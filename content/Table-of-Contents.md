@@ -1,0 +1,13 @@
+Day 1: hello-world-solana [x]
+Day 2: rust-arithmetic-operators [x]
+Day 3: anchor-idl [x]
+Day 4: solana-require-macro [x]
+Day 5: solana-anchor-deploy [x]
+Day 6: rust-basic-syntax [x]
+Day 7: the-unusual-syntax-of-rust [x]
+Day 8: rust-function-like-macro [x]
+Day 9: rust-attribute-derive-macro [x]
+Day 10: rust-function-visibility [x]
+
+Day 11: solana-clock [ ]
+Day 12: solana-sysvar [ ]
