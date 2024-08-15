@@ -4,9 +4,9 @@
 
 This tutorial will introduce the mechanism by which Solana Anchor programs can transfer SOL as part of the transaction.
 
-**Unlike Ethereum where wallets specify msg.value as part of the transaction and “push” the ETH to the contract, Solana programs “pull” the Solana from the wallet.**
+**Unlike Ethereum where wallets specify msg.value as part of the transaction and "push" the ETH to the contract, Solana programs "pull" the Solana from the wallet.**
 
-As such, there is no such thing as “payable” functions or “msg.value”
+As such, there is no such thing as "payable" functions or "msg.value"
 
 Below we have created a new anchor project called `sol_splitter` and have put the Rust code to transfer SOL from the sender to a recipient.
 
@@ -64,14 +64,14 @@ pub struct SendSol<'info> {
 There are a lot of things to explain here.
 
 ## Introducing the CPI: Cross Program Invocation
-In Ethereum, transferring ETH is done simply by specifying a value in the `msg.value` field. In Solana, a built-in program called the `system program` transfers SOL from one account to another. That’s why it kept showing up when we initialized accounts and had to pay a fee to initialize them.
+In Ethereum, transferring ETH is done simply by specifying a value in the `msg.value` field. In Solana, a built-in program called the `system program` transfers SOL from one account to another. That's why it kept showing up when we initialized accounts and had to pay a fee to initialize them.
 
 You can roughly think of the system program as a precompile in Ethereum. Imagine it behaves sort of like an ERC-20 token built into the protocol that is used as the native currency. And it has a public function called `transfer`.
 
 ## Context for CPI transactions
 Whenever a Solana program function is called, a `Context` must be provided. That `Context` holds all the accounts that the program will interact with.
 
-Calling the system program is no different. The system program needs a `Context` holding the `from` and `to` accounts. The `amount` that is transferred is passed as a “regular” argument — it is not part of the `Context` (as “amount” is not an account, it is just a value).
+Calling the system program is no different. The system program needs a `Context` holding the `from` and `to` accounts. The `amount` that is transferred is passed as a "regular" argument — it is not part of the `Context` (as "amount" is not an account, it is just a value).
 
 We can now explain the code snippet below:
 
@@ -87,10 +87,28 @@ This returns a `Result<()>` type, just like the public functions on our Anchor p
 
 To check if the cross program invocation succeeded, we just need to check the returned value is an `Ok`. Rust makes this straightforward with the `is_ok()` method:
 
-![res system_program](https://static.wixstatic.com/media/935a00_31a6794a7b484ababb68895357fe3b27~mv2.png/v1/fill/w_1404,h_592,al_c,q_90,enc_auto/935a00_31a6794a7b484ababb68895357fe3b27~mv2.png)
+```rust
+        let res = system_program::transfer(cpi_context, amount);
 
-## Only the signer can be “from”
-If you call the system program with `from` being an account that is not a `Signer`, then the system program will reject the call. Without a signature, the system program can’t know if you authorized the call or not.
+        if res.is_ok() {
+            return Ok(());
+        } else {
+            return err!(Errors::TransferFailed);
+        }
+    }
+}
+
+#[error_code]
+pub enum Errors {
+    #[msg("transfer failed")]
+    TransferFailed,
+}
+```
+
+<!-- ![res system_program](https://static.wixstatic.com/media/935a00_31a6794a7b484ababb68895357fe3b27~mv2.png/v1/fill/w_1404,h_592,al_c,q_90,enc_auto/935a00_31a6794a7b484ababb68895357fe3b27~mv2.png) -->
+
+## Only the signer can be "from"
+If you call the system program with `from` being an account that is not a `Signer`, then the system program will reject the call. Without a signature, the system program can't know if you authorized the call or not.
 
 Typescript code:
 
@@ -132,7 +150,7 @@ Some items to note:
 - We generated the recipient wallet using `anchor.web3.Keypair.generate()`
 - We transferred one SOL to the new account
 
-When we run the code, the expected result is as follows. The print statements are the balance before and after of the recipient’s address:
+When we run the code, the expected result is as follows. The print statements are the balance before and after of the recipient's address:
 
 ![result sol_sprinter](https://static.wixstatic.com/media/935a00_65cb4a30f02d467ba68d5dcb4f78bdde~mv2.png/v1/fill/w_1405,h_336,al_c,q_90,enc_auto/935a00_65cb4a30f02d467ba68d5dcb4f78bdde~mv2.png)
 
@@ -170,7 +188,7 @@ pub struct SendSol<'info> {
 }
 ```
 
-To solve this, Anchor adds a `remaining_accounts field` to `Context` structs.
+To solve this, Anchor adds a `remaining_accounts` field to `Context` structs.
 
 The code below illustrates how to use that feature:
 
@@ -184,7 +202,7 @@ declare_id!("9qnGx9FgLensJQy1hSB4b8TaRae6oWuNDveUrxoYatr7");
 pub mod sol_splitter {
     use super::*;
 
-		// 'a, 'b, 'c are Rust lifetimes, ignore them for now
+    // 'a, 'b, 'c are Rust lifetimes, ignore them for now
     pub fn split_sol<'a, 'b, 'c, 'info>(
         ctx: Context<'a, 'b, 'c, 'info, SplitSol<'info>>,
         amount: u64,
@@ -193,7 +211,7 @@ pub mod sol_splitter {
         let amount_each_gets = amount / ctx.remaining_accounts.len() as u64;
         let system_program = &ctx.accounts.system_program;
 
-				// note the keyword `remaining_accounts`
+        // note the keyword `remaining_accounts`
         for recipient in ctx.remaining_accounts {
             let cpi_accounts = system_program::Transfer {
                 from: ctx.accounts.signer.to_account_info(),
@@ -271,13 +289,12 @@ describe("sol_splitter", () => {
 
 Running the tests shows the before and after balances:
 
-![test result Split SOL](https://static.wixstatic.com/media/935a00_d59f3d33908a4c2fa3a2ccd2feabdf9f~mv2.png/v1/fill/w_1442,h_331,al_c,q_90,enc_auto/935a00_d59f3d33908a4c2fa3a2ccd2feabdf9f~mv2.png
-)
+![test result Split SOL](https://static.wixstatic.com/media/935a00_d59f3d33908a4c2fa3a2ccd2feabdf9f~mv2.png/v1/fill/w_1442,h_331,al_c,q_90,enc_auto/935a00_d59f3d33908a4c2fa3a2ccd2feabdf9f~mv2.png)
 
 Here is some commentary on the Rust code:
 
 ### Rust Lifetimes
-The function declaration of split_sol has some odd syntax introduced:
+The function declaration of `split_sol` has some odd syntax introduced:
 
 ```rust
 pub fn split_sol<'a, 'b, 'c, 'info>(
@@ -286,7 +303,7 @@ pub fn split_sol<'a, 'b, 'c, 'info>(
 ) -> Result<()>
 ```
 
-The `'a` , `'b`, and `'c` are Rust lifetimes. Rust lifetimes are a complicated topic we’d rather avoid for now. But a high level explanation is that the Rust code needs assurances the resources passed into the loop `for recipient in ctx.remaining_accounts` will exist for the entirety of the loop.
+The `'a` , `'b`, and `'c` are Rust lifetimes. Rust lifetimes are a complicated topic we'd rather avoid for now. But a high level explanation is that the Rust code needs assurances the resources passed into the loop `for recipient in ctx.remaining_accounts` will exist for the entirety of the loop.
 
 ### ctx.remaining_accounts
 The loop loops through for `recipient in ctx.remaining_accounts`. The keyword `remaining_acocunts` is the Anchor mechanism for passing in an arbitrary number of accounts without having to create a bunch of keys in the Context struct.
@@ -300,4 +317,6 @@ await program.methods.splitSol(amount)
 ```
 
 ## Learn more with RareSkills
-See our [<ins>Solana course</ins>](https://www.rareskills.io/solana-tutorial) for the rest of the Solana tutorials.
+See our [Solana course](https://www.rareskills.io/solana-tutorial) for the rest of the Solana tutorials.
+
+*Originally Published March, 2, 2024*

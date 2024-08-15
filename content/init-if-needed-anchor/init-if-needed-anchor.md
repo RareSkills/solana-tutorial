@@ -2,11 +2,11 @@
 
 ![Hero image showing Anchor init_if_needed](https://static.wixstatic.com/media/935a00_da6446a3727044b589537f2fedac8c55~mv2.jpg/v1/fill/w_1480,h_832,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_da6446a3727044b589537f2fedac8c55~mv2.jpg)
 
-In previous tutorials, we’ve had to initialize an account in a separate transaction before we can write data to it. We may wish to be able to initialize an account and write data to it in one transaction to simplify things for the user.
+In previous tutorials, we've had to initialize an account in a separate transaction before we can write data to it. We may wish to be able to initialize an account and write data to it in one transaction to simplify things for the user.
 
 Anchor provides a handy macro called `init_if_needed` which, as the name suggests, will initialize the account if it does not exist.
 
-The example counter below does not need a separate initialize transaction, it will start adding “1” to the `counter` storage right away.
+The example counter below does not need a separate initialize transaction, it will start adding "1" to the `counter` storage right away.
 
 Rust:
 
@@ -92,7 +92,7 @@ But before we just silence the error, we should understand what a re-initializat
 If we try to initialize an account that has already been initialized, the transaction will fail.
 
 ## How does Anchor know an account is already initialized?
-From Anchor’s perspective, if the account has a non-zero lamport balance OR the account is owned by the system program, then it is not initialized.
+From Anchor's perspective, if the account has a non-zero lamport balance OR the account is owned by the system program, then it is not initialized.
 
 An account owned by the system program or with zero lamport balance can be initialized again.
 
@@ -197,16 +197,16 @@ The sequence is as follows:
 5. With zero lamport balance, the Solana runtime considers the account non-existent as it will be scheduled for deletion as it is no longer rent exempt.
 6. We call initialize again, and it succeeds.**We have successfully reinitialized the account after following this sequence.**
 
-Again, Solana does not have an “initialized” flag or anything. Anchor will allow an initialize transaction to succeed if the owner is the system program or the lamport balance is zero.
+Again, Solana does not have an "initialized" flag or anything. Anchor will allow an initialize transaction to succeed if the owner is the system program or the lamport balance is zero.
 
 ## Why reinitialization might be a problem in our example
-Transferring ownership to the system program requires erasing the data in the account. Removing all the lamports “communicates” that you don’t want the account to continue to exist.
+Transferring ownership to the system program requires erasing the data in the account. Removing all the lamports "communicates" that you don't want the account to continue to exist.
 
 Is your intent by doing either of those actions to restart the counter or end the life of the counter? If your application never expects the counter to be reset, this could lead to bugs.
 
 Anchor wants you to think through your intent with this, which is why it makes you jump through the extra hoop of enabling a feature flag in Cargo.toml.
 
-If you are okay with the counter getting reset back at some point and counting back up, reinitialization is not an issue. But if the counter should never reset to zero under any circumstance, then it would probably be better for you to implement the `initialization` function separately and add a safeguard to make sure it can only be called once in it’s lifetime (for example, storing a boolean flag in a separate account).
+If you are okay with the counter getting reset back at some point and counting back up, reinitialization is not an issue. But if the counter should never reset to zero under any circumstance, then it would probably be better for you to implement the `initialization` function separately and add a safeguard to make sure it can only be called once in it's lifetime (for example, storing a boolean flag in a separate account).
 
 Of course, your program might not necessarily have the mechanism to transfer the account to the system program or withdraw lamports from the account. But Anchor has no way of knowing this, so it always throws out the warning about `init_if_needed` because it cannot determine whether the account can go back into an initializable state.
 
@@ -215,20 +215,52 @@ In our counter example with `init_if_needed`, the counter is never equal to zero
 
 If we *also* had a regular initialization function that did not increment the counter, then the counter would be initialized and have a value of zero. If some business logic never expects to see a counter with a value of zero, then unexpected behavior may happen.
 
-**In Ethereum, storage values for variables that have never been “touched” have a default value of zero. In Solana, accounts that have not been initialized do not hold zero-value variables — they don’t exist and cannot be read.**
+**In Ethereum, storage values for variables that have never been "touched" have a default value of zero. In Solana, accounts that have not been initialized do not hold zero-value variables — they don't exist and cannot be read.**
 
-## “Initialization” does not always mean “init” in Anchor
-Somewhat confusingly, some use the term “initialize” to mean “writing data the account for the first time” in a more general sense than Anchor’s `init` macro.
+## "Initialization" does not always mean "init" in Anchor
+Somewhat confusingly, some use the term "initialize" to mean "writing data the account for the first time" in a more general sense than Anchor's `init` macro.
 
-If we look at the example program from [<ins>Soldev</ins>](https://solana.com/developers/courses), we see that the `init` macro isn’t used:
+If we look at the example program from [Soldev](https://solana.com/developers/courses), we see that the `init` macro isn't used:
 
-![example program: initialization_insecure](https://static.wixstatic.com/media/935a00_ddf79fa835384feeab537745b953b160~mv2.png/v1/fill/w_1480,h_1058,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_ddf79fa835384feeab537745b953b160~mv2.png)
+```rust
+use anchor_lang::prelude::*;
+use borsh::{BorshDeserialize, BorshSerialize};
+
+declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+
+#[program]
+pub mod initialization_insecure {
+    use super::*;
+
+    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+        let mut user = User::try_from_slice(&ctx.accounts.user.data.borrow()).unwrap();
+        user.authority = ctx.accounts.authority.key();
+        user.serialize(&mut *ctx.accounts.user.data.borrow_mut())?;
+        Ok(())
+    }
+}
+
+#[derive(Accounts)]
+pub struct Initialize<'info> {
+    #[account(mut)]
+    user: AccountInfo<'info>,
+    #[account(mut)]
+    authority: Signer<'info>,
+}
+
+#[derive(BorshSerialize, BorshDeserialize)]
+pub struct User {
+    authority: Pubkey,
+}
+```
+
+<!-- ![example program: initialization_insecure](https://static.wixstatic.com/media/935a00_ddf79fa835384feeab537745b953b160~mv2.png/v1/fill/w_1480,h_1058,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_ddf79fa835384feeab537745b953b160~mv2.png) -->
 
 The code is directly reading in the account on line 11, then setting the fields. **The program blindly overwrites data whether it is writing for the first time or the second time (or third time).**
 
-Instead, the nomenclature for “initialize” here is “write to the account for the first time”.
+Instead, the nomenclature for "initialize" here is "write to the account for the first time".
 
-The “reinitialization attack” here is a different variety from what the Anchor frame is warning about. Specifically, “initialize” can be called several times. Anchor’s `init` macro checks that the lamport balance is nonzero and that the program already owns the account, which would prevent multiple calls to `initialize`. The init macro can see the account already has lamports or is owned by the program. However, the code above has no such checks.
+The "reinitialization attack" here is a different variety from what the Anchor frame is warning about. Specifically, "initialize" can be called several times. Anchor's `init` macro checks that the lamport balance is nonzero and that the program already owns the account, which would prevent multiple calls to `initialize`. The init macro can see the account already has lamports or is owned by the program. However, the code above has no such checks.
 
 It is worth going through their tutorial to see this variety of a reinitialization attack.
 
@@ -291,9 +323,11 @@ This operation will erase the account discriminator, so it will not be readable 
 ## Summary
 The `init_if_needed` macro can be convenient to avoid needing two transactions to interact with a new storage account. The Anchor framework blocks it by default to force us to consider the following possible undesirable situations:
 - If there is a method to reduce the lamport balance to zero or transfer ownership to the system program, then the account can be re-initialized. This may or may not be a problem depending on the business requirements.
-- If the program has both an `init` macro and a `init_if_needed` macro, the developer must ensure that having two codepaths doesn’t result in unexpected state.
+- If the program has both an `init` macro and a `init_if_needed` macro, the developer must ensure that having two codepaths doesn't result in unexpected state.
 - Even after the data in an account is completely erased, the account is still initialized.
-- If the program has a function that “blindly” writes to an account, then data in that account could get overwritten. This usually requires loading in the account via `AccountInfo` or its alias `UncheckedAccount`.
+- If the program has a function that "blindly" writes to an account, then data in that account could get overwritten. This usually requires loading in the account via `AccountInfo` or its alias `UncheckedAccount`.
 
 ## Learn more with RareSkills
-See our [<ins>Solana development course</ins>](https://www.rareskills.io/solana-tutorial) for the rest of our Solana tutorials. Thank you for reading!
+See our [Solana development course](https://www.rareskills.io/solana-tutorial) for the rest of our Solana tutorials. Thank you for reading!
+
+*Originally Published March, 8, 2024*

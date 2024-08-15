@@ -53,8 +53,8 @@ describe("balance", () => {
 
 Some items in this example differ from earlier tutorials, particularly the use of `UncheckedAccount`.
 
-## What is UncheckedAccount in Solana Anchor?
-The UncheckedAccount type tells to Anchor to not check if the account being read is owned by the program.
+## What is `UncheckedAccount` in Solana Anchor?
+The `UncheckedAccount` type tells to Anchor to not check if the account being read is owned by the program.
 
 Note that the account we passed through the `Context` struct is not an account that this program initialized, hence the program does not own it.
 
@@ -77,7 +77,7 @@ In our case, we are passing in accounts that are certainly not owned by the prog
 In our case, we are just logging the balance to the console, but most real-world use cases will have more complex logic.
 
 ### What is `/// CHECK:`?
-Because of the danger of using UncheckedAccount, Anchor forces you to include this comment to encourage you not to ignore the safety considerations.
+Because of the danger of using `UncheckedAccount`, Anchor forces you to include this comment to encourage you not to ignore the safety considerations.
 
 **Exercise**: remove the `/// Check:` comment and run `anchor build` you should see the build halt and ask you to add the comment back with an explanation for why an Unchecked Account is safe. That is, reading in an untrusted account could be dangerous, Anchor wants to make sure you are not doing anything critical with the data in the account.
 
@@ -87,16 +87,18 @@ The `#[account]` struct tells Anchor how to deserialize an account holding data.
 ```rust
 #[account]
 pub struct Counter {
-	counter: u64
+    counter: u64
 }
 ```
 
-In our case however, we are not reading the data from the account — we are only reading the balance. This is similar to how this similar to how we can read the balance of an Ethereum address but not read any of it’s code. Since we do not want to deserialize the data, we don’t supply an `#[account]` struct.
+In our case however, we are not reading the data from the account — we are only reading the balance. This is similar to how this similar to how we can read the balance of an Ethereum address but not read any of it's code. Since we do *not* want to deserialize the data, we don't supply an `#[account]` struct.
 
 ## Not all the SOL in an account is spendable
-Recall from our discussion of [<ins>Solana account rent</ins>](https://www.rareskills.io/post/solana-account-rent) that the account must maintain a certain balance of SOL to be “rent exempt” or the runtime will delete the account. Just because the account has “1 SOL” in it does not necessarily mean the account can spend the entire 1 SOL.
+Recall from our discussion of [Solana account rent](https://www.rareskills.io/post/solana-account-rent) that the account must maintain a certain balance of SOL to be "rent exempt" or the runtime will delete the account. Just because the account has "1 SOL" in it does not necessarily mean the account can spend the entire 1 SOL.
 
-For example, if you are building a staking or bank application where a user’s deposited SOL is kept in separate accounts, it is not accurate to simply measure the SOL balance of those accounts as the rent will be included in the balance.
+For example, if you are building a staking or bank application where a user's deposited SOL is kept in separate accounts, it is not accurate to simply measure the SOL balance of those accounts as the rent will be included in the balance.
 
 ## Learn more with RareSkills
-See our [<ins>Solana developer course</ins>](https://www.rareskills.io/solana-tutorial) for more Solana materials.
+See our [Solana developer course](https://www.rareskills.io/solana-tutorial) for more Solana materials.
+
+*Originally Published February, 29, 2024*

@@ -6,30 +6,30 @@ The owner of an account in Solana is able to reduce the SOL balance, write data 
 
 Here is the summary of account ownership in Solana:
 
-1. The `system program` owns wallets and keypair accounts that haven’t been assigned ownership to a program (initialized).
+1. The `system program` owns wallets and keypair accounts that haven't been assigned ownership to a program (initialized).
 2. The BPFLoader owns programs.
-3. A program owns [<ins>Solana PDAs</ins>](https://www.rareskills.io/post/solana-pda). It can also own keypair accounts if ownership has been transferred to the program (this is what happens during initialization).
+3. A program owns [Solana PDAs](https://www.rareskills.io/post/solana-pda). It can also own keypair accounts if ownership has been transferred to the program (this is what happens during initialization).
 
 We now examine the implications of these facts.
 
 ## The system program owns keypair accounts
-To illustrate this, let’s look at our Solana wallet address using the Solana CLI and inspect its metadata:
+To illustrate this, let's look at our Solana wallet address using the Solana CLI and inspect its metadata:
 
 ![Solona metadata : owner](https://static.wixstatic.com/media/935a00_18047d3cc76b443f8ed1db16968ed951~mv2.png/v1/fill/w_812,h_224,al_c,lg_1,q_85,enc_auto/935a00_18047d3cc76b443f8ed1db16968ed951~mv2.png)
 
-Observe that the owner is not our address, but rather an account with address 111…111. This is the system program, the same system program that moves SOL around as we saw in earlier tutorials.
+Observe that the owner is not our address, but rather an account with address `111...111`. This is the system program, the same system program that moves SOL around as we saw in earlier tutorials.
 
 **Only the owner of an account has the ability to modify the data in it**
 
 This includes reducing the lamport data (you do not need to be the owner to increase the lamport data of another account as we will see later).
 
-Although you “own” your wallet in some metaphysical sense, you do not directly have the ability to write data into it or reduce the lamport balance because, from Solana runtime perspective, you are not the owner.
+Although you "own" your wallet in some metaphysical sense, you do not directly have the ability to write data into it or reduce the lamport balance because, from Solana runtime perspective, you are not the owner.
 
 The reason you are able to spend SOL in your wallet is because you possess the private key that generated the address, or public key. When the `system program` recognizes that you have produced a valid signature for the public key, then it will recognize your request to spend the lamports in the account as legitimate, then spend them according to your instructions.
 
 However, the system program does not offer a mechanism for a signer to directly write data to the account.
 
-The account showed in the example above is a keypair account, or what we might consider a “regular Solana wallet.” The system program is the owner of keypair accounts.
+The account showed in the example above is a keypair account, or what we might consider a "regular Solana wallet." The system program is the owner of keypair accounts.
 
 ## PDAs and keypair accounts initialized by programs are owned by the program
 The reason programs can write to PDAs or keypair accounts that were created outside the program but initialized by the program, is because the program owns them.
@@ -147,10 +147,10 @@ describe("owner", () => {
 });
 ```
 
-The tests works as follows:
+The tests work as follows:
 1. It predicts the address of the PDA and queries the owner. It gets `null`.
 2. It calls `initializePDA` then queries the owner. It gets the address of the program.
-3. It generates a keypair account and queries the owner. It gets null.
+3. It generates a keypair account and queries the owner. It gets `null`.
 4. It airdrops SOL to the keypair account. Now the owner is the system program, just like a normal wallet.
 5. It calls `initializeKeypair` then queries the owner. It gets the address of the program.
 
@@ -163,7 +163,7 @@ This is how the program is able to write data to accounts: it owns them. During 
 **Exercise**: Modify the test to print out the address of the keypair and the pda. Then use the Solana CLI to inspect who the owner is for those accounts. It should match what the test prints. Make sure the `solana-test-validator` is running in the backgorund so you can use the CLI.
 
 ## The BPFLoaderUpgradeable owns programs
-Let’s use the Solana CLI to determine the owner of our program:
+Let's use the Solana CLI to determine the owner of our program:
 
 ![Solona metadata : Owner: the BPFLoaderUpgradable](https://static.wixstatic.com/media/935a00_396ec64ed6bf429fb84fd1252b62cdb6~mv2.png/v1/fill/w_1397,h_349,al_c,lg_1,q_90,enc_auto/935a00_396ec64ed6bf429fb84fd1252b62cdb6~mv2.png)
 
@@ -171,7 +171,21 @@ The wallet that deployed the program is not the owner of it. The reason Solana p
 
 When we deploy (or upgrade) a program, we are actually making a call to the BPFLoaderUpgradeable program, as can be seen in the logs:
 
-![logs : the BPFLoaderUpgradable](https://static.wixstatic.com/media/935a00_b29171cb29a34ae49c47c92571e49af9~mv2.png/v1/fill/w_1395,h_281,al_c,lg_1,q_90,enc_auto/935a00_b29171cb29a34ae49c47c92571e49af9~mv2.png)
+```bash
+  Signature: 2zBBEPWsMvf8t7wkNEDqfHJKw83aBMgwGi3G9uZ6m9qG9t4kjJA2wFEP84dkKCjiCdbh54xeEDYFeDcNS7FkyLEw  
+  Status: Ok  
+  Log Messages:
+    Program 11111111111111111111111111111111 invoke [1]
+    Program 11111111111111111111111111111111 success
+    Program BPFLoaderUpgradeab1e11111111111111111111111 invoke [1]
+    Program 11111111111111111111111111111111 invoke [2]
+    Program 11111111111111111111111111111111 success
+    Deployed program C2ZKJPhNiCM6CqTneGUXJoE4o6YhMzNUes3q5WNcH3un
+    Program BPFLoaderUpgradeab1e11111111111111111111111 success
+Transaction executed in slot 34:
+```
+
+<!-- ![logs : the BPFLoaderUpgradable](https://static.wixstatic.com/media/935a00_b29171cb29a34ae49c47c92571e49af9~mv2.png/v1/fill/w_1395,h_281,al_c,lg_1,q_90,enc_auto/935a00_b29171cb29a34ae49c47c92571e49af9~mv2.png) -->
 
 ## Programs can transfer ownership of owned accounts
 This is a feature you will probably not use very often, but here is the code to do it.
@@ -279,7 +293,7 @@ describe("change_owner", () => {
 ```
 
 Here are some things we want to call attention to:
-- After transferring the account, the data must be erased in the same transaction. Otherwise, we could insert data into owned accounts of other programs. This is the `account_info.realloc(0, false)`; code. The `false` means don’t zero out the data, but it makes no difference because there is no data anymore.
+- After transferring the account, the data must be erased in the same transaction. Otherwise, we could insert data into owned accounts of other programs. This is the `account_info.realloc(0, false)`; code. The `false` means don't zero out the data, but it makes no difference because there is no data anymore.
 - Transferring account ownership does not permanently remove the account, it can be initialized again as the tests show.
 
 Now that we clearly understand that programs own PDAs and keypair accounts initialized by them, the interesting and useful thing we can do is transfer SOL out of them.
@@ -363,14 +377,14 @@ pub struct Pda {}
 ```
 Because the program owns the PDA, it can directly deduct the lamport balance from the account.
 
-When we transfer SOL as part of a normal wallet transaction, we don’t deduct the lamport balance directly as we are not the owner of the account. The system program owns the wallet, and will deduct the lamport balance if it sees a valid signature on a transaction requesting it to do so.
+When we transfer SOL as part of a normal wallet transaction, we don't deduct the lamport balance directly as we are not the owner of the account. The system program owns the wallet, and will deduct the lamport balance if it sees a valid signature on a transaction requesting it to do so.
 
 In this case, the program owns the PDA, and therefore can directly deduct lamports from it.
 
 Some other items in the code worth calling attention to:
-- We hardcoded who can withdraw from the PDA using the constraint `#[account(mut, address = Pubkey::from_str("5jmigjgt77kAfKsHri3MHpMMFPo6UuiAMF19VdDfrrTj").unwrap())]`. This checks that the address for that account matches the one in the string. For this code to work, we also needed to import use `std::str::FromStr;`. To test this code, change the address in the string to yours from `solana address`.
-- With Anchor 0.29, we can use the syntax `ctx.accounts.pda.sub_lamports(amount)?;` and `ctx.accounts.signer.add_lamports(amount)?`;. For earlier versions of Anchor, use **`ctx.accounts.pda.to_account_info().try_borrow_mut_lamports()? -= amount;`** and `ctx.accounts.signer.to_account_info().try_borrow_mut_lamports()? += amount;`.
-- You don’t need to own the account you are transferring lamports to.
+- We hardcoded who can withdraw from the PDA using the constraint `#[account(mut, address = Pubkey::from_str("5jmigjgt77kAfKsHri3MHpMMFPo6UuiAMF19VdDfrrTj").unwrap())]`. This checks that the address for that account matches the one in the string. For this code to work, we also needed to import `use std::str::FromStr;`. To test this code, change the address in the string to yours from `solana address`.
+- With Anchor 0.29, we can use the syntax `ctx.accounts.pda.sub_lamports(amount)?;` and `ctx.accounts.signer.add_lamports(amount)?;`. For earlier versions of Anchor, use **`ctx.accounts.pda.to_account_info().try_borrow_mut_lamports()? -= amount;`** **and** `ctx.accounts.signer.to_account_info().try_borrow_mut_lamports()? += amount;`.
+- You don't need to own the account you are transferring lamports to.
 
 Here is the accompanying Typescript code:
 
@@ -425,7 +439,9 @@ ctx.accounts.signer.add_lamports(amount + 1)?;
 ```
 The runtime should block you.
 
-Note that withdrawing the lamport balance below the rent-exempt threshold will result in the account getting closed. If there is data in the account, that will be erased. As such, programs should track how much SOL is required for rent exemption before withdrawing SOL unless they don’t care about the account getting erased.
+Note that withdrawing the lamport balance below the rent-exempt threshold will result in the account getting closed. If there is data in the account, that will be erased. As such, programs should track how much SOL is required for rent exemption before withdrawing SOL unless they don't care about the account getting erased.
 
 ## Learn more with RareSkills
-See our [<ins>Solana tutorial</ins>](https://www.rareskills.io/solana-tutorial) for the complete list of topics.
+See our [Solana tutorial](https://www.rareskills.io/solana-tutorial) for the complete list of topics.
+
+*Originally Published March, 7, 2024*

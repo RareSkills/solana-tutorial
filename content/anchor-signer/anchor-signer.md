@@ -2,14 +2,14 @@
 
 ![Hero image showing Anchor Signer: Modifying accounts with different signers](https://static.wixstatic.com/media/935a00_8a5622df6d344ca3bd3d548454a703fe~mv2.jpg/v1/fill/w_1480,h_832,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_8a5622df6d344ca3bd3d548454a703fe~mv2.jpg)
 
-In our [<ins>Solana tutorials</ins>](https://www.rareskills.io/solana-tutorial) thus far, we’ve only had one account initialize and write to the account.
+In our [Solana tutorials](https://www.rareskills.io/solana-tutorial) thus far, we've only had one account initialize and write to the account.
 
 In practice, this is very restrictive. For example, if user Alice is transferring points to Bob, Alice must be able to write to an account initialized by user Bob.
 
 In this tutorial we will demonstrate initializing an account with one wallet and updating it with another.
 
 ## The initialization step
-The Rust code we’ve been using to initialize accounts doesn’t change:
+The Rust code we've been using to initialize accounts doesn't change:
 
 ```rust
 use anchor_lang::prelude::*;
@@ -100,7 +100,7 @@ It is not required that the key `signer` be called `signer`.
 **Exercise**:  In the Rust code, change `payer = signer` to `payer = fren` and `pub signer: Signer<'info>`, to `pub fren: Signer<'info>`, and change `signer: newKeypair.publicKey` to `fren: newKeypair.publicKey` in the test. The initialization should succeed and the test should pass.
 
 ## Why does Anchor require specifying the Signer and the publicKey?
-At first it might seem redundant that we are specifying the signer twice, but let’s take a closer look:
+At first it might seem redundant that we are specifying the signer twice, but let's take a closer look:
 
 ![A public key is passed here](https://static.wixstatic.com/media/935a00_e6738de42e754598bdc0b91d6b161675~mv2.png/v1/fill/w_1480,h_1372,al_c,q_95,usm_0.66_1.00_0.01,enc_auto/935a00_e6738de42e754598bdc0b91d6b161675~mv2.png)
 
@@ -121,7 +121,7 @@ We will get the following error:
 
 ![Error: Signature verification fail](https://static.wixstatic.com/media/935a00_e65c13cd81be466dbb8abed42a18c3f4~mv2.png/v1/fill/w_1480,h_294,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_e65c13cd81be466dbb8abed42a18c3f4~mv2.png)
 
-Similarly, if we don’t pass in the `publicKey` explicitly, Anchor will silently use the default signer:
+Similarly, if we don't pass in the `publicKey` explicitly, Anchor will silently use the default signer:
 
 ![Dont pass publicKey](https://static.wixstatic.com/media/935a00_3d3ff1498fb74e98a9d153733f621ade~mv2.png/v1/fill/w_1416,h_341,al_c,lg_1,q_90,enc_auto/935a00_3d3ff1498fb74e98a9d153733f621ade~mv2.png)
 
@@ -129,11 +129,18 @@ And we will get the following `Error: unknown signer`:
 
 ![Error: unknown signer](https://static.wixstatic.com/media/935a00_6cffaab9b57f4f40ad296c048769d223~mv2.png/v1/fill/w_1480,h_284,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_6cffaab9b57f4f40ad296c048769d223~mv2.png)
 
-Somewhat misleadingly, Anchor isn’t saying the signer is unknown because it wasn’t specified per se. Anchor is able to figure out that if no signer is specified, then it will use the default signer. If we remove both the `.signers([newKeypair])` code *and* the `fren: newKeypair.publicKey` code, then Anchor will use the default signer for both the public key to check against, and the signature of the signer to verify it matches the public key.
+Somewhat misleadingly, Anchor isn't saying the signer is unknown because it wasn't specified per se. Anchor is able to figure out that if no signer is specified, then it will use the default signer. If we remove both the `.signers([newKeypair])` code *and* the `fren: newKeypair.publicKey` code, then Anchor will use the default signer for both the public key to check against, and the signature of the signer to verify it matches the public key.
 
 The following code will result in a successful initialization because both the `Signer` public key and the account that signs the transaction are the Anchor default signer.
 
-![Successful initialize](https://static.wixstatic.com/media/935a00_f4422a244375428b8b18b9990d7aa1d3~mv2.png/v1/fill/w_866,h_144,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_f4422a244375428b8b18b9990d7aa1d3~mv2.png)
+```typescript
+  await program.methods.initialize().accounts({
+    myStorage: myStorage
+  }).rpc();
+});
+```
+
+<!-- ![Successful initialize](https://static.wixstatic.com/media/935a00_f4422a244375428b8b18b9990d7aa1d3~mv2.png/v1/fill/w_866,h_144,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_f4422a244375428b8b18b9990d7aa1d3~mv2.png) -->
 
 ![other_write initialized](https://static.wixstatic.com/media/935a00_8c4141658d744bfe980e6063b598eb6d~mv2.png/v1/fill/w_864,h_202,al_c,lg_1,q_85,enc_auto/935a00_8c4141658d744bfe980e6063b598eb6d~mv2.png)
 
@@ -253,14 +260,14 @@ describe("other_write", () => {
 ```
 
 ## Restricting writes to Solana accounts
-In real applications, we don’t want Bob writing arbitrary data to arbitrary accounts. Let’s create a basic example where users can initialize an account with 10 points and transfer those points to another account. (There is an obvious problem that a hacker can create as many accounts as they want using separate wallets, but that is outside of the scope of our example).
+In real applications, we don't want Bob writing arbitrary data to arbitrary accounts. Let's create a basic example where users can initialize an account with 10 points and transfer those points to another account. (There is an obvious problem that a hacker can create as many accounts as they want using separate wallets, but that is outside of the scope of our example).
 
 ## Building a proto-ERC20 program
-Alice should be able to modify both her account and Bob’s account. That is, she should be able to deduct her points and credit Bob’s points. She should not be able to deduct Bob’s points — only Bob should be able to do that.
+Alice should be able to modify both her account and Bob's account. That is, she should be able to deduct her points and credit Bob's points. She should not be able to deduct Bob's points — only Bob should be able to do that.
 
-By convention, we call an address that can make privileged  changes to an account an “authority” in Solana. It is a common pattern to store the “authority” field in the account struct to signify that only that account can conduct sensitive operations on that account (such as deducting points in our example).
+By convention, we call an address that can make privileged  changes to an account an "authority" in Solana. It is a common pattern to store the "authority" field in the account struct to signify that only that account can conduct sensitive operations on that account (such as deducting points in our example).
 
-This is somewhat analogous to the [<ins>onlyOwner pattern in Solidity</ins>](https://www.rareskills.io/post/anchor-signer), except that instead of applying to the entire contract, it applies only to a single account:
+This is somewhat analogous to the [onlyOwner pattern in Solidity](https://www.rareskills.io/post/anchor-signer), except that instead of applying to the entire contract, it applies only to a single account:
 
 ```rust
 use anchor_lang::prelude::*;
@@ -328,11 +335,11 @@ pub struct Player {
     authority: Pubkey
 }
 ```
-Note that we use the address of the signer `(&(signer.as_ref().key().to_bytes()))` to derive the address of the account where their points are stored. This behaves like a Solidity [<ins>mapping in Solana</ins>](https://www.rareskills.io/post/solana-solidity-mapping), where the [<ins>Solana “msg.sender / tx.origin”</ins>](https://www.rareskills.io/post/msg-sender-solana) is the key.
+Note that we use the address of the signer (`&(signer.as_ref().key().to_bytes())`) to derive the address of the account where their points are stored. This behaves like a Solidity [mapping in Solana](https://www.rareskills.io/post/solana-solidity-mapping), where the [Solana "msg.sender / tx.origin"](https://www.rareskills.io/post/msg-sender-solana) is the key.
 
 In the `initialize` function, the program sets the initial points to `10` and the authority to the `signer`. The user does not have control over these initial values.
 
-The `transfer_points` function uses [<ins>Solana Anchor require macros and error code macros</ins>](https://www.rareskills.io/post/solana-require-macro) to ensure that 1) the Signer of the transaction is the authority of the account whose balance is getting deducted; and 2) the account has enough points balance to transfer.
+The `transfer_points` function uses [Solana Anchor require macros and error code macros](https://www.rareskills.io/post/solana-require-macro) to ensure that 1) the Signer of the transaction is the authority of the account whose balance is getting deducted; and 2) the account has enough points balance to transfer.
 
 The test codebase should be straightforward to understand. Alice and Bob initialize their accounts, then Alice transfer 5 points to Bob:
 
@@ -407,7 +414,7 @@ describe("points", () => {
 An alternative to writing `require!(ctx.accounts.from.authority == ctx.accounts.signer.key(), Errors::SignerIsNotAuthority);` is to use an Anchor constraint. The Anchor account docs give us a list of constraints available to us.
 
 ## Anchor `has_one` constraint
-The `has_one` constraint assumes that there is “shared key” between `#[derive(Accounts)]` and `#[account]` and checks that both of those keys have the same value. The best way to demonstrate this is with a picture:
+The `has_one` constraint assumes that there is "shared key" between `#[derive(Accounts)]` and `#[account]` and checks that both of those keys have the same value. The best way to demonstrate this is with a picture:
 
 ![pup struct TransferPoints](https://static.wixstatic.com/media/935a00_bfee9678192b41db9831e3adc6016eb2~mv2.png/v1/fill/w_664,h_612,al_c,q_90,enc_auto/935a00_bfee9678192b41db9831e3adc6016eb2~mv2.png)
 
@@ -415,10 +422,10 @@ Behind the scenes, Anchor will block the transaction if the `authority` account 
 
 In our implementation above, we used the key `authority` in the account and `signer` in the `#[derive(Accounts)]`. This mismatch of key names will prevent this macro from working, so the code above changes the key `signer` to `authority`. Authority is not a special keyword, merely a convention. You could, as an exercise, change all instances of `authority` to fren and the code will work the same.
 
-## Anchor constraint constraint
+## Anchor `constraint` constraint
 We can also replace the macro `require!(ctx.accounts.from.points >= amount, Errors::InsufficientPoints);` with an Anchor constraint.
 
-The constraint macro allows us to place arbitrary constraints on accounts passed to the transactions and data in the account. In our case, we want to make sure the sender has enough points:
+The `constraint` macro allows us to place arbitrary constraints on accounts passed to the transactions and data in the account. In our case, we want to make sure the sender has enough points:
 
 ```rust
 #[derive(Accounts)]
@@ -468,5 +475,7 @@ The `Errors` enum was defined in the Rust code earlier that used them in the `re
 
 **Exercise**: modify the tests to violate the `has_one` and `constraint` macro and observe the error messages.
 
-## Learn more Solona with RareSkills
-Our [<ins>Solana tutorials</ins>](https://www.rareskills.io/solana-tutorial)covers how to learn Solana as an Ethereum or EVM developer.
+## Learn more Solana with RareSkills
+Our [Solana tutorials](https://www.rareskills.io/solana-tutorial)covers how to learn Solana as an Ethereum or EVM developer.
+
+*Originally Published March, 5, 2024*
