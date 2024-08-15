@@ -4,7 +4,7 @@
 
 In this tutorial we will peek behind the scenes of anchor to see how a Solana program gets deployed.
 
-Let’s look at the test file anchor creates for us when we run anchor init `deploy_tutorial`:
+Let’s look at the test file anchor creates for us when we run `anchor init deploy_tutorial`:
 
 ```javascript
 describe("deploy_tutorial", () => {
@@ -136,14 +136,14 @@ Now look at the logs terminal:
 
 ![Screenshot for Anchor test when skipping deploy](https://static.wixstatic.com/media/935a00_177b1f145f08486d94416f73f502c14e~mv2.png/v1/fill/w_1480,h_388,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_177b1f145f08486d94416f73f502c14e~mv2.png)
 
-We see that the initialize instruction was executed, but the program was neither deployed nor upgraded, since we used the --skip-deploy argument with anchor test.
+We see that the initialize instruction was executed, but the program was neither deployed nor upgraded, since we used the `--skip-deploy` argument with anchor test.
 
 **Exercise**: To see that the program bytecode actually changed, deploy two contracts that print different `msg!` values. Specifically,
 1. Update the `initialize` function in [lib.rs](https://lib.rs/) to include a `msg!` statement that writes a string to the logs.
 2. `anchor deploy`
 3. `anchor test --skip-local-validator --skip-deploy`
 4. Check log to see the message logged
-5. Repeat 1 - 4, but change the string in the msg!
+5. Repeat 1 - 4, but change the string in the `msg!`
 6. Verify the program id did not change
 
 You should observe message string changes but the program id stays the same.
@@ -155,3 +155,5 @@ You should observe message string changes but the program id stays the same.
 
 ## Learn more with RareSkills
 This tutorial is part of our free [Solana course](https://www.rareskills.io/solana-tutorial).
+
+*Originally Published February, 12, 2024*

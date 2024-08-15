@@ -15,7 +15,7 @@ We can say there are 2 ways developers can control the flow of execution based o
 
 Now let’s see the above in Solidity, and their translations to Solana.
 
-**If-Else Statements**
+### If-Else Statements
 
 In Solidity:
 
@@ -44,7 +44,7 @@ pub fn age_checker(ctx: Context<Initialize>, age: u64) -> Result<()> {
 
 Note that the condition `age >= 18` does not have parenthesis — those are optional for if statements.
 
-To test, add another it block in ./tests/tryrust.ts:
+To test, add another `it` block in `./tests/tryrust.ts`:
 
 ```javascript
 it("Age checker", async () => {
@@ -56,9 +56,21 @@ it("Age checker", async () => {
 
 We should have the following logs after running the test:
 
-![Screenshot for test suit](https://static.wixstatic.com/media/935a00_352cf38336e741569ec749be92ea8970~mv2.png/v1/fill/w_1322,h_284,al_c,q_90,enc_auto/935a00_352cf38336e741569ec749be92ea8970~mv2.png)
+```bash
+Transaction executed in slot 77791:
+  Signature: 2Av18ej2YjkRhzybbccPpwEtkw73VcBpDPZgC9iKrmf6mvwbqjA517garhrntWxKAM1ULL2eAv5vDWJ3SjnFZq6j
+  Status: Ok
+  Log Messages:
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX invoke [1]
+    Program log: Instruction: AgeChecker
+    Program log: You are 18 years old or above
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX consumed 440 of 200000 compute units
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX success
+```
 
-**Ternary operator**
+<!-- ![Screenshot for test suit](https://static.wixstatic.com/media/935a00_352cf38336e741569ec749be92ea8970~mv2.png/v1/fill/w_1322,h_284,al_c,q_90,enc_auto/935a00_352cf38336e741569ec749be92ea8970~mv2.png) -->
+
+### Ternary operator
 
 Assigning if-else statement to a variable in Solidity:
 
@@ -78,42 +90,55 @@ pub fn age_checker(ctx: Context<Initialize>, age: u64) -> Result<()> {
 }
 ```
 
-Note that in the Ternary Operator example in Rust the if/else block ends with a semi colon as this is being assigned to a variable.
+Note that in the Ternary Operator example in Rust, the if/else block ends with a semi colon as this is being assigned to a variable.
 
 Also notice that the inner values do not have a semicolon at the end because it is being returned as the return value to the variable, similar to how you don’t put a semicolon after `Ok(())` as it’s an expression and not a statement.
 
 Program logs out true if age is even, else false:
 
-![Screenshot for Ternary Operator](https://static.wixstatic.com/media/935a00_c089b9aaebc54a5e93b398f1f34ae4cb~mv2.png/v1/fill/w_1328,h_284,al_c,q_90,enc_auto/935a00_c089b9aaebc54a5e93b398f1f34ae4cb~mv2.png)
+```bash
+Transaction executed in slot 102358:
+  Signature: 2zohZKhY56rLb7myFs8kabdwULJALENyvyFS5LC6yLM264BnkwsThMnotHNAssJbQEzQpmK4yd3ozs3zhG3GH1Gx
+  Status: Ok
+  Log Messages:
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX invoke [1]
+    Program log: Instruction: AgeChecker
+    Program log: true
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX consumed 792 of 200000 compute units
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX success
+```
 
-Rust has one more powerful control flow construct called match. Let’s see an example of using match below:
+<!-- ![Screenshot for Ternary Operator](https://static.wixstatic.com/media/935a00_c089b9aaebc54a5e93b398f1f34ae4cb~mv2.png/v1/fill/w_1328,h_284,al_c,q_90,enc_auto/935a00_c089b9aaebc54a5e93b398f1f34ae4cb~mv2.png) -->
+
+Rust has one more powerful control flow construct called [**match**](https://doc.rust-lang.org/book/ch06-02-match.html). Let’s see an example of using match below:
 
 ```rust
 pub fn age_checker(ctx: Context<Initialize>, age: u64) -> Result<()> {
-	match age {
+    match age {
         1 => {
             // Code block executed if age equals 1
             msg!("The age is 1");
-                    },
+        },
         2 | 3 => {
             // Code block executed if age equals 2 or 3
             msg!("The age is either 2 or 3");
-                },
+        },
         4..=6 => {
             // Code block executed if age is in the 
-		    // range 4 to 6 (inclusive)
+            // range 4 to 6 (inclusive)
             msg!("The age is between 4 and 6");
-                },
+        },
         _ => {
             // Code block executed for any other age
             msg!("The age is something else");
-                    }
         }
-	Ok(())
+    }
+    Ok(())
 }
 ```
 
 ## For Loops
+
 As we know, for loop allows looping over ranges, collections, and other iterable objects and it is written in Solidity like so:
 
 ```solidity
@@ -144,11 +169,11 @@ function loopOverSmth() public {
         // do something...
 
         // Increment i by 2
-		}
+    }
 }
 ```
 
-Here is the equivalent in Solana using step_by:
+Here is the equivalent in Solana using `step_by`:
 
 ```rust
 pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
@@ -164,14 +189,56 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 
 Running the test, we should have the following logs:
 
-![Screenshot for Loop](https://static.wixstatic.com/media/935a00_5d9b55d26fa54d65b36a721256eb6d8f~mv2.png/v1/fill/w_1330,h_395,al_c,q_90,enc_auto/935a00_5d9b55d26fa54d65b36a721256eb6d8f~mv2.png)
+```bash
+Transaction executed in slot 126442:
+  Signature: 3BSPA11TZVSbF8krjMnge1fgwNsL9odknD2twAsDeYEF39AzaJy1c5TmFCt6LEzLtvWnjzx7VyFKJ4VT1KQBpiwm
+  Status: Ok
+  Log Messages:
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX invoke [1]
+    Program log: Instruction: Initialize
+    Program log: 0
+    Program log: 2
+    Program log: 4
+    Program log: 6
+    Program log: 8
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX consumed 2830 of 200000 compute units
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX success
+```
+
+<!-- ![Screenshot for Loop](https://static.wixstatic.com/media/935a00_5d9b55d26fa54d65b36a721256eb6d8f~mv2.png/v1/fill/w_1330,h_395,al_c,q_90,enc_auto/935a00_5d9b55d26fa54d65b36a721256eb6d8f~mv2.png) -->
 
 ## Arrays and Vectors
+
 Rust differs from Solidity in terms of array support. While Solidity has native support for both fixed and dynamic arrays, Rust only has built-in support for fixed arrays. If you want a dynamic-length list, use a vector.
 
 Now, let's look at some examples that demonstrate how to declare and initialize both fixed and dynamic arrays.
 
-**Fixed array**
+### Fixed array
+
+```rust
+pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+    // Declare an array of u32 with a fixed size of 5
+    let my_array: [u32; 5] = [10, 20, 30, 40, 50];
+
+    // Accessing elements of the array
+    let first_element = my_array[0];
+    let third_element = my_array[2];
+    
+    // Declare a mutable array of u32 with a fixed size of 3
+    let mut mutable_array: [u32; 3] = [100, 200, 300];
+    
+    // Change the second element from 200 to 250
+    mutable_array[1] = 250;
+    
+    // Rest of your program's logic
+
+    Ok(())
+}
+```
+
+### Dynamic array
+
+A method to simulate a dynamic array in Solana involves utilizing a `Vec` (Vector) from the Rust standard library. Here is an example below:
 
 ```rust
 pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
@@ -198,12 +265,24 @@ The `dynamic_array` variable must be declared as mutable (`mut`) to allow mutati
 
 Program should log this after running the test:
 
-![Screenshot for Loop](https://static.wixstatic.com/media/935a00_caa278163121499cb37eaf83ab946f03~mv2.png/v1/fill/w_1326,h_296,al_c,q_90,enc_auto/935a00_caa278163121499cb37eaf83ab946f03~mv2.png)
+```bash
+Transaction executed in slot 195373:
+  Signature: 4113irrcBsFbNaiZia5c84yfJpS4Hn4H1QawfUSHYoPuuQPj22JnVFtDMHmZDFkQ3vK15SrDUSTakh5fT4N8UVRf
+  Status: Ok
+  Log Messages:
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX invoke [1]
+    Program log: Instruction: Initialize
+    Program log: Third element = 30
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX consumed 1010 of 200000 compute units
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX success
+```
+
+<!-- ![Screenshot for Loop](https://static.wixstatic.com/media/935a00_caa278163121499cb37eaf83ab946f03~mv2.png/v1/fill/w_1326,h_296,al_c,q_90,enc_auto/935a00_caa278163121499cb37eaf83ab946f03~mv2.png) -->
 
 ## Mappings
-Unlike Solidity, Solana lacks a built-in mapping data structure. However, we can replicate the key-value mappings functionality in Solana by utilizing the HashMap type from the Rust standard library. **Unlike EVM chains, the map we are demonstrating here is in memory, not storage. EVM chains do not have in-memory hash maps**. We will demonstrate mappings in storage for Solana later.
+Unlike Solidity, Solana lacks a built-in mapping data structure. However, we can replicate the key-value mappings functionality in Solana by utilizing the [HashMap](https://doc.rust-lang.org/std/collections/struct.HashMap.html) type from the Rust standard library. **Unlike EVM chains, the map we are demonstrating here is in memory, not storage. EVM chains do not have in-memory hash maps**. We will demonstrate mappings in storage for Solana later.
 
-Let’s see how to use HashMap to create a mapping in Solana. Copy and paste the provided code snippet into the lib.rs file, and remember to replace the program ID with your own:
+Let’s see how to use `HashMap` to create a mapping in Solana. Copy and paste the provided code snippet into the lib.rs file, and remember to replace the program ID with your own:
 
 ```rust
 use anchor_lang::prelude::*;
@@ -213,7 +292,7 @@ declare_id!("53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX");
 #[program]
 pub mod tryrust {
     use super::*;
-		// Import HashMap library
+        // Import HashMap library
     use std::collections::HashMap;
 
     pub fn initialize(ctx: Context<Initialize>, key: String, value: String) -> Result<()> {
@@ -245,7 +324,19 @@ it("Is initialized!", async () => {
 
 When we run the test, we see the following log:
 
-![Screenshot for Loop](https://static.wixstatic.com/media/935a00_16d2a849c1364c6d94182e48d22a3f36~mv2.png/v1/fill/w_1242,h_314,al_c,q_90,enc_auto/935a00_16d2a849c1364c6d94182e48d22a3f36~mv2.pn)
+```bash
+Transaction executed in slot 216142:
+  Signature: 5m4Cx26jaYT3c6YeJbLMDHppvki4Kmu3zTDMgk8Tao9v8b9sH7WgejETzymnHuUfr4hY25opptqniBuwDpncbnB9
+  Status: Ok
+  Log Messages:
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX invoke [1]
+    Program log: Instruction: Initialize
+    Program log: My name is Bob
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX consumed 2634 of 200000 compute units
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX success
+```
+
+<!-- ![Screenshot for Loop](https://static.wixstatic.com/media/935a00_16d2a849c1364c6d94182e48d22a3f36~mv2.png/v1/fill/w_1242,h_314,al_c,q_90,enc_auto/935a00_16d2a849c1364c6d94182e48d22a3f36~mv2.pn) -->
 
 ## Structs
 In Solidity and Solana, structs are used to define custom data structures that can hold multiple fields. Let’s see a struct example in both Solidity and Solana.
@@ -302,7 +393,20 @@ pub fn initialize(_ctx: Context<Initialize>, name: String, age: u64) -> Result<(
 
 **Exercise**: update the test file to pass two arguments Alice and 20 to the initialize function and run the test, you should get the following logs:
 
-![Screenshot for Loop](https://static.wixstatic.com/media/935a00_98c76b05ce414702b110ebdb09aa42e3~mv2.png/v1/fill/w_1244,h_338,al_c,q_90,enc_auto/935a00_98c76b05ce414702b110ebdb09aa42e3~mv2.png)
+```bash
+Transaction executed in slot 324406:
+  Signature: 2XBQKJLpkJbVuuonqzirN9CK5dNKnuu5NqNCGTGgQovWBfrdjRcVeckDmqtzyEPe4PP8xSN8vf2STNxWygE4BPZN
+  Status: Ok
+  Log Messages:
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX invoke [1]
+    Program log: Instruction: Initialize
+    Program log: Alice is 20 years old
+    Program log: Bob is 18 years old
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX consumed 2601 of 200000 compute units
+    Program 53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX success
+```
+
+<!-- ![Screenshot for Loop](https://static.wixstatic.com/media/935a00_98c76b05ce414702b110ebdb09aa42e3~mv2.png/v1/fill/w_1244,h_338,al_c,q_90,enc_auto/935a00_98c76b05ce414702b110ebdb09aa42e3~mv2.png) -->
 
 In the provided code snippet, the Solidity implementation stores the instance of a struct in storage, whereas in the Solana implementation, everything happened in the initialize function and nothing was stored on-chain. Storage will be discussed in a later tutorial.
 
@@ -369,3 +473,5 @@ Rust does not have try catch. Failures are expected to return errors (like we di
 
 ## Learn more with RareSkills
 This tutorial is part of our free [Solana course](https://www.rareskills.io/solana-tutorial).
+
+*Originally Published February, 13, 2024*

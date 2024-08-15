@@ -15,7 +15,7 @@ In the code above, the transaction will revert if `foobar` is passed a value of 
 
 How do we do this in Solana, or specifically, in the Anchor framework?
 
-Anchor has equivalents for Solidity’s custom error and require statements. Their [documentation](https://www.anchor-lang.com/docs/errors) on the subject is quite good, but we will also explain how to halt transactions when the function arguments are not what we want them to be.
+Anchor has equivalents for Solidity's custom error and require statements. Their [documentation](https://www.anchor-lang.com/docs/errors) on the subject is quite good, but we will also explain how to halt transactions when the function arguments are not what we want them to be.
 
 The Solana program below has a function `limit_range` which will only accept values 10 to 100 inclusive:
 
@@ -96,7 +96,7 @@ describe("day4", () => {
 ```
 
 **Exercise**:
-1. What pattern do you notice with the Error number? What happens to the error codes if you change the order of the errors in the Enum MyError?
+1. What pattern do you notice with the Error number? What happens to the error codes if you change the order of the errors in the `enum MyError`?
 2. Use this code block which adds the new func and error to the existing code:
 
 ```rust
@@ -171,21 +171,21 @@ In Ethereum, we know nothing gets logged if a function reverts, even if the reve
 
 ```solidity
 contract DoesNotLog {
-	event SomeEvent(uint256);
+    event SomeEvent(uint256);
 
-	function tryToLog() public {
-		emit SomeEvent(100);
-		require(false);
-	}
+    function tryToLog() public {
+        emit SomeEvent(100);
+        require(false);
+    }
 }
 ```
 
-**Exercise**: What happens if you put a msg! macro before the return error statements in a Solana program function? What happens if you replace `return err!` with `Ok(())`? Below we have a function that logs something with `msg!` then returns an error. See if the contents of the `msg!` macro get logged.
+**Exercise**: What happens if you put a `msg!` macro before the return error statements in a Solana program function? What happens if you replace `return err!` with `Ok(())`? Below we have a function that logs something with `msg!` then returns an error. See if the contents of the `msg!` macro get logged.
 
 ```rust
 pub fn func(ctx: Context<ReturnError>) -> Result<()> {
-	msg!("Will this print?");
-	return err!(Day4Error::AlwaysErrors);
+    msg!("Will this print?");
+    return err!(Day4Error::AlwaysErrors);
 }
 
 #[derive(Accounts)]
@@ -198,13 +198,13 @@ pub enum Day4Error {
 }
 ```
 
-**Under the hood, the `require!` macro is no different from returning an error, it’s just synactic sugar.**
+**Under the hood, the `require!` macro is no different from returning an error, it's just syntactic sugar.**
 
-The expected result is that “Will this print?” will print when you return `Ok(())` and not print when you return an error.
+The expected result is that "`Will this print?`" will print when you return `Ok(())` and not print when you return an error.
 
 ## Differences between Solana and Solidity with regards to errors
 
-In Solidity, the require statement halts the execution with the revert op code. Solana does not halt execution but simply returns a different value. This is analogous to how linux returns 0 or 1 on success. If a 0 is returned (equivalent of returning `Ok(()))`, everything went smoothly.
+In Solidity, the require statement halts the execution with the revert op code. Solana does not halt execution but simply returns a different value. This is analogous to how linux returns 0 or 1 on success. If a 0 is returned (equivalent of returning `Ok(())`), everything went smoothly.
 
 Therefore, Solana programs should always return something — either an `Ok(())` or an `Error`.
 
@@ -214,10 +214,10 @@ Note how all the functions in Solana have a return type of `Result<()>`. A [resu
 
 ## Question and Answers
 ### Why does `Ok(())` not have a semicolon at the end?
-If you add it, your code won’t compile. If the final statement in Rust does not have a semicolon, then the value on that line is returned.
+If you add it, your code won't compile. If the final statement in Rust does not have a semicolon, then the value on that line is returned.
 
 ### Why does `Ok(())` have an extra set of parenthesis?
-The `()` means “unit” in Rust, which you can think of as being a void in C or a Nothing in Haskell. Here, Ok is an enum which contains a unit type. That is what get returns. Functions that don’t return things implicitly return the unit type in Rust. An `Ok(())` with no semicolon is syntactically equivalent to return `Ok(())`;. Note the semicolon at the end.
+The `()` means "unit" in Rust, which you can think of as being a void in C or a Nothing in Haskell. Here, `Ok` is an enum which contains a unit type. That is what get returns. Functions that don't return things implicitly return the unit type in Rust. An `Ok(())` with no semicolon is syntactically equivalent to return `Ok(())`;. Note the semicolon at the end.
 
 
 ### How come the `if statements` above are missing parenthesis?
@@ -225,3 +225,5 @@ Those are optional in Rust.
 
 ## Learn more with RareSkills
 This tutorial is part of our free [Solana course](https://www.rareskills.io/solana-tutorial).
+
+*Originally Published February, 11, 2024*
