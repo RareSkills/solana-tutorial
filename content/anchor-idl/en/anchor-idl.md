@@ -93,7 +93,7 @@ it("Should sub", async () => {
 });
 ```
 
-**Exercise:** Implement similar functions for `mul`, `div`, and `mod`, and write a unit test to trigger each one.
+**Exercise:** Implement similar functions for `mul`, `div`, and `modulo`, and write a unit test to trigger each one.
 
 ## What about the `Initialize` struct?
 
