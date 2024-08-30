@@ -145,6 +145,6 @@ let myAddress = "enter and address here";
 getTransactions(myAddress, 3);
 ```
 
-Note that the actual content of the transaction is retrieved using the `getParsedTransaction` RPC method.
+Note that the actual content of the transaction is retrieved using the `getParsedTransaction` RPC method, which is only supported in the `@solana/web3.js` SDK. For other libraries, see `getTransaction` instead.
 
 *Originally Published February, 20, 2024*
