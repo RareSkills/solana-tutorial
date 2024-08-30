@@ -26,10 +26,11 @@ corepack enable # corepack comes with node js
 
 ### Install the Solana cli
 We strongly recommend using the `stable` version, not `latest`.
+Solana installation no longer supports symbolic channel names (`edge`, `beta`, `stable`), hence we have to specify the version.
 
 ```
 # install solana
-sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
+sh -c "$(curl -sSfL https://release.solana.com/v1.16.25/install)"
 ```
 
 ### Install Anchor
@@ -182,11 +183,6 @@ You can change the Anchor version by running:
 ```bash
 avm install 0.29.0
 avm use 0.29.0
-```
-You can change the Solana version simply by specifying the version in the curl command:
-```
-# install solana
-sh -c "$(curl -sSfL https://release.solana.com/1.16.25/install)"
 ```
 
 ### error: package `solana-program v1.18.0` cannot be built
