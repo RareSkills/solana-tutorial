@@ -64,7 +64,7 @@ The following is the Typescript unit test that:
 ```typescript
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { BasicStorage} from "../target/types/basic_storage";
+import { BasicStorage } from "../target/types/basic_storage";
 
 describe("basic_storage", () => {
   anchor.setProvider(anchor.AnchorProvider.env());
