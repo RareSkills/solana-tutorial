@@ -143,7 +143,7 @@ The `'info` keyword is a [Rust lifetime](https://doc.rust-lang.org/rust-by-examp
 We will focus on the macro above `my_storage`, as this is where the action for initialization is happening.
 
 ### 3) The `my_storage` field in the Initialize struct
-The attribute macro above the `my_storage` field (<span style="color:#8d28a4">purple arrow</span>) is how Anchor knows this transaction is intended to initialize this account (remember, an [attribute-like macro](https://www.rareskills.io/post/rust-attribute-derive-macro) starts with `#` and modify augments the struct with additional functionality):
+The attribute macro above the `my_storage` field (<span style="color:#8d28a4">purple arrow</span>) is how Anchor knows this transaction is intended to initialize this account (remember, an [attribute-like macro](https://www.rareskills.io/post/rust-attribute-derive-macro) starts with `#` and augments the struct with additional functionality):
 ![annotation of struct fields](https://static.wixstatic.com/media/935a00_48be1af69ce54df281456844ff5fbec7~mv2.png/v1/fill/w_1160,h_848,al_c,q_90,enc_auto/935a00_48be1af69ce54df281456844ff5fbec7~mv2.png)
 
 The important keyword here is `init`.
