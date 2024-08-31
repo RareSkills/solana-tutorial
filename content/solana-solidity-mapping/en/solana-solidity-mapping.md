@@ -90,12 +90,12 @@ describe("example_map", () => {
 
   it("Initialize mapping storage", async () => {
     const key = new anchor.BN(42);
+    const seeds = [key.toArrayLike(Buffer, "le", 8)];
 
-    const [seeds, _bump] = [key.toArrayLike(Buffer, "le", 8)];
     let valueAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
-      program.programId,
-    );
+      program.programId
+    )[0];
 
     await program.methods.initialize(key).accounts({val: valueAccount}).rpc();
   });
@@ -145,7 +145,7 @@ describe("example_map", () => {
     const seeds = [key.toArrayLike(Buffer, "le", 8)];
     let valueAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
-      program.programId,
+      program.programId
     )[0];
 
     await program.methods.initialize(key).accounts({val: valueAccount}).rpc();
@@ -250,7 +250,7 @@ describe("example_map", () => {
     const seeds = [key1.toArrayLike(Buffer, "le", 8), key2.toArrayLike(Buffer, "le", 8)];
     let valueAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
-      program.programId,
+      program.programId
     )[0];
 
     // functions now take two keys
