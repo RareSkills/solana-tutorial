@@ -4,9 +4,9 @@
 
 This tutorial will introduce the mechanism by which Solana Anchor programs can transfer SOL as part of the transaction.
 
-**Unlike Ethereum where wallets specify msg.value as part of the transaction and "push" the ETH to the contract, Solana programs "pull" the Solana from the wallet.**
+**Unlike Ethereum where wallets specify msg.value as part of the transaction and "push" the ETH to the contract, Solana programs "pull" the SOL from the wallet.**
 
-As such, there is no such thing as "payable" functions or "msg.value"
+As such, there is no such thing as "payable" functions or "msg.value".
 
 Below we have created a new anchor project called `sol_splitter` and have put the Rust code to transfer SOL from the sender to a recipient.
 
@@ -306,7 +306,7 @@ pub fn split_sol<'a, 'b, 'c, 'info>(
 The `'a` , `'b`, and `'c` are Rust lifetimes. Rust lifetimes are a complicated topic we'd rather avoid for now. But a high level explanation is that the Rust code needs assurances the resources passed into the loop `for recipient in ctx.remaining_accounts` will exist for the entirety of the loop.
 
 ### ctx.remaining_accounts
-The loop loops through for `recipient in ctx.remaining_accounts`. The keyword `remaining_acocunts` is the Anchor mechanism for passing in an arbitrary number of accounts without having to create a bunch of keys in the Context struct.
+The loop loops through for `recipient in ctx.remaining_accounts`. The keyword `remaining_accounts` is the Anchor mechanism for passing in an arbitrary number of accounts without having to create a bunch of keys in the Context struct.
 
 In the Typescript tests, we can add `remaining_accounts` to the transaction like so:
 
