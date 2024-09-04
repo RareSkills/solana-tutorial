@@ -51,7 +51,7 @@ pub struct MyStorage {
 However, there is an important change in the client code:
 - For testing purposes, we create a new wallet called `newKeypair`. This is different from the one Anchor provides by default.
 - We airdrop that new wallet 1 SOL so it can pay for transactions.
-- Pay attention to the comment `// THIS MUST BE EXPLICITLY SPECIFIED`. We are passing the publicKey of that wallet for the `Signer` field. When we use the default signer built into Anchor, Anchor passes this in the background for us. However, when we use a different wallet, we need to provide this explictily.
+- Pay attention to the comment `// THIS MUST BE EXPLICITLY SPECIFIED`. We are passing the publicKey of that wallet for the `Signer` field. When we use the default signer built into Anchor, Anchor passes this in the background for us. However, when we use a different wallet, we need to provide this explicitly.
 - We set the signer to be `newKeypair` with the `.signers([newKeypair])` configuration.
 
 We will explain after this code snippet why we are (seemingly) specifying the signer twice:
@@ -341,7 +341,7 @@ In the `initialize` function, the program sets the initial points to `10` and th
 
 The `transfer_points` function uses [Solana Anchor require macros and error code macros](https://www.rareskills.io/post/solana-require-macro) to ensure that 1) the Signer of the transaction is the authority of the account whose balance is getting deducted; and 2) the account has enough points balance to transfer.
 
-The test codebase should be straightforward to understand. Alice and Bob initialize their accounts, then Alice transfer 5 points to Bob:
+The test codebase should be straightforward to understand. Alice and Bob initialize their accounts, then Alice transfers 5 points to Bob:
 
 ```typescript
 import * as anchor from "@coral-xyz/anchor";
