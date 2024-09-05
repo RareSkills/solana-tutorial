@@ -61,7 +61,7 @@ describe("keypair_vs_pda", () => {
   const program = anchor.workspace.KeypairVsPda as Program<KeypairVsPda>;
 
   it("Is initialized -- PDA version", async () => {
-    const seeds = []
+    const seeds = [];
     const [myPda, _bump] = anchor.web3.PublicKey.findProgramAddressSync(seeds, program.programId);
 
     console.log("the storage account address is", myPda.toBase58());
@@ -166,7 +166,7 @@ Some things we wish to call attention to:
 ## It is not possible to initialize a keypair account you don't hold the private key for
 If you could create an account with an arbitrary address, that would be a major security risk as you could insert malicious data into an arbitrary account.
 
-**Exercise**: Modify the test to generate a second keypair `secondKeypair`. Use the public key of the second keypair and replace `.accounts({myKeypairAccount: newKeypair.publicKey})` with with `.accounts({myKeypairAccount: secondKeypair.publicKey})`. Do not change the signer. You should see the test fail. You do not need to airdrop SOL to the new keypair since it is not the signer of the transaction.
+**Exercise**: Modify the test to generate a second keypair `secondKeypair`. Use the public key of the second keypair and replace `.accounts({myKeypairAccount: newKeypair.publicKey})` with `.accounts({myKeypairAccount: secondKeypair.publicKey})`. Do not change the signer. You should see the test fail. You do not need to airdrop SOL to the new keypair since it is not the signer of the transaction.
 
 You should see an error like the following:
 
@@ -177,7 +177,7 @@ You should see an error like the following:
 **Exercise**: Instead of passing in `secondKeypair` from the exercise above, derive a PDA with:
 
 ```typescript
-const seeds = []
+const seeds = [];
 const [pda, _bump] = anchor
                         .web3
                         .PublicKey
@@ -242,7 +242,7 @@ describe("keypair_vs_pda", () => {
       }),
     );
     await anchor.web3.sendAndConfirmTransaction(anchor.getProvider().connection, transaction, [newKeypair]);
-    console.log('sent 1 lamport') 
+    console.log('sent 1 SOL');
 
     await program.methods.initializeKeypairAccount()
       .accounts({myKeypairAccount: newKeypair.publicKey})
@@ -297,8 +297,9 @@ describe("keypair_vs_pda", () => {
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.KeypairVsPda as Program<KeypairVsPda>;
+  
   it("Console log account owner", async () => {
-    console.log(`The program address is ${program.programId}`) 
+    console.log(`The program address is ${program.programId}`);
     const newKeypair = anchor.web3.Keypair.generate();
 
     // get account owner before initialization
