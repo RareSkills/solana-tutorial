@@ -6,7 +6,7 @@ A program derived address (PDA) is an account whose address is derived from the 
 
 It is also possible to create an account outside the program, then `init` that account inside the program.
 
-Interestingly, the account we create outside the program will have a private key, but we will see this won't have the security implications it would seem to have. We will refer to it as a "keypair account."
+Interestingly, the account we create outside the program will have a private key, but we will see this won't have the security implications it would seem to have. We will refer to it as a "keypair account".
 
 ## Account Creation Revisited
 Before we get into keypair accounts, let's review how we've been creating accounts in our [Solana tutorials](https://www.rareskills.io/solana-tutorial) so far. This is the same boilerplate we've been using, and it creates program-derived addresses (PDA):
@@ -28,7 +28,6 @@ pub mod keypair_vs_pda {
 
 #[derive(Accounts)]
 pub struct InitializePDA<'info> {
-
     // This is the program derived address
     #[account(init,
               payer = signer,
@@ -98,7 +97,7 @@ pub mod keypair_vs_pda {
 
 #[derive(Accounts)]
 pub struct InitializeKeypairAccount<'info> {
-    // This is the program derived address
+    // This is the keypair account
     #[account(init,
               payer = signer,
               space = size_of::<MyKeypairAccount>() + 8,)]
@@ -116,7 +115,7 @@ pub struct MyKeypairAccount {
 }
 ```
 
-When the `seed` and `bump` are absent, **the Anchor program is now expecting us to create an account first, then pass the account to the program. Since we create the account ourselves, its address will not be "derived from" the address of the program. In other words, it will not be a program derived account (PDA)**.
+When `seeds` and `bump` are absent, **the Anchor program is now expecting us to create an account first, then pass the account to the program. Since we create the account ourselves, its address will not be "derived from" the address of the program. In other words, it will not be a program derived account (PDA)**.
 
 Creating an account for the program is as simple as generating a new keypair (in the same manner we used to [test different signers in Anchor](https://www.rareskills.io/post/anchor-signer)). Yes, this may sound a bit terrifying that we hold the secret key for an account the program is using to store data — we will revisit this in a bit. For now, here is the Typescript code to create a new account and pass it to the program above. We will call attention to the important parts next:
 
@@ -187,7 +186,7 @@ const [pda, _bump] = anchor
                             program.programId);
 ```
 
-then replace the `myKeypairAccount` argument `.accounts({myKeypairAccount: pda})`
+then replace the `myKeypairAccount` argument `.accounts({myKeypairAccount: pda})`.
 
 You should again see an `unknown signer` error.
 
