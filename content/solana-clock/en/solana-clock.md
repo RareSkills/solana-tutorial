@@ -229,6 +229,6 @@ Solana does not have a chain id because it is not an EVM compatible blockchain. 
 Solana runs separate clusters for [Devnet, Testnet, and Mainnet](https://docs.solana.com/clusters), but programs do not have a mechanism to know which one they are on. However, you can programatically adjust your code at deploy time using the Rust cfg feature to have different features depending on which cluster it is deployed to. Here is an example of [changing the program id depending on the cluster](https://solana.stackexchange.com/questions/848/how-to-have-a-different-program-id-depending-on-the-cluster).
 
 ## Learn more
-This tutorial is part of our free [Solana course](https://hackmd.io/4eVoPWjpRLCqf03vK7CyVg?view).
+This tutorial is part of our free [Solana course](https://www.rareskills.io/solana-tutorial).
 
 *Originally Published February, 18, 2024*
