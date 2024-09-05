@@ -209,11 +209,6 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { KeypairVsPda } from "../target/types/keypair_vs_pda";
 
-// Change this to your path
-import privateKey from '/Users/RareSkills/.config/solana/id.json';
-
-import { fs } from fs;
-
 async function airdropSol(publicKey, amount) {
   let airdropTx = await anchor.getProvider().connection.requestAirdrop(publicKey, amount * anchor.web3.LAMPORTS_PER_SOL);
   await confirmTransaction(airdropTx);
@@ -228,24 +223,21 @@ async function confirmTransaction(tx) {
   });
 }
 
-
 describe("keypair_vs_pda", () => {
-  const deployer = anchor.web3.Keypair.fromSecretKey(Uint8Array.from(privateKey));
-
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.KeypairVsPda as Program<KeypairVsPda>;
 
   it("Writing to keypair account fails", async () => {
     const newKeypair = anchor.web3.Keypair.generate();
-    var recieverWallet = anchor.web3.Keypair.generate();
+    var receiverWallet = anchor.web3.Keypair.generate();
 
     await airdropSol(newKeypair.publicKey, 10);
 
     var transaction = new anchor.web3.Transaction().add(
       anchor.web3.SystemProgram.transfer({
         fromPubkey: newKeypair.publicKey,
-        toPubkey: recieverWallet.publicKey,
+        toPubkey: receiverWallet.publicKey,
         lamports: 1 * anchor.web3.LAMPORTS_PER_SOL,
       }),
     );
@@ -262,7 +254,7 @@ describe("keypair_vs_pda", () => {
     var transaction = new anchor.web3.Transaction().add(
       anchor.web3.SystemProgram.transfer({
         fromPubkey: newKeypair.publicKey,
-        toPubkey: recieverWallet.publicKey,
+        toPubkey: receiverWallet.publicKey,
         lamports: 1 * anchor.web3.LAMPORTS_PER_SOL,
       }),
     );
@@ -287,9 +279,6 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { KeypairVsPda } from "../target/types/keypair_vs_pda";
 
-import privateKey from '/Users/jeffreyscholz/.config/solana/id.json';
-
-
 async function airdropSol(publicKey, amount) {
   let airdropTx = await anchor.getProvider().connection.requestAirdrop(publicKey, amount * anchor.web3.LAMPORTS_PER_SOL);
   await confirmTransaction(airdropTx);
@@ -304,18 +293,13 @@ async function confirmTransaction(tx) {
   });
 }
 
-
 describe("keypair_vs_pda", () => {
-  const deployer = anchor.web3.Keypair.fromSecretKey(Uint8Array.from(privateKey));
-
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.KeypairVsPda as Program<KeypairVsPda>;
   it("Console log account owner", async () => {
-
     console.log(`The program address is ${program.programId}`) 
     const newKeypair = anchor.web3.Keypair.generate();
-    var recieverWallet = anchor.web3.Keypair.generate();
 
     // get account owner before initialization
     await airdropSol(newKeypair.publicKey, 10);
@@ -328,7 +312,6 @@ describe("keypair_vs_pda", () => {
       .rpc();
       
     // get account owner after initialization
-	
     const accountInfoAfter = await anchor.getProvider().connection.getAccountInfo(newKeypair.publicKey);
     console.log(`initial keypair account owner is ${accountInfoAfter.owner}`);
   });
