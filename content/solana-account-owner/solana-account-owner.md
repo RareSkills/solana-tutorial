@@ -34,7 +34,7 @@ The account showed in the example above is a keypair account, or what we might c
 ## PDAs and keypair accounts initialized by programs are owned by the program
 The reason programs can write to PDAs or keypair accounts that were created outside the program but initialized by the program, is because the program owns them.
 
-We will explore initialization more closely when we discuss the re-initialization attack, but for now, the important takeaway is that **initializing an account changes the owner of the account from the system program to the program.**
+We will explore initialization more closely when we discuss the re-initialization attack, but for now, the important takeaway is that **initializing an account changes the owner of the account from the system program to the initializing program.**
 
 To illustrate this, consider the following program that initializes a PDA and a keypair account. The Typescript test will console log the owner before and after the initialization transaction.
 
