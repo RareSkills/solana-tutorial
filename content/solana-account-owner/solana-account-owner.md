@@ -29,12 +29,12 @@ The reason you are able to spend SOL in your wallet is because you possess the p
 
 However, the system program does not offer a mechanism for a signer to directly write data to the account.
 
-The account showed in the example above is a keypair account, or what we might consider a "regular Solana wallet." The system program is the owner of keypair accounts.
+The account showed in the example above is a keypair account, or what we might consider a "regular Solana wallet". The system program is the owner of keypair accounts.
 
 ## PDAs and keypair accounts initialized by programs are owned by the program
 The reason programs can write to PDAs or keypair accounts that were created outside the program but initialized by the program, is because the program owns them.
 
-We will explore initialization more closely when we discuss the re-initialization attack, but for now, the important takeaway is that **initializing an account changes the owner of the account from the system program the program.**
+We will explore initialization more closely when we discuss the re-initialization attack, but for now, the important takeaway is that **initializing an account changes the owner of the account from the system program to the program.**
 
 To illustrate this, consider the following program that initializes a PDA and a keypair account. The Typescript test will console log the owner before and after the initialization transaction.
 
@@ -160,14 +160,14 @@ The test result screenshot is below:
 
 This is how the program is able to write data to accounts: it owns them. During initialization, the program takes ownership over the account.
 
-**Exercise**: Modify the test to print out the address of the keypair and the pda. Then use the Solana CLI to inspect who the owner is for those accounts. It should match what the test prints. Make sure the `solana-test-validator` is running in the backgorund so you can use the CLI.
+**Exercise**: Modify the test to print out the address of the keypair and the pda. Then use the Solana CLI to inspect who the owner is for those accounts. It should match what the test prints. Make sure the `solana-test-validator` is running in the background so you can use the CLI.
 
 ## The BPFLoaderUpgradeable owns programs
 Let's use the Solana CLI to determine the owner of our program:
 
 ![Solona metadata : Owner: the BPFLoaderUpgradable](https://static.wixstatic.com/media/935a00_396ec64ed6bf429fb84fd1252b62cdb6~mv2.png/v1/fill/w_1397,h_349,al_c,lg_1,q_90,enc_auto/935a00_396ec64ed6bf429fb84fd1252b62cdb6~mv2.png)
 
-The wallet that deployed the program is not the owner of it. The reason Solana programs are able to be upgraded by the deploying wallet is because the BpfLoaderUpgradeable is able to write new bytecode to the program, and it will only accept new bytecode from a predesignated address: the address that originally deployed the program.
+The wallet that deployed the program is not the owner of it. The reason Solana programs are able to be upgraded by the deploying wallet is because the BPFLoaderUpgradeable is able to write new bytecode to the program, and it will only accept new bytecode from a predesignated address: the address that originally deployed the program.
 
 When we deploy (or upgrade) a program, we are actually making a call to the BPFLoaderUpgradeable program, as can be seen in the logs:
 
@@ -299,7 +299,7 @@ Here are some things we want to call attention to:
 Now that we clearly understand that programs own PDAs and keypair accounts initialized by them, the interesting and useful thing we can do is transfer SOL out of them.
 
 ## Transferring SOL out of a PDA: Crowdfund example
-Below we show the code for a barebones crowdfunding app. The function of interest is the `withdraw` function where the program transfer lamports out of the PDA and to the withrdawer.
+Below we show the code for a barebones crowdfunding app. The function of interest is the `withdraw` function where the program transfer lamports out of the PDA and to the withdrawer.
 
 ```rust
 use anchor_lang::prelude::*;
