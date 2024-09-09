@@ -38,7 +38,7 @@ The purpose of `Account`, `UncheckedAccount`, `Signer`, and `Program` are to per
 We will further explain each of these four types in the following sections.
 
 ## Account
-The `Account` type will check that the owner of the account being loaded is actually owned by the program. If the owner does not match, then it won't load. This serves as an important safety measure to not accidentally read in data the program did not create.
+The `Account` type will check that the account being loaded is actually owned by the program. If the owner does not match, then it won't load. This serves as an important safety measure to not accidentally read in data the program did not create.
 
 In the following example, we create a keypair account and try to pass it to `foo`. Because the account is not owned by the program, the transaction fails.
 
