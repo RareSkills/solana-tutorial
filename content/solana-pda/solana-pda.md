@@ -6,7 +6,7 @@ A program derived address (PDA) is an account whose address is derived from the 
 
 It is also possible to create an account outside the program, then `init` that account inside the program.
 
-Interestingly, the account we create outside the program will have a private key, but we will see this won't have the security implications it would seem to have. We will refer to it as a "keypair account."
+Interestingly, the account we create outside the program will have a private key, but we will see this won't have the security implications it would seem to have. We will refer to it as a "keypair account".
 
 ## Account Creation Revisited
 Before we get into keypair accounts, let's review how we've been creating accounts in our [Solana tutorials](https://www.rareskills.io/solana-tutorial) so far. This is the same boilerplate we've been using, and it creates program-derived addresses (PDA):
@@ -28,7 +28,6 @@ pub mod keypair_vs_pda {
 
 #[derive(Accounts)]
 pub struct InitializePDA<'info> {
-
     // This is the program derived address
     #[account(init,
               payer = signer,
@@ -62,7 +61,7 @@ describe("keypair_vs_pda", () => {
   const program = anchor.workspace.KeypairVsPda as Program<KeypairVsPda>;
 
   it("Is initialized -- PDA version", async () => {
-    const seeds = []
+    const seeds = [];
     const [myPda, _bump] = anchor.web3.PublicKey.findProgramAddressSync(seeds, program.programId);
 
     console.log("the storage account address is", myPda.toBase58());
@@ -98,7 +97,7 @@ pub mod keypair_vs_pda {
 
 #[derive(Accounts)]
 pub struct InitializeKeypairAccount<'info> {
-    // This is the program derived address
+    // This is the keypair account
     #[account(init,
               payer = signer,
               space = size_of::<MyKeypairAccount>() + 8,)]
@@ -116,7 +115,7 @@ pub struct MyKeypairAccount {
 }
 ```
 
-When the `seed` and `bump` are absent, **the Anchor program is now expecting us to create an account first, then pass the account to the program. Since we create the account ourselves, its address will not be "derived from" the address of the program. In other words, it will not be a program derived account (PDA)**.
+When `seeds` and `bump` are absent, **the Anchor program is now expecting us to create an account first, then pass the account to the program. Since we create the account ourselves, its address will not be "derived from" the address of the program. In other words, it will not be a program derived account (PDA)**.
 
 Creating an account for the program is as simple as generating a new keypair (in the same manner we used to [test different signers in Anchor](https://www.rareskills.io/post/anchor-signer)). Yes, this may sound a bit terrifying that we hold the secret key for an account the program is using to store data — we will revisit this in a bit. For now, here is the Typescript code to create a new account and pass it to the program above. We will call attention to the important parts next:
 
@@ -167,7 +166,7 @@ Some things we wish to call attention to:
 ## It is not possible to initialize a keypair account you don't hold the private key for
 If you could create an account with an arbitrary address, that would be a major security risk as you could insert malicious data into an arbitrary account.
 
-**Exercise**: Modify the test to generate a second keypair `secondKeypair`. Use the public key of the second keypair and replace `.accounts({myKeypairAccount: newKeypair.publicKey})` with with `.accounts({myKeypairAccount: secondKeypair.publicKey})`. Do not change the signer. You should see the test fail. You do not need to airdrop SOL to the new keypair since it is not the signer of the transaction.
+**Exercise**: Modify the test to generate a second keypair `secondKeypair`. Use the public key of the second keypair and replace `.accounts({myKeypairAccount: newKeypair.publicKey})` with `.accounts({myKeypairAccount: secondKeypair.publicKey})`. Do not change the signer. You should see the test fail. You do not need to airdrop SOL to the new keypair since it is not the signer of the transaction.
 
 You should see an error like the following:
 
@@ -178,7 +177,7 @@ You should see an error like the following:
 **Exercise**: Instead of passing in `secondKeypair` from the exercise above, derive a PDA with:
 
 ```typescript
-const seeds = []
+const seeds = [];
 const [pda, _bump] = anchor
                         .web3
                         .PublicKey
@@ -187,7 +186,7 @@ const [pda, _bump] = anchor
                             program.programId);
 ```
 
-then replace the `myKeypairAccount` argument `.accounts({myKeypairAccount: pda})`
+then replace the `myKeypairAccount` argument `.accounts({myKeypairAccount: pda})`.
 
 You should again see an `unknown signer` error.
 
@@ -210,11 +209,6 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { KeypairVsPda } from "../target/types/keypair_vs_pda";
 
-// Change this to your path
-import privateKey from '/Users/RareSkills/.config/solana/id.json';
-
-import { fs } from fs;
-
 async function airdropSol(publicKey, amount) {
   let airdropTx = await anchor.getProvider().connection.requestAirdrop(publicKey, amount * anchor.web3.LAMPORTS_PER_SOL);
   await confirmTransaction(airdropTx);
@@ -229,29 +223,26 @@ async function confirmTransaction(tx) {
   });
 }
 
-
 describe("keypair_vs_pda", () => {
-  const deployer = anchor.web3.Keypair.fromSecretKey(Uint8Array.from(privateKey));
-
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.KeypairVsPda as Program<KeypairVsPda>;
 
   it("Writing to keypair account fails", async () => {
     const newKeypair = anchor.web3.Keypair.generate();
-    var recieverWallet = anchor.web3.Keypair.generate();
+    var receiverWallet = anchor.web3.Keypair.generate();
 
     await airdropSol(newKeypair.publicKey, 10);
 
     var transaction = new anchor.web3.Transaction().add(
       anchor.web3.SystemProgram.transfer({
         fromPubkey: newKeypair.publicKey,
-        toPubkey: recieverWallet.publicKey,
+        toPubkey: receiverWallet.publicKey,
         lamports: 1 * anchor.web3.LAMPORTS_PER_SOL,
       }),
     );
     await anchor.web3.sendAndConfirmTransaction(anchor.getProvider().connection, transaction, [newKeypair]);
-    console.log('sent 1 lamport') 
+    console.log('sent 1 SOL');
 
     await program.methods.initializeKeypairAccount()
       .accounts({myKeypairAccount: newKeypair.publicKey})
@@ -263,7 +254,7 @@ describe("keypair_vs_pda", () => {
     var transaction = new anchor.web3.Transaction().add(
       anchor.web3.SystemProgram.transfer({
         fromPubkey: newKeypair.publicKey,
-        toPubkey: recieverWallet.publicKey,
+        toPubkey: receiverWallet.publicKey,
         lamports: 1 * anchor.web3.LAMPORTS_PER_SOL,
       }),
     );
@@ -288,9 +279,6 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { KeypairVsPda } from "../target/types/keypair_vs_pda";
 
-import privateKey from '/Users/jeffreyscholz/.config/solana/id.json';
-
-
 async function airdropSol(publicKey, amount) {
   let airdropTx = await anchor.getProvider().connection.requestAirdrop(publicKey, amount * anchor.web3.LAMPORTS_PER_SOL);
   await confirmTransaction(airdropTx);
@@ -305,18 +293,14 @@ async function confirmTransaction(tx) {
   });
 }
 
-
 describe("keypair_vs_pda", () => {
-  const deployer = anchor.web3.Keypair.fromSecretKey(Uint8Array.from(privateKey));
-
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.KeypairVsPda as Program<KeypairVsPda>;
+  
   it("Console log account owner", async () => {
-
-    console.log(`The program address is ${program.programId}`) 
+    console.log(`The program address is ${program.programId}`);
     const newKeypair = anchor.web3.Keypair.generate();
-    var recieverWallet = anchor.web3.Keypair.generate();
 
     // get account owner before initialization
     await airdropSol(newKeypair.publicKey, 10);
@@ -329,7 +313,6 @@ describe("keypair_vs_pda", () => {
       .rpc();
       
     // get account owner after initialization
-	
     const accountInfoAfter = await anchor.getProvider().connection.getAccountInfo(newKeypair.publicKey);
     console.log(`initial keypair account owner is ${accountInfoAfter.owner}`);
   });
