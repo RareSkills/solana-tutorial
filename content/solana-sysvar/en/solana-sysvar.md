@@ -83,13 +83,13 @@ We can access the EpochSchedule sysvar using the `get` method, similar to the Cl
 Update the initialize function with the following code:
 ```rust
 pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-    // Get the Clock sysvar
-    let clock = Clock::get()?;
+    // Get the EpochSchedule sysvar
+    let epoch_schedule = EpochSchedule::get()?;
 
     msg!(
-        "clock: {:?}",
-        // Retrieve all the details of the Clock sysvar
-        clock
+        "epoch schedule: {:?}",
+        // Retrieve all the details of the EpochSchedule sysvar
+        epoch_schedule
     );
 
     Ok(())
@@ -194,27 +194,33 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 We are not importing the StakeHistory sysvar because we can access it through the use of the `super::*; import`. If this is not the case, we will import the specific sysvar.
 
 And update the test:
-```rust
-pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-    // Previous code...
+```typescript
+import * as anchor from "@coral-xyz/anchor";
+import { Program } from "@coral-xyz/anchor";
+import { Sysvars } from "../target/types/sysvars";
 
-    // Accessing the StakeHistory sysvar
-    // Create an array to store the StakeHistory account
-    let arr = [ctx.accounts.stake_history.clone()];
+describe("sysvars", () => {
+  // Configure the client to use the local cluster.
+  anchor.setProvider(anchor.AnchorProvider.env());
 
-    // Create an iterator for the array
-    let accounts_iter = &mut arr.iter();
+  const program = anchor.workspace.Sysvars as Program<Sysvars>;
 
-    // Get the next account info from the iterator (still StakeHistory)
-    let sh_sysvar_info = next_account_info(accounts_iter)?;
+  // Create a StakeHistory PublicKey object
+  const StakeHistory_PublicKey = new anchor.web3.PublicKey(
+    "SysvarStakeHistory1111111111111111111111111"
+  );
 
-    // Create a StakeHistory instance from the account info
-    let stake_history = StakeHistory::from_account_info(sh_sysvar_info)?;
-
-    msg!("stake_history: {:?}", stake_history);
-
-    Ok(())
-}
+  it("Is initialized!", async () => {
+    // Add your test here.
+    const tx = await program.methods
+      .initialize()
+      .accounts({
+        stakeHistory: StakeHistory_PublicKey,
+      })
+      .rpc();
+    console.log("Your transaction signature", tx);
+  });
+});
 ```
 
 Now, we re-run our test:
