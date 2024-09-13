@@ -115,7 +115,8 @@ Below we show the `Alice` program. At the top, the Alice program is importing th
 ```rust
 
 use anchor_lang::prelude::*;
-// account struct for add_and_storeuse bob::cpi::accounts::BobAddOp;
+// account struct for add_and_store
+use bob::cpi::accounts::BobAddOp;
 
 // The program definition for Bob
 use bob::program::Bob;
@@ -207,7 +208,7 @@ describe("CPI from Alice to Bob", () => {
   it("Can add numbers then double!", async () => {
     // Add your test here.
     const tx = await aliceProgram.methods
-      .askBobToAddThenDouble(new anchor.BN(4), new anchor.BN(2))
+      .askBobToAdd(new anchor.BN(4), new anchor.BN(2))
       .accounts({
         bobDataAccount: dataAccountKeypair.publicKey,
         bobProgram: bobProgram.programId,
@@ -216,9 +217,10 @@ describe("CPI from Alice to Bob", () => {
   });
 
   it("Can assert value in Bob's data account equals 4 + 2", async () => {
-
     const BobAccountValue = (
-      await bobProgram.account.bobData.fetch(dataAccountKeypair.publicKey)    ).result.toNumber();
+      await bobProgram.account.bobData
+        .fetch(dataAccountKeypair.publicKey)
+    ).result.toNumber();
     expect(BobAccountValue).to.equal(6);
   });
 });
