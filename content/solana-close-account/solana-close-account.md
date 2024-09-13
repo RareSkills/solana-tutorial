@@ -52,7 +52,7 @@ pub struct ThePda {
 ```
 
 ### Solana returns rent for closing accounts
-The `close = signer` macro specifies that the signer in the transaction will receive the rent that was set aside to pay for storage (though another address could be specified of course). This is similar to how selfdestruct in Ethereum (prior to the Decun upgrade) refunded users for clearing space. The amount of SOL that can be earned from closing an account is proportional to how large the account was.
+The `close = signer` macro specifies that the signer in the transaction will receive the rent that was set aside to pay for storage (though another address could be specified of course). This is similar to how selfdestruct in Ethereum (prior to the Dencun upgrade) refunded users for clearing space. The amount of SOL that can be earned from closing an account is proportional to how large the account was.
 
 Here is the Typescript to call `initialize` followed by `delete`:
 
