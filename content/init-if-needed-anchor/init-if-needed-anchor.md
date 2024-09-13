@@ -92,7 +92,7 @@ But before we just silence the error, we should understand what a re-initializat
 If we try to initialize an account that has already been initialized, the transaction will fail.
 
 ## How does Anchor know an account is already initialized?
-From Anchor's perspective, if the account has a non-zero lamport balance OR the account is owned by the system program, then it is not initialized.
+From Anchor's perspective, if the account has a zero lamport balance OR the account is owned by the system program, then it is not initialized.
 
 An account owned by the system program or with zero lamport balance can be initialized again.
 
