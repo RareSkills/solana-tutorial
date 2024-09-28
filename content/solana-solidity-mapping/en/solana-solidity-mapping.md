@@ -290,6 +290,6 @@ pub struct InitializeMap<'info> {
 **Exercise**: Complete the Rust and Typescript code to create a program that has two mappings: the first one with a single key and second one with two keys. Think about how to turn a two level map into a single level map when the first map is specified.
 
 ## Learn Solana with RareSkills
-See our [Solana course](http://rareskills.io/solana-tutorial) to see the rest of our Solana tutorials.
+See our [Solana course](https://rareskills.io/solana-tutorial) to see the rest of our Solana tutorials.
 
 *Originally Published February, 27, 2024*
