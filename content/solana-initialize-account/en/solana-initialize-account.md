@@ -273,6 +273,6 @@ We've only looked at initializing storage in this tutorial, in the upcoming ones
 **Exercise:** modify `MyStorage` to hold `x` and `y` as if it were a cartesian coordinate. This means adding `y` to the `MyStorage` struct and changing them from `u64` to `i64`. You will not need to modify other parts of the code because `size_of` will recalculate the size for you. Be sure to reset the validator so that the original storage account gets erased and you aren't blocked from initializing the account again.
 
 ## Learn more with RareSkills
-See our [Solana course](http://rareskills.io/solana-tutorial) to learn more.
+See our [Solana course](https://rareskills.io/solana-tutorial) to learn more.
 
 *Originally Published February, 24, 2024*
