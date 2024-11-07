@@ -206,6 +206,7 @@ The following code will read the `TrueOrFalse` struct from `other_program`. Ensu
 + the `otherProgramAddress` matches the one from printed above
 + ensure that you are reading the `other_program.json` IDL from the right file location
 + make sure to run the tests with `--skip-local-validator` to ensure that this code reads the account the other program created
+
 ```typescript
 import * as anchor from "@coral-xyz/anchor";
 
@@ -233,6 +234,7 @@ describe("read", () => {
   });
 });
 ```
+
 The expected output is as follows:
 ![output](https://static.wixstatic.com/media/935a00_3fdf24ed318d4767b952aa9ae5bbc925~mv2.png/v1/fill/w_700,h_294,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_3fdf24ed318d4767b952aa9ae5bbc925~mv2.png)
 
@@ -244,6 +246,7 @@ In the following section we show how to read data without the Anchor magic.
 Unfortunately, the documentation for Solana's Typescript client is very limited and the library has been updated enough times to deprecate tutorials on the subject.
 
 Your best bet for trying to find the Solana web3 Typescript function you need is to look at the [HTTP JSON RPC Methods](https://docs.solana.com/api/http) and look for one that seems promising. In our case, `getAccountInfo` looks promising (<span style="color:#008aff">blue arrow</span>).
+
 ![Solana JSON RPC HTTP Methods](https://static.wixstatic.com/media/935a00_d93044e34e724b31b7998bc55176a053~mv2.png/v1/fill/w_1480,h_838,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_d93044e34e724b31b7998bc55176a053~mv2.png)
 
 Next we want to try to find that method in Solana web3 js. Preferably, you should use an IDE with autocompletion so you can fiddle around until you find that function as the following video demonstrates:
@@ -254,8 +257,6 @@ Below we show the expected output of running the test again:
 The <span style="color:Green">green box</span> around the hex `aa` byte shows we have successfully retrieved the decimal `170` value we stored in the `set()` function.
 
 The next step is to parse the data buffer, which is not something we will cover here.
-
-> The reader should be warned that deserializing this data may be a frustrating process.
 
 **There is no "enforced" way that data is serialized in a Solana account**. Anchor serializes structs its own way, but if someone wrote a Solana program in raw Rust (without Anchor) or used their own serialization algorithm, then you will have to customize your deserialization algorithm for how they serialized the data.
 
