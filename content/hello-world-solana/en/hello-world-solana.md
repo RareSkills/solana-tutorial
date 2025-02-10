@@ -143,7 +143,7 @@ ls .anchor/program-logs/
 ![Program log "Hello world"](https://static.wixstatic.com/media/935a00_c67a788b24174d8a9d28c7ac8ce5ee36~mv2.png/v1/fill/w_740,h_145,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_c67a788b24174d8a9d28c7ac8ce5ee36~mv2.png)
 
 ## Realtime Solana logs
-Alternatively, you can view the logs as the happen by opening a third shell and running:
+Alternatively, you can view the logs as they happen by opening a third shell and running:
 
 ```bash
 # shell 3
