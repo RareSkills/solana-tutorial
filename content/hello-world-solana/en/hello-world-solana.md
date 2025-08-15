@@ -24,13 +24,10 @@ You will need this to run the unit tests. Skip this if you already have yarn ins
 corepack enable # corepack comes with node js
 ```
 
-### Install the Solana cli
-We strongly recommend using the `stable` version, not `latest`.
-Solana installation no longer supports symbolic channel names (`edge`, `beta`, `stable`), hence we have to specify the version.
-
+### Install the Solana cli and Anchor
 ```
 # install solana
-sh -c "$(curl -sSfL https://release.solana.com/v1.16.25/install)"
+curl --proto '=https' --tlsv1.2 -sSfL https://solana-install.solana.workers.dev | bash
 ```
 
 ### Install Anchor
@@ -38,8 +35,7 @@ Anchor is a framework for Solana development. It is quite similar to hardhat in 
 
 ```bash
 # install anchor
-cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
-
+cargo install --git https://github.com/solana-foundation/anchor avm --force
 avm install latest
 avm use latest
 ```
