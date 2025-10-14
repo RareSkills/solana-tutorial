@@ -1,6 +1,6 @@
-# How to Add Metadata to an SPL Token with Metaplex
+# How Metaplex Metadata for Tokens Works
 
-We have deployed and interacted with SPL tokens, but none of them had a name, symbol, or any metadata attached. Instead, we identified each token by its mint account address. In contrast, ERC20 tokens include functions for reading the token’s name and symbol (but it's worth noting these are just human-readable conveniences, there is nothing preventing different tokens from having the same name or symbol). [ERC721](https://rareskills.io/post/erc721) and [ERC1155](https://rareskills.io/post/erc-1155) also include a `tokenURI` function that returns a URI pointing to off-chain metadata. 
+We have deployed and interacted with [SPL tokens](https://rareskills.io/post/spl-token), but none of them had a name, symbol, or any metadata attached. Instead, we identified each token by its mint account address. In contrast, ERC20 tokens include functions for reading the token’s name and symbol (but it's worth noting these are just human-readable conveniences, there is nothing preventing different tokens from having the same name or symbol). [ERC721](https://rareskills.io/post/erc721) and [ERC1155](https://rareskills.io/post/erc-1155) also include a `tokenURI` function that returns a URI pointing to off-chain metadata. 
 
 But as we have seen so far, the SPL mint account does not have a name, symbol, or a URI field.
 
