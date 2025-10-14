@@ -1,4 +1,4 @@
-# Basic Bank Tutorial
+# Basic Bank Tutorial with SPL Tokens and Anchor
 
 In this tutorial, we’ll build a simple bank program on Solana with the basic features you'd expect from a regular bank. Users can create accounts, check balances, deposit funds, and withdraw their funds when needed. The deposited SOL will be stored in a bank PDA, owned by our program. 
 
