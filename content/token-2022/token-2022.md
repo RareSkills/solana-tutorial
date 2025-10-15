@@ -160,7 +160,7 @@ Here is an example instruction layout that tells the token program to mint 100 t
 
  Applications can adopt Token-2022 by simply changing the program ID in their transactions.
 
-Here’s the list of Token-2022 instruction beyond original 25 instructions of the Token program. The [token instructions](https://docs.rs/crate/solarti-token-2022/latest/source/src/instruction.rs) that are named to match the extensions they initialize or manage:
+Here’s the list of Token-2022 instruction beyond the original 25 instructions of the Token program. The [token instructions](https://docs.rs/crate/solarti-token-2022/latest/source/src/instruction.rs) are named to match the extensions they initialize or manage:
 
 ```
 25: InitializeMintCloseAuthority
