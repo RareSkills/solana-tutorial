@@ -1,6 +1,6 @@
 # The Solana Token 2022 Specification
 
-Token-2022 is a new backward-compatible version of the SPL Token program that supports additional features in the form of *extensions*. The bytecode for these extensions is part of the Token-2022 program itself, no separate programs are deployed. The bytecode activated for a particular token is determined by the extension enabled in the mint or token accounts.
+Token-2022 is a new backward-compatible version of the [SPL Token](https://rareskills.io/post/spl-token) program that supports additional features in the form of *extensions*. The bytecode for these extensions is part of the Token-2022 program itself, no separate programs are deployed. The bytecode activated for a particular token is determined by the extension enabled in the mint or token accounts.
 
 For example, in the original SPL Token program, adding metadata such as a token name, symbol, or logo URL requires an external program like Metaplex. But in Token-2022, you can add metadata by enabling a metadata extension on the token mint.
 
