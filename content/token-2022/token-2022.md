@@ -28,7 +28,7 @@ Extensions are optional features built into the Token-2022 program that you can 
 
 The original SPL Token program has a fixed binary layout where each field’s size, type, and value are predetermined. Token-2022 uses the same fixed binary layout in the preserved first 82 to 165 bytes region, but beyond that it uses a variable Type-Length-Value (TLV) encoding scheme to store extensions.
 
-The **Type–Length–Value (TLV)** is data serialization scheme. Each object in the data contains three parts:
+The **Type–Length–Value (TLV)** is a data serialization scheme. Each object in the data contains three parts:
 
 - **Type**: an identifier that specifies what the data represents.
 - **Length**: the size of the data in bytes.
@@ -140,7 +140,7 @@ Let’s consider how the program would handle an unknown extension `UnknownExten
 - But it still reads the length and skips forward by that number of bytes (in this case, 20)
 - It then proceeds to the next TLV entry, if any
 
-Now suppose the unknown extension had a 64-byte value, the program would read the value 64 from L and then skip forward 64 bytes (over the V) to find the next `T`. This approach makes Token-2022 forward-compatible; future extensions won’t break existing programs.
+Now suppose the unknown extension had a 64-byte value, the program would read the value 64 from `L` and then skip forward 64 bytes (over the `V`) to find the next `T`. This approach makes Token-2022 forward-compatible; future extensions won’t break existing programs.
 
 ### Token-2022 instruction compatibility and new functionality
 
@@ -158,7 +158,7 @@ Here is an example instruction layout that tells the token program to mint 100 t
 
 ![The data inside a mint account in Token-2022](https://r2media.rareskills.io/SolanaToken2022/image6.png)
 
- Applications can adopt Token-2022 by simply changing the program ID in their transactions.
+ Applications can adopt Token-2022 by simply changing the program ID in their instructions.
 
 Here’s the list of Token-2022 instruction beyond original 25 instructions of the Token program. The [token instructions](https://docs.rs/crate/solarti-token-2022/latest/source/src/instruction.rs) that are named to match the extensions they initialize or manage:
 
@@ -279,7 +279,7 @@ Before we get into the next part of this article, let's summarize what we’ve d
 - Both Token account’s first 165 bytes and Mint account’s first 82 bytes are preserved in Token-2022.
 - Extensions are stored using a TLV (Type-Length-Value) encoding format.
 - Token-2022 adds 20 new instructions to the 25 from the original SPL Token program.
-- The developer must allocate enough space for all extensions you want to enable upfront during account creation.
+- The developer must allocate enough space for all the extensions they want to enable upfront during account creation.
 - Extensions must be initialized before mint creation
 
 ## ImmutableOwner and Non-Transferable Extensions
@@ -575,9 +575,9 @@ The complete source code for this program [can be found on GitHub](https://githu
 
 ## Conclusion
 
-Token-2022 makes building on Solana more flexible. We’ve learned about the architecture of and  how it maintains backward compatibility with the original SPL token program. 
+Token-2022 makes building on Solana more flexible. We’ve learned about the architecture of token-2022 and how it maintains backward compatibility with the original SPL token program. 
 
-We saw how extensions are used to add new behavior to tokens. While extensions can be used together, ohter combinations aren’t allowed. 
+We saw how extensions are used to add new behavior to tokens. While extensions can be used together, other combinations aren’t allowed. 
 
 And finally, we built a credential issuing program that combines the `NonTransferable` and `ImmutableOwner` extensions. This showed how enabling `NonTransferable` on a mint prevents tokens from being transferred, enforcing strict control over how credentials are held.
 
