@@ -123,7 +123,7 @@ First off, here is a description of the variables in the formula:
 
 
 $$
-t = \frac{elapse\_seconds}{SECONDS\_PER\_YEAR}
+t = \frac{elapsed\_seconds}{SECONDS\_PER\_YEAR}
 $$
 
 Where **SECONDS_PER_YEAR** = 60 × 60 × 24 × 365.24
