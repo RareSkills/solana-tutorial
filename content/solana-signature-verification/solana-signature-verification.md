@@ -1,8 +1,6 @@
 # Ed25519 Signature Verification in Solana
 
-# **Verifying Ed25519 Signatures in Solana Anchor Programs**
-
-![Frame 4.png](https://www.notion.so/images/app-packages/docs-getting-started-1.png)
+## **Verifying Ed25519 Signatures in Solana Anchor Programs**
 
 This tutorial shows how to verify an off-chain Ed25519 signature in a Solana program.
 
@@ -14,17 +12,17 @@ Although wallet transactions are also signed with `Ed25519`, those signatures ar
 
 In this article, we’ll show how signature verification works in Solana using `Ed25519Program` and [instruction introspection](https://rareskills.io/post/solana-instruction-introspection). Our running example will be an airdrop flow, where a distributor signs claims off-chain and recipients submit those signed claims on-chain for verification so they can claim the airdrop.
 
-## Ed25519Program is stateless
+### Ed25519Program is stateless
 
 The Solana Ed25519Program only performs cryptographic signature verification based on the provided input parameters. It doesn't maintain any persistent data between calls, therefore, it owns no accounts. As a result, it doesn’t store the outcome of verification. If the signature verification fails, the entire transaction is rejected; if it succeeds, execution continues and the next instruction can safely assume the signature was valid.
 
-## Our running example: Airdrop
+### Our running example: Airdrop
 
 In an airdrop, we need a way to know who is eligible to claim tokens. One approach is to store all eligible addresses on-chain, but this is costly.
 
 Rather than storing all recipient addresses on-chain, a signature-based airdrop uses a trusted distributor (e.g. the project’s team) to sign off-chain messages containing each recipient’s wallet address and token amount `(recipient, amount)`. The on-chain program responsible for distributing the airdrop verifies these signatures to authorize token claims and transfer the `amount` to the `recipient`.
 
-## How the verification process works
+### How the verification process works
 
 The signature verification process uses instruction introspection, where a program can read other instructions in the same transaction. We discussed instruction introspection previously, and now we'll focus on how it applies to signature verification.
 
@@ -43,30 +41,20 @@ pub struct Instruction {
 }
 ```
 
-## **Instruction 1: `Ed25519 Instruction` for** signature verification
+### **Instruction 1: `Ed25519 Instruction` for** signature verification
 
 The `Ed25519 Instruction` is a Solana instruction whose `program_id` is the native `Ed25519Program` verifier (`Ed25519SigVerify111111111111111111111111111`). It is the first instruction in our airdrop transaction.
 
 Since the `Ed25519Program` is stateless, no accounts are needed for this instruction, so all inputs are encoded in the instruction `data`.
 
-### How instruction data for `Ed25519Program` is formatted
+#### How instruction data for `Ed25519Program` is formatted
 
 The `data`  in the `Ed25519program` instruction starts with a 16-byte header which contains the number of signatures in the instruction and offsets. In our case, we’ll have only the distributor’s signature count and the offsets. These offsets point into the rest of the `data` to locate the public key, message, and signature that were verified. The rest of the data will continue from the 16th byte to the 151st byte.
 
-|  |  | **Ed25519 Instruction** |  |
+| | | **Ed25519 Instruction** | |
 | --- | --- | --- | --- |
-|    [bytes 0..15] 
+| [bytes 0..15]<br>Header (16 bytes) | [bytes 16..47]<br>Distributor’s public key (32 bytes) | [bytes 48..111]<br>Distributor’s Signature (64 bytes) | [bytes 112..151]<br>Message<br>- Recipient Pubkey (0..31)<br>-  Amount of airdrop token (32..39, little-endian) |
 
-Header (16 bytes) |        [bytes 16..47]
-
-Distributor’s public key (32 bytes) |       [bytes 48..111]
-
-Distributor’s Signature (64 bytes) |              [bytes 112..151]
-
-Message
-   - Recipient Pubkey (0..31) 
-   -  Amount of airdrop 
-       token(32..39, little-endian) |
 
 This is the Rust struct of the header:
 
@@ -88,7 +76,7 @@ struct Ed25519SignatureOffsets {
 }
 ```
 
-Notice that  the `Ed25519SignatureOffsets` struct has the following indices: `signature_instruction_index`, `public_key_instruction_index`, and `message_instruction_index`. These indices are used to determine if the instruction data is in the current instruction being executed. The indices in the current instruction data are set to `u16::MAX` in the Solana [Ed25519 source code](https://github.com/anza-xyz/solana-sdk/blob/c654e5f556ad3e22679fe9757da1bf5c9486e2f1/ed25519-program/src/lib.rs#L79): 
+Notice that  the `Ed25519SignatureOffsets` struct has the following indices: `signature_instruction_index`, `public_key_instruction_index`, and `message_instruction_index`. These indices are used to determine if the instruction data is in the current instruction being executed. The indices in the current instruction data are set to `u16::MAX` in the Solana [Ed25519 source code](https://github.com/anza-xyz/solana-sdk/blob/c654e5f556ad3e22679fe9757da1bf5c9486e2f1/ed25519-program/src/lib.rs#L79):
 
 ```rust
     let offsets = Ed25519SignatureOffsets {
@@ -104,18 +92,11 @@ Notice that  the `Ed25519SignatureOffsets` struct has the following indices: `si
 
 Any other value would point to another instruction in the transaction.
 
-The layout for the **`Ed25519 Instruction`** data will look like this in our running airdrop example. 
+The layout for the **`Ed25519 Instruction`** data will look like this in our running airdrop example.
 
-|  |  | **Ed25519 Instruction** |  |
+| | | **Ed25519 Instruction** | |
 | --- | --- | --- | --- |
-|          0..15
-Header (16 bytes) |              16..47
-Distributor’s public key |            48..111
-Distributor’s Signature |           112..151
-Message
-   - Recipient Pubkey (0..31) 
-   -  Amount of airdrop 
-       token(32..39, little-endian) |
+| 0..15<br>Header (16 bytes) | 16..47<br>Distributor’s public key | 48..111<br>Distributor’s Signature | 112..151<br>Message<br>- Recipient Pubkey (0..31)<br>- Amount of airdrop token (32..39, little-endian) |
 
 In practice, you’ll use off-chain helpers like Web3.js or the [solana-ed25519-program](https://crates.io/crates/solana-ed25519-program) crate to build a valid instruction. Below is a snippet from the ed25519 crate source code showing the input parameters to build the instruction and then return a valid instruction off-chain. (The Typescript version will be shown later)
 
@@ -135,22 +116,20 @@ Conceptually, the de-serialized version of `Ed25519 Instruction` looks like this
 | --- | --- |
 | Program ID | Ed25519SigVerify111111111111111111111111111 |
 | Accounts | [] |
-| Instruction Data |     - Header (Signature Count + Offsets) 
-    - Distributor's Public Key
-    - Message (recipient, amount)
-    - Distributor's Signature |
+| Instruction Data | - Header (Signature Count + Offsets)<br>- Distributor's Public Key<br>- Message (recipient, amount)<br>- Distributor's Signature |
+
 
 When the transaction executes, the `Ed25519 Instruction` is processed by the `Ed25519Program`. If the signature is valid, the instruction execution succeeds. However, if the signature is invalid, it aborts the transaction and logs an error code, which means subsequent instructions (like the `AirdropClaim Instruction`) are not executed.
 
 We’ll demonstrate how this verification works practically later in this article.
 
-## Instruction 2: `AirdropClaim Instruction`
+### Instruction 2: `AirdropClaim Instruction`
 
 `AirdropClaim Instruction` is a standard Solana transaction instruction sent to the airdrop program to claim the airdrop token. The instruction contains the airdrop program ID, the recipient account, and the instructions sysvar account for introspection.
 
 |  | **AirdropClaim Instruction** |
 | --- | --- |
-| Program ID |         airdrop program ID  |
+| Program ID | airdrop program ID  |
 | Accounts | [recipient, instructions sysvar account] |
 | Instruction Data | No custom data |
 
@@ -162,21 +141,21 @@ The airdrop program will first introspect the ****`Ed25519 Verification Instruct
 
 If the introspection shows that `Ed25519 Verification Instruction: Instruction 1` is valid, the user can claim their airdrop token.
 
-## **Execution flow of the** `Ed25519 Verification Instruction`  **and** `AirdropClaim Instruction`
+### **Execution flow of the** `Ed25519 Verification Instruction`  **and** `AirdropClaim Instruction`
 
-The diagram below shows a high-level execution flow of the `Ed25519 Verification Instruction` and the `AirdropClaim Instruction` in our program before an airdrop can be claimed.  
+The diagram below shows a high-level execution flow of the `Ed25519 Verification Instruction` and the `AirdropClaim Instruction` in our program before an airdrop can be claimed.
 
-The user sends a transaction with two instructions: `Ed25519 Verification Instruction` and `AirdropClaim Instruction`. 
+The user sends a transaction with two instructions: `Ed25519 Verification Instruction` and `AirdropClaim Instruction`.
 
 1. The`Ed25519 Verification Instruction` goes to the `Ed25519Program` to verify the distributor’s signature.
-2. If the signature verification fails, the entire transaction fails. If it succeeds, the execution flow continues. 
+2. If the signature verification fails, the entire transaction fails. If it succeeds, the execution flow continues.
 3. The `AirdropClaim Instruction` is then sent to the **Airdrop program**.
 4. The **Airdrop program** introspects `Ed25519 Verification Instruction`, checking its program ID, accounts, and data to confirm it was a valid `Ed25519` verification.
 5. If introspection confirms `Ed25519 Verification Instruction`, the user can claim their airdrop token.
 
 ![A diagram illustrating the execution flow of the Ed25519 Verification Instruction and AirdropClaim Instruction.](https://r2media.rareskills.io/SolanaSignatureVerification/image7.png)
 
-## Signature verification program for airdrop distribution
+### Signature verification program for airdrop distribution
 
 Let’s write actual code that demonstrates how to use instruction introspection to verify Ed25519 signatures following our airdrop distribution flow. This application has two phases:
 
@@ -185,14 +164,14 @@ Let’s write actual code that demonstrates how to use instruction introspection
 
 We’ll implement the client side logic in the test suite, so let’s start by creating the program logic first.
 
-### The program logic: the claim verification
+#### The program logic: the claim verification
 
 To follow along with this section, ensure you have Solana development environment setup on your machine. Otherwise, read [the first article in the series](https://rareskills.io/post/hello-world-solana) to set it up.
 
 Initialize an Anchor application by running anchor the command:
 
 ```bash
- anchor init airdrop-distribution 
+ anchor init airdrop-distribution
 ```
 
 Update the imports in the `programs/airdrop-distribution/lib.rs` file with these Anchor imports. We need:
@@ -205,19 +184,19 @@ Update the imports in the `programs/airdrop-distribution/lib.rs` file with these
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::{
     ed25519_program,
-    pubkey::Pubkey, 
-    sysvar::instructions as ix_sysvar, 
+    pubkey::Pubkey,
+    sysvar::instructions as ix_sysvar,
     sysvar::SysvarId
 };
 ```
 
-Retain your generated `declare_id` 
+Retain your generated `declare_id`
 
 ```rust
 declare_id!("Gh2JoycvxfreSgjzhCHuRDK7sZDAbxeo7Pd8GKCoSLmS");
 ```
 
-Next, we’ll include the rest of the program logic and walk through it step by step. 
+Next, we’ll include the rest of the program logic and walk through it step by step.
 
 The program contains a `claim` function where all the logic lives. Here’s a breakdown of what happens in the function:
 
@@ -233,8 +212,8 @@ The program contains a `claim` function where all the logic lives. Here’s a br
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::{
     ed25519_program,
-    pubkey::Pubkey, 
-    sysvar::instructions as ix_sysvar, 
+    pubkey::Pubkey,
+    sysvar::instructions as ix_sysvar,
     sysvar::SysvarId
 };
 
@@ -272,7 +251,7 @@ pub mod airdrop {
         // Ensure it is the Ed25519 program and uses no accounts (stateless check)
         require!(ed_ix.program_id == ed25519_program::id(), AirdropError::BadEd25519Program);
         require!(ed_ix.accounts.is_empty(), AirdropError::BadEd25519Accounts);
-       
+
         // Ed25519 Verification Instruction data
         let data = &ed_ix.data;
 
@@ -319,8 +298,8 @@ pub mod airdrop {
         // Ensure all offsets point beyond the 16-byte header,
         // i.e. into the region containing the signature, public key, and message
         require!(
-            signature_offset >= HEADER_LEN 
-                 && public_key_offset >= HEADER_LEN 
+            signature_offset >= HEADER_LEN
+                 && public_key_offset >= HEADER_LEN
                  && message_offset >= HEADER_LEN,
             AirdropError::InvalidInstructionSysvar
         );
@@ -356,7 +335,7 @@ pub mod airdrop {
         amount_bytes.copy_from_slice(&msg[32..40]);
         let amount = u64::from_le_bytes(amount_bytes);
 
-        // User can now claim the airdrop token. 
+        // User can now claim the airdrop token.
         // The airdrop transfer can now be implemented here.
 
         Ok(())
@@ -407,21 +386,21 @@ Let’s explain the key parts of the above code. We’ll cover:
 
 We’ll share screenshots of each key part of the program code above and discuss it in the following sections.
 
-### 1. Introspection: Loading and validating the `Ed25519 Verification Instruction: Instruction 1`
+#### 1. Introspection: Loading and validating the `Ed25519 Verification Instruction: Instruction 1`
 
-The screenshot below from our program code shows how we use instruction introspection through the instruction sysvar to verify the `Ed25519 Verification Instruction: Instruction 1`. 
+The screenshot below from our program code shows how we use instruction introspection through the instruction sysvar to verify the `Ed25519 Verification Instruction: Instruction 1`.
 
 1. We call `load_current_index_checked()` to get the index of the current instruction and `load_instruction_at_checked()` to load the immediately preceding instruction.
-2. Once we have the preceding instruction (`Ed25519 Verification Instruction: Instruction 1`), we: 
+2. Once we have the preceding instruction (`Ed25519 Verification Instruction: Instruction 1`), we:
     - verify that its program ID matches the `Ed25519Program`. This ensures the instruction is indeed an Ed25519 signature verification.
     - and confirm that the instruction account list is empty.
 3. Once these checks succeed, we extract the instruction’s data, which is a vector and bind it to the variable `data`.
 
 ![A screenshot showing a code snippet for how to load and validate the Ed25519 Verification Instruction](https://r2media.rareskills.io/SolanaSignatureVerification/image1.png)
 
-Now, we’ve succeeded in verifying the top level `ed2559Program` instruction information: the ID and the accounts. We’ve also grabbed the `Ed25519 Verification Instruction: Instruction 1` data, so, the next step is to verify the content of the data. The data is a vector of `u8` data type. 
+Now, we’ve succeeded in verifying the top level `ed2559Program` instruction information: the ID and the accounts. We’ve also grabbed the `Ed25519 Verification Instruction: Instruction 1` data, so, the next step is to verify the content of the data. The data is a vector of `u8` data type.
 
-### 2. Accessing and verifying the `Ed25519 Verification Instruction: Instruction 1` data
+#### 2. Accessing and verifying the `Ed25519 Verification Instruction: Instruction 1` data
 
 We expect the instruction data to encode, in order: a header that specifies the signature count and offsets for the following fields; the distributor’s public key; the message; and the distributor’s Ed25519 signature.
 
@@ -429,7 +408,7 @@ We expect the instruction data to encode, in order: a header that specifies the 
 
 Now, we’ll step through the next part of our code to see how the airdrop program is accessing and verifying the `Ed25519 Verification Instruction: Instruction 1` data.
 
-### **3. Retrieving the signature count and offsets in the header region**
+#### **3. Retrieving the signature count and offsets in the header region**
 
 The code in the screenshot below extracts the signature count, the offsets and the indexes pointing to where each element is in the `Ed25519 Verification Instruction: Instruction 1` data vector.
 
@@ -441,7 +420,7 @@ To parse them, we define a closure `read_u16` that steps through the data buffer
 
 ![A screenshot showing the snippet for retrieving the signature count and offsets in the header region of an instruction data.](https://r2media.rareskills.io/SolanaSignatureVerification/image2.png)
 
-### **4.** Validation to ensure we are accessing accurate signature, public key, and message in the current instruction
+#### **4.** Validation to ensure we are accessing accurate signature, public key, and message in the current instruction
 
 At this point, we have the signature count and the offsets but we need to make sure:
 
@@ -450,7 +429,7 @@ At this point, we have the signature count and the offsets but we need to make s
 
 ![A screenshot explaining: Validation to ensure we are accessing accurate signature, public key, and message in the current instruction following our program code.](https://r2media.rareskills.io/SolanaSignatureVerification/image3.png)
 
-### **5. Accessing the distributor’s signature, public key, and the message in the instruction data vector**
+#### **5. Accessing the distributor’s signature, public key, and the message in the instruction data vector**
 
 The screenshot below shows how we use the offsets parsed from the `Ed25519 Verification Instruction: Instruction 1` data header to locate the distributor’s public key and message content (recipient and amount) within instruction data and validating them against the version provided by the user in the`AirdropClaim Instruction: Instruction 2`.
 
@@ -461,9 +440,9 @@ If both checks succeed, the signature verification is complete. At this point yo
 
 ![A screenshot showing showing how to access the distributor’s signature, public key, and the message in the instruction data vector](https://r2media.rareskills.io/SolanaSignatureVerification/image4.png)
 
-## The **client side: constructing the transaction off-chain**
+#### The **client side: constructing the transaction off-chain**
 
-We’ve seen how the signature verification works. Now, let’s test it by creating a transaction that will contain the two instructions — `Ed25519 Verification Instruction: Instruction 1` and the `AirdropClaim Instruction: Instruction 2`. 
+We’ve seen how the signature verification works. Now, let’s test it by creating a transaction that will contain the two instructions — `Ed25519 Verification Instruction: Instruction 1` and the `AirdropClaim Instruction: Instruction 2`.
 
 **Dependencies**
 
@@ -480,15 +459,15 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { expect } from "chai";
 
-// Add the following 
+// Add the following
 import { Airdrop } from "../target/types/airdrop"; // The IDL
-import { 
-    PublicKey, 
-    Keypair, 
-    SystemProgram, 
-    Transaction, 
-    **TransactionInstruction, 
-    Ed25519Program** 
+import {
+    PublicKey,
+    Keypair,
+    SystemProgram,
+    Transaction,
+    **TransactionInstruction,
+    Ed25519Program**
 } from "@solana/web3.js";
 import * as nacl from "tweetnacl";
 ```
@@ -499,7 +478,7 @@ We’ll have four test case scenarios:
 2. **Wrong order**: `claim` instruction comes before `Ed25519Program`, the transaction fails with `InvalidInstructionSysvar`.
 3. **Wrong distributor**: signature doesn’t match `expectedDistributor` signature, the transaction fails with `DistributorMismatch`.
 4. **Wrong recipient**: signed recipient differs from the user trying to claim the airdrop’s signature, the transaction fails with `RecipientMismatch`.
-5. **Multiple claims:** a test case to show that an attempt to cheat the system by constructing multiple `AirdropClaim Instruction` will fail. That’s because the program’s introspection logic only looks at the immediately preceding `Ed25519 Verification Instruction: Instruction 1`, so the second `AirdropClaim Instruction` will fail. 
+5. **Multiple claims:** a test case to show that an attempt to cheat the system by constructing multiple `AirdropClaim Instruction` will fail. That’s because the program’s introspection logic only looks at the immediately preceding `Ed25519 Verification Instruction: Instruction 1`, so the second `AirdropClaim Instruction` will fail.
 
 Start by setting up the test first to use the local cluster and set up test accounts for the distributor, the recipient and an invalid distributor account for negative test cases.
 
@@ -557,14 +536,14 @@ We create two instructions: `Ed25519 Verification Instruction: Instruction 1` an
 ```tsx
   it("Successfully claims airdrop with valid signature", async () => {
   const claimAmount = 1000000;
-    
-  // Create Ed25519 Signature Verification Instruction: Instruction 1 
+
+  // Create Ed25519 Signature Verification Instruction: Instruction 1
   const ed25519Ix = createEd25519Instruction(
     distributorKeypair,
     recipientKeypair.publicKey,
     claimAmount
   );
- 
+
   // Create the AirdropClaim Instruction: Instruction 2
   const claimIx = await program.methods
     .claim()
@@ -576,15 +555,15 @@ We create two instructions: `Ed25519 Verification Instruction: Instruction 1` an
     .instruction();
 
   const tx = new Transaction();
-  tx.add(ed25519Ix); // Add Instruction 1 to the transaction 
+  tx.add(ed25519Ix); // Add Instruction 1 to the transaction
   tx.add(claimIx); // Add Instruction 2 to the transaction
- 
+
   // Just expect the transaction to succeed
   expect(await provider.sendAndConfirm(tx, [recipientKeypair])).to.not.be.empty;
 });
 ```
 
-The failure cases will involve the same process, we’ll only need to add invalid data that will cause them to fail. So, here’s the complete test code with explanatory comments. 
+The failure cases will involve the same process, we’ll only need to add invalid data that will cause them to fail. So, here’s the complete test code with explanatory comments.
 
 ```tsx
 import * as anchor from "@coral-xyz/anchor";
@@ -635,13 +614,13 @@ function createEd25519Instruction(
 
   it("Successfully claims airdrop with valid signature", async () => {
 	  const claimAmount = 1000000;
-	
+
 	  const ed25519Ix = createEd25519Instruction(
 	    distributorKeypair,
 	    recipientKeypair.publicKey,
 	    claimAmount
 	  );
-	
+
 	  const claimIx = await program.methods
 	    .claim()
 	    .accountsPartial({
@@ -650,11 +629,11 @@ function createEd25519Instruction(
 	      instructionSysvar: anchor.web3.SYSVAR_INSTRUCTIONS_PUBKEY,
 	    })
 	    .instruction();
-	
+
 	  const tx = new Transaction();
 	  tx.add(ed25519Ix);
 	  tx.add(claimIx); // AirdropClaim Instruction: Instruction 2
-	  
+
 	  // Just expect the transaction to succeed
 	  expect(await provider.sendAndConfirm(tx, [recipientKeypair])).to.not.be.empty;
 	});
@@ -755,14 +734,14 @@ function createEd25519Instruction(
 
    it("Fails when multiple claim instructions try to reuse the same Ed25519 signature", async () => {
 	    const claimAmount = 1000000;
-	
+
 	    // Create a single Ed25519 instruction
 	    const ed25519Ix = createEd25519Instruction(
 	      distributorKeypair,
 	      recipientKeypair.publicKey,
 	      claimAmount
 	    );
-	
+
 	    // First claim instruction (valid)
 	    const claimIx1 = await program.methods
 	      .claim()
@@ -772,7 +751,7 @@ function createEd25519Instruction(
 	        instructionSysvar: anchor.web3.SYSVAR_INSTRUCTIONS_PUBKEY,
 	      })
 	      .instruction();
-	
+
 	    // Second claim instruction (tries to reuse the same Ed25519)
 	    const claimIx2 = await program.methods
 	      .claim()
@@ -782,12 +761,12 @@ function createEd25519Instruction(
 	        instructionSysvar: anchor.web3.SYSVAR_INSTRUCTIONS_PUBKEY,
 	      })
 	      .instruction();
-	
+
 	    const tx = new Transaction();
 	    tx.add(ed25519Ix);
 	    tx.add(claimIx1);
 	    tx.add(claimIx2);
-	
+
 	    try {
 	      await provider.sendAndConfirm(tx, [recipientKeypair]);
 	      expect.fail("Should have failed because multiple claims tried to reuse the same signature");
