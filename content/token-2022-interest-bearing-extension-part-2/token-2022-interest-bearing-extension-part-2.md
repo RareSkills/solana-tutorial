@@ -1021,7 +1021,7 @@ Run the test with the command `anchor test`. The test output should look like th
 ![A screenshot of a command-line terminal showing a successful interest accrual test. The test begins with a 1000 token balance and simulates three periods: 1) 3 months at 3% interest, 2) another 9 months at 5%, and 3) a final 3 months at 7%. Each step shows the new balance, the expected balance calculated with the formula A=Pert
 , and the total interest earned, confirming the logic is correct.](https://r2media.rareskills.io/SolanaInterestBearingTokensPart2/image1.png)
 
-From the above screenshot, you’ll notice that our interest accrual works correctly and aligns with the continuous compounding interest calculation with discussed earlier.
+From the above screenshot, you’ll notice that our interest accrual works correctly and aligns with the continuous compounding interest calculation we discussed earlier.
 
 ## Conclusion
 
