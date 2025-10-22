@@ -121,8 +121,9 @@ First off, here is a description of the variables in the formula:
 - **r** = the annual interest rate (as a decimal)
 - **t** = time in years (Token-2022 internally works with seconds)
 
+
 $$
-t = \frac{\text{elapsed\_seconds}}{\text{SECONDS\_PER\_YEAR}}
+t = \frac{elapsed\_seconds}{SECONDS\_PER\_YEAR}
 $$
 
 Where **SECONDS_PER_YEAR** = 60 × 60 × 24 × 365.24
@@ -209,7 +210,7 @@ Suppose we start with:
 Then:
 
 $$
-\text{pre\_update\_average\_rate}_{\text{new}} = \frac{(300 \times 7889184) + (500 \times 23667552)}{31556736} \approx 450
+pre\_update\_average\_rate_{new} = \frac{(300 \times 7889184) + (500 \times 23667552)}{31556736} \approx 450
 $$
 
 After the update:
