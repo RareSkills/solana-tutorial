@@ -87,7 +87,7 @@ describe("other_write", () => {
 
     let seeds = [];
     const [myStorage, _bump] = anchor.web3.PublicKey.findProgramAddressSync(seeds, program.programId);
-    
+
     await program.methods.initialize().accounts({
       myStorage: myStorage,
       signer: newKeypair.publicKey // ** THIS MUST BE EXPLICITLY SPECIFIED **
@@ -106,7 +106,7 @@ At first it might seem redundant that we are specifying the signer twice, but le
 
 In the <span style="color:red">red box</span>, we see the `fren` field specified to be a Signer account. **The `Signer` type means Anchor will look at the signature of the transaction and make sure the signature matches the address passed here.**
 
-We will see later how we can use this to validate the Signer is authorized to conduct certain a transaction.
+We will see later how we can use this to validate the Signer is authorized to conduct a certain transaction.
 
 Anchor has been doing this the whole time behind the scenes, but since we passed in a `Signer` other than the one Anchor uses by default, we have to be explicit about what account the `Signer` is.
 
@@ -240,7 +240,7 @@ describe("other_write", () => {
 
     let seeds = [];
     const [myStorage, _bump] = anchor.web3.PublicKey.findProgramAddressSync(seeds, program.programId);
-    
+
     // ALICE INITIALIZE ACCOUNT
     await program.methods.initialize().accounts({
       myStorage: myStorage,
@@ -291,7 +291,7 @@ pub mod points {
                            amount: u32) -> Result<()> {
         require!(ctx.accounts.from.authority == ctx.accounts.signer.key(), Errors::SignerIsNotAuthority);
         require!(ctx.accounts.from.points >= amount, Errors::InsufficientPoints);
-        
+
         ctx.accounts.from.points -= amount;
         ctx.accounts.to.points += amount;
         Ok(())
