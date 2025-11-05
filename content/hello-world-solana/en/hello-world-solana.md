@@ -24,14 +24,14 @@ You will need this to run the unit tests. Skip this if you already have yarn ins
 corepack enable # corepack comes with node js
 ```
 
-### Install the Solana cli and Anchor
+### Install the Solana CLI and Anchor
 ```
 # install solana
 curl --proto '=https' --tlsv1.2 -sSfL https://solana-install.solana.workers.dev | bash
 ```
 
 ### Install Anchor
-Anchor is a framework for Solana development. It is quite similar to hardhat in many respects.
+Anchor is a framework for Solana development. It is quite similar to Hardhat in many respects.
 
 ```bash
 # install anchor
@@ -138,7 +138,7 @@ ls .anchor/program-logs/
 
 ![Program log "Hello world"](https://static.wixstatic.com/media/935a00_c67a788b24174d8a9d28c7ac8ce5ee36~mv2.png/v1/fill/w_740,h_145,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_c67a788b24174d8a9d28c7ac8ce5ee36~mv2.png)
 
-## Realtime Solana logs
+## Real-time Solana logs
 Alternatively, you can view the logs as they happen by opening a third shell and running:
 
 ```bash
@@ -162,7 +162,7 @@ There is nothing special about the name initialize in this context, and so we ca
 **Exercise**: *Try renaming `initialize` in `programs/day_1/src/lib.rs` and `initialize` in `tests/day_1.ts` to become `initialize2` and run the test again. See the change marked in the <span style="color:orange">orange circles</span> below.*
 
 
-![Renaming excersise](https://static.wixstatic.com/media/935a00_cd564f43dbd94c15b15249e9083fa91b~mv2.png/v1/fill/w_740,h_201,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_cd564f43dbd94c15b15249e9083fa91b~mv2.png)
+![Renaming exercise](https://static.wixstatic.com/media/935a00_cd564f43dbd94c15b15249e9083fa91b~mv2.png/v1/fill/w_740,h_201,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_cd564f43dbd94c15b15249e9083fa91b~mv2.png)
 
 ### Why do we run the test with --skip-local-validator?
 When the tests run against a node, we will be able to query the node for state changes. If you are not able to get the node to run, it is okay to run `anchor test` without the `--skip-local-validator` flag. However, you will have a harder time developing and testing, so we recommend getting the local validator to work.
@@ -207,7 +207,7 @@ error[E0658]: use of unstable library feature 'build_hasher_simple_hash_one'
 = help: add #![feature(build_hasher_simple_hash_one)] to the crate attributes to enable
 ```
 
-Run the following command: `cargo update -p ahash@0.8.7 --precise 0.8.6`.  
+Run the following command: `cargo update -p ahash@0.8.7 --precise 0.8.6`.
 
 **Credit**: [https://solana.stackexchange.com/questions/8800/cant-build-hello-world](https://solana.stackexchange.com/questions/8800/cant-build-hello-world)
 
@@ -221,7 +221,7 @@ There was a problem deploying: Output { status: ExitStatus(unix_wait_status(256)
 If you get this error, your keys are not synced. Run `anchor keys sync`.
 
 ### Error: failed to send transaction: Transaction simulation failed: Attempt to load a program that does not exist
-Your keys are not synced. Run `anchor keys sync`. 
+Your keys are not synced. Run `anchor keys sync`.
 
 ### Error: Your configured rpc port: 8899 is already in use
 You ran `anchor test` without `--skip-local-validator` while the validator is running in the background. Either turn off the validator and run `anchor test` or run `anchor test --skip-local-validator` with the validator running. Skip local validator means skip the temporary one it creates for the project, not the one running in the background.
@@ -254,7 +254,7 @@ It's likely you didn't run `anchor build` yet.
 ### I'm using Mac and I get Error: failed to start validator: Failed to create ledger at test-ledger: blockstore error
 Follow the instructions in this [Stack Exchange thread](https://solana.stackexchange.com/questions/4499/cant-start-solana-test-validator-on-macos-13-0-1/4761#4761).
 
-### I don't have corepack on my Mac despite having node.js
+### I don't have corepack on my Mac despite having Node.js
 Run the following commands:
 
 ```bash
