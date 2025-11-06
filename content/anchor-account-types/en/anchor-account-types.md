@@ -9,7 +9,7 @@ For Solana to know that Alice and Bob's transaction cannot be parallelized, both
 
 Since both Alice and Bob specify a (storage) account, the Solana runtime can infer that both transactions conflict. One must be chosen (presumably, the one that paid the higher priority fee), and the other will end up failing.
 
-This is why each function has it's own separate `#[derive(Accounts)]` struct. Each field in the struct is an account that the program intends to (but is not required to) access during execution.
+This is why each function has its own separate `#[derive(Accounts)]` struct. Each field in the struct is an account that the program intends to (but is not required to) access during execution.
 
 Some Ethereum developers may notice the similarity with this requirement and [EIP 2930 access list transactions](https://www.rareskills.io/post/eip-2930-optional-access-list-ethereum).
 
@@ -49,17 +49,17 @@ use anchor_lang::prelude::*;
 declare_id!("ETnqC8mvPRyUVXyXoph22EQ1GS5sTs1zndkn5eGMYWfs");
 
 #[program]
-pub mod account_types {    
-    use super::*;   
+pub mod account_types {
+    use super::*;
 
-    pub fn foo(ctx: Context<Foo>) -> Result<()> {        
-        // we don't do anything with the account SomeAccount        
-        Ok(())    
+    pub fn foo(ctx: Context<Foo>) -> Result<()> {
+        // we don't do anything with the account SomeAccount
+        Ok(())
     }
 }
 
 #[derive(Accounts)]
-pub struct Foo<'info> {    
+pub struct Foo<'info> {
     some_account: Account<'info, SomeAccount>,
 }
 
@@ -67,7 +67,7 @@ pub struct Foo<'info> {
 pub struct SomeAccount {}
 ```
 
-**Typescript:**
+**TypeScript:**
 ```typescript
 
 import * as anchor from "@coral-xyz/anchor";
@@ -75,44 +75,44 @@ import { Program } from "@coral-xyz/anchor";
 import { AccountTypes } from "../target/types/account_types";
 
 describe("account_types", () => {
-    async function airdropSol(publicKey, amount) {    
+    async function airdropSol(publicKey, amount) {
         let airdropTx = await anchor
             .getProvider()
             .connection.requestAirdrop(
-                publicKey, 
+                publicKey,
                 amount * anchor.web3.LAMPORTS_PER_SOL
-            );  
+            );
 
-        await confirmTransaction(airdropTx);  
-    }  
+        await confirmTransaction(airdropTx);
+    }
 
-    async function confirmTransaction(tx) {    
+    async function confirmTransaction(tx) {
         const latestBlockHash = await anchor
             .getProvider()
             .connection.getLatestBlockhash();
 
         await anchor
             .getProvider()
-            .connection.confirmTransaction({      
-                blockhash: latestBlockHash.blockhash,      	
-                lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,      
-                signature: tx,    
-        });  
-    }  
+            .connection.confirmTransaction({
+                blockhash: latestBlockHash.blockhash,
+                lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+                signature: tx,
+        });
+    }
 
-    // Configure the client to use the local cluster.  
-    anchor.setProvider(anchor.AnchorProvider.env());  
+    // Configure the client to use the local cluster.
+    anchor.setProvider(anchor.AnchorProvider.env());
 
-    const program = anchor.workspace.AccountTypes as Program<AccountTypes>;  
+    const program = anchor.workspace.AccountTypes as Program<AccountTypes>;
 
-    it("Wrong owner with Account", async () => {    
-        const newKeypair = anchor.web3.Keypair.generate();    
-        await airdropSol(newKeypair.publicKey, 10);    
+    it("Wrong owner with Account", async () => {
+        const newKeypair = anchor.web3.Keypair.generate();
+        await airdropSol(newKeypair.publicKey, 10);
 
         await program.methods
         .foo()
         .accounts({someAccount: newKeypair
-        .publicKey}).rpc();  
+        .publicKey}).rpc();
     });
 });
 ```
@@ -136,24 +136,24 @@ use anchor_lang::prelude::*;
 declare_id!("ETnqC8mvPRyUVXyXoph22EQ1GS5sTs1zndkn5eGMYWfs");
 
 #[program]
-pub mod account_types {    
-    use super::*;    
+pub mod account_types {
+    use super::*;
 
-    pub fn foo(ctx: Context<Foo>) -> Result<()> {        
-        let data = &ctx.accounts.some_account.try_borrow_data()?;        
-        msg!("{:?}", data);        
-        Ok(())    
+    pub fn foo(ctx: Context<Foo>) -> Result<()> {
+        let data = &ctx.accounts.some_account.try_borrow_data()?;
+        msg!("{:?}", data);
+        Ok(())
     }
 }
 
 #[derive(Accounts)]
-pub struct Foo<'info> {    
-    /// CHECK: we are just printing the data    
+pub struct Foo<'info> {
+    /// CHECK: we are just printing the data
     some_account: AccountInfo<'info>,
 }
 ```
 
-Here is our Typescript code. Note that we are calling the system program directly to create the keypair account so that we can allocate 16 bytes of data.
+Here is our TypeScript code. Note that we are calling the system program directly to create the keypair account so that we can allocate 16 bytes of data.
 
 ```typescript
 
@@ -161,40 +161,40 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { AccountTypes } from "../target/types/account_types";
 
-describe("account_types", () => {  
-    const wallet = anchor.workspace.AccountTypes.provider.wallet;  
-	
-    // Configure the client to use the local cluster.  
-    anchor.setProvider(anchor.AnchorProvider.env());  
+describe("account_types", () => {
+    const wallet = anchor.workspace.AccountTypes.provider.wallet;
 
-    const program = anchor.workspace.AccountTypes as Program<AccountTypes>;  
-    it("Load account with accountInfo", async () => {    
-        // CREATE AN ACCOUNT NOT OWNED BY THE PROGRAM    
-        const newKeypair = anchor.web3.Keypair.generate();    
-        const tx = new anchor.web3.Transaction().add(      
-            anchor.web3.SystemProgram.createAccount({        
-                fromPubkey: wallet.publicKey,        
-                newAccountPubkey: newKeypair.publicKey,        
-                space: 16,        
-                lamports: await anchor          
-                    .getProvider()          				
+    // Configure the client to use the local cluster.
+    anchor.setProvider(anchor.AnchorProvider.env());
+
+    const program = anchor.workspace.AccountTypes as Program<AccountTypes>;
+    it("Load account with accountInfo", async () => {
+        // CREATE AN ACCOUNT NOT OWNED BY THE PROGRAM
+        const newKeypair = anchor.web3.Keypair.generate();
+        const tx = new anchor.web3.Transaction().add(
+            anchor.web3.SystemProgram.createAccount({
+                fromPubkey: wallet.publicKey,
+                newAccountPubkey: newKeypair.publicKey,
+                space: 16,
+                lamports: await anchor
+                    .getProvider()
                     .connection
-                    .getMinimumBalanceForRentExemption(32),        		
-                programId: program.programId,      
-            })    
-	);    
+                    .getMinimumBalanceForRentExemption(32),
+                programId: program.programId,
+            })
+	);
 
-	await anchor.web3.sendAndConfirmTransaction(      
-            anchor.getProvider().connection,      
-            tx,      
-            [wallet.payer, newKeypair]    
-	);    
+	await anchor.web3.sendAndConfirmTransaction(
+            anchor.getProvider().connection,
+            tx,
+            [wallet.payer, newKeypair]
+	);
 
-	// READ THE DATA IN THE ACCOUNT    
-	await program.methods      
-            .foo()      
-            .accounts({ someAccount: newKeypair.publicKey })      
-            .rpc();  
+	// READ THE DATA IN THE ACCOUNT
+	await program.methods
+            .foo()
+            .accounts({ someAccount: newKeypair.publicKey })
+            .rpc();
     });
 });
 ```
@@ -228,45 +228,45 @@ Rust example:
 ```rust
 use anchor_lang::prelude::*;
 
-declare_id!("ETnqC8mvPRyUVXyXoph22EQ1GS5sTs1zndkn5eGMYWfs");#
+declare_id!("ETnqC8mvPRyUVXyXoph22EQ1GS5sTs1zndkn5eGMYWfs");
 
-[program]
-pub mod account_types {    
-    use super::*;    
-    pub fn hello(ctx: Context<Hello>) -> Result<()> {        
-        let lamports = ctx.accounts.signer.lamports();        
+#[program]
+pub mod account_types {
+    use super::*;
+    pub fn hello(ctx: Context<Hello>) -> Result<()> {
+        let lamports = ctx.accounts.signer.lamports();
         let address = &ctx.accounts
             .signer
-            .signer_key().unwrap();        
+            .signer_key().unwrap();
         msg!(
-            "hello {:?} you have {} lamports", 
-            address, 
+            "hello {:?} you have {} lamports",
+            address,
             lamports
-        );        
-        Ok(())    
+        );
+        Ok(())
     }
 }
 
 #[derive(Accounts)]
-pub struct Hello<'info> {    
+pub struct Hello<'info> {
     pub signer: Signer<'info>,
 }
 
 ```
 
-Typescript:
+TypeScript:
 ```typescript
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { AccountTypes } from "../target/types/account_types";
 
-describe("account_types", () => {  
-    anchor.setProvider(anchor.AnchorProvider.env()); 
+describe("account_types", () => {
+    anchor.setProvider(anchor.AnchorProvider.env());
 
-    const program = anchor.workspace.AccountTypes as Program<AccountTypes>;  
+    const program = anchor.workspace.AccountTypes as Program<AccountTypes>;
 
-    it("Wrong owner with Account", async () => {    
-        await program.methods.hello().rpc();  
+    it("Wrong owner with Account", async () => {
+        await program.methods.hello().rpc();
     });
 });
 
@@ -289,7 +289,7 @@ Transaction executed in slot 11184:
 <!-- ![Signer program output](https://static.wixstatic.com/media/706568_3eb814a8492a4152bcc3088d4d0f57cb~mv2.png/v1/fill/w_1480,h_244,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/706568_3eb814a8492a4152bcc3088d4d0f57cb~mv2.png) -->
 
 ## Program
-This should be self explanatory. It signals to Anchor the account is an executable one, i.e. a program, and you may issue to it a cross program invocation. The one we have been using is the system program, though later we will use our own programs.
+This should be self-explanatory. It signals to Anchor the account is an executable one, i.e. a program, and you may issue to it a cross program invocation. The one we have been using is the system program, though later we will use our own programs.
 
 ## Learn more
 [Learn Solana](https://www.rareskills.io/solana-tutorial) development in our Ethereum to Solana course.
