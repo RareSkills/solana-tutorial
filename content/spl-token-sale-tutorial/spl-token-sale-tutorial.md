@@ -189,6 +189,19 @@ import * as web3 from "@solana/web3.js";
 import { assert } from "chai";
 import { TokenSale } from "../target/types/token_sale";
 
+// Helper functions for token conversions
+function toRawTokenAmount(amount: number): number {
+  return amount * 1e9;
+}
+
+function toDisplayAmount(amount: number): number {
+  return amount / 1e9;
+}
+
+function lamportsToSol(lamports: number | anchor.BN): number {
+  return Number(lamports) / 1e9;
+}
+
 describe("token_sale", async () => {
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
