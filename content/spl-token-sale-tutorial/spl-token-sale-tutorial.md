@@ -294,7 +294,7 @@ The code does the following:
         // Setup mint instruction with mint as its own authority
         let mint_to_instruction = MintTo {
             mint: ctx.accounts.mint.to_account_info(),
-            to: ctx.accounts.buyer_token_account.to_account_info(),
+            to: ctx.accounts.buyer_ata.to_account_info(),
             authority: ctx.accounts.mint.to_account_info(),
         };
 
