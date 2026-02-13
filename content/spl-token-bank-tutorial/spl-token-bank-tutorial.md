@@ -643,7 +643,7 @@ The withdraw function does the following:
 
 ```
 
-Recall from the **deposit** function, we use the System Program’s transfer function to pull SOL from the user’s account into the bank. We do this because the System Program owns all regular wallets (like EOAs in Ethereum) and has the permission to modify their balances.
+Recall from the **deposit** function, we use the System Program’s **transfer** function to pull SOL from the user’s account into the bank. We do this because the System Program owns all regular wallets (like EOAs in Ethereum) and has the permission to modify their balances.
 
 ![A screenshot showing the transfer CPI instructions](https://r2media.rareskills.io/SolanaSPLTokenBank/image3.png)
 
