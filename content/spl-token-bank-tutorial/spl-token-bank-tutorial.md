@@ -289,7 +289,7 @@ describe("basic_bank", () => {
   // Find PDA for user accounts
   const [userAccountPDA] = PublicKey.findProgramAddressSync(
     [Buffer.from("user-account"), signer.publicKey.toBuffer()],
-    program.programId
+    program.programId,
   );
 
   it("Initializes the bank account", async () => {
@@ -588,9 +588,9 @@ The withdraw function does the following:
 1. Validates that withdrawal amount is greater than zero
 2. Checks if user has sufficient balance for the withdrawal
 3. Updates user account balance and bank's total deposits using checked arithmetic
-4. Calculates minimum balance needed to keep the account rent-exempt
-5. Determines safe transfer amount that preserves the rent-exempt minimum
-6. Transfers SOL using direct lamport manipulation (since program owns the accounts)
+4. Calculates minimum balance needed to keep the bank account rent-exempt
+5. Determines safe transfer amount from the bank that preserves the rent-exempt minimum
+6. Transfers SOL from the bank to the user's wallet using direct lamport manipulation (since our program owns the bank account)
 7. Logs the withdrawal details
 
 ```rust
@@ -622,17 +622,19 @@ The withdraw function does the following:
             .checked_sub(amount)
             .ok_or(BankError::Underflow)?;
 
-        // Calculate minimum balance needed to keep the account rent-exempt
+        // The bank account must keep enough lamports to stay rent-exempt,
+        // otherwise the runtime will garbage-collect it.
         let rent = Rent::get()?;
-        let user_account_info = ctx.accounts.user_account.to_account_info();
-        let minimum_balance = rent.minimum_balance(user_account_info.data_len());
+        let bank_account_info = ctx.accounts.bank.to_account_info();
+        let minimum_balance = rent.minimum_balance(bank_account_info.data_len());
 
-        // Calculate safe transfer amount (preserving rent-exempt minimum)
-        let available_lamports = user_account_info.lamports();
+        // Only transfer what the bank can afford after reserving rent.
+        // Cap at the requested amount so we never send more than asked.
+        let available_lamports = bank_account_info.lamports();
         let transfer_amount = amount.min(available_lamports.saturating_sub(minimum_balance));
 
-        // Transfer SOL: subtract from user account PDA and add to user wallet
-        **user_account_info.try_borrow_mut_lamports()? -= transfer_amount;
+        // Transfer SOL: subtract from bank account and add to user wallet
+        **bank_account_info.try_borrow_mut_lamports()? -= transfer_amount;
         **ctx.accounts.user.try_borrow_mut_lamports()? += transfer_amount;
 
         msg!("Withdrawn {} lamports for {}", amount, user);
@@ -641,7 +643,7 @@ The withdraw function does the following:
 
 ```
 
-Recall from the **deposit** function, we use the System Program’s `transfer` function to pull SOL from the user’s account into the bank. We do this because the System Program owns all regular wallets (like EOAs in Ethereum) and has the permission to modify their balances.
+Recall from the **deposit** function, we use the System Program’s **transfer** function to pull SOL from the user’s account into the bank. We do this because the System Program owns all regular wallets (like EOAs in Ethereum) and has the permission to modify their balances.
 
 ![A screenshot showing the transfer CPI instructions](https://r2media.rareskills.io/SolanaSPLTokenBank/image3.png)
 
