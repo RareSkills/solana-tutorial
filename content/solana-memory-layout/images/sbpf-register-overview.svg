@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="160" font-family="monospace" font-size="13">
+
+  <!-- Background -->
+  <rect width="820" height="160" fill="#1e1e2e" rx="10"/>
+
+  <!-- Register boxes -->
+  <!-- R0: green -->
+  <rect x="20"  y="36" width="56" height="36" fill="#1e1e2e" stroke="#a6e3a1" stroke-width="2" rx="3"/>
+  <text x="48"  y="59" fill="#a6e3a1" text-anchor="middle" font-weight="bold">r0</text>
+
+  <!-- R1-R5: orange -->
+  <rect x="80"  y="36" width="56" height="36" fill="#1e1e2e" stroke="#fab387" stroke-width="2" rx="3"/>
+  <text x="108" y="59" fill="#fab387" text-anchor="middle" font-weight="bold">r1</text>
+
+  <rect x="140" y="36" width="56" height="36" fill="#1e1e2e" stroke="#fab387" stroke-width="2" rx="3"/>
+  <text x="168" y="59" fill="#fab387" text-anchor="middle" font-weight="bold">r2</text>
+
+  <rect x="200" y="36" width="56" height="36" fill="#1e1e2e" stroke="#fab387" stroke-width="2" rx="3"/>
+  <text x="228" y="59" fill="#fab387" text-anchor="middle" font-weight="bold">r3</text>
+
+  <rect x="260" y="36" width="56" height="36" fill="#1e1e2e" stroke="#fab387" stroke-width="2" rx="3"/>
+  <text x="288" y="59" fill="#fab387" text-anchor="middle" font-weight="bold">r4</text>
+
+  <rect x="320" y="36" width="56" height="36" fill="#1e1e2e" stroke="#fab387" stroke-width="2" rx="3"/>
+  <text x="348" y="59" fill="#fab387" text-anchor="middle" font-weight="bold">r5</text>
+
+  <!-- R6-R9: cyan -->
+  <rect x="380" y="36" width="56" height="36" fill="#1e1e2e" stroke="#89dceb" stroke-width="2" rx="3"/>
+  <text x="408" y="59" fill="#89dceb" text-anchor="middle" font-weight="bold">r6</text>
+
+  <rect x="440" y="36" width="56" height="36" fill="#1e1e2e" stroke="#89dceb" stroke-width="2" rx="3"/>
+  <text x="468" y="59" fill="#89dceb" text-anchor="middle" font-weight="bold">r7</text>
+
+  <rect x="500" y="36" width="56" height="36" fill="#1e1e2e" stroke="#89dceb" stroke-width="2" rx="3"/>
+  <text x="528" y="59" fill="#89dceb" text-anchor="middle" font-weight="bold">r8</text>
+
+  <rect x="560" y="36" width="56" height="36" fill="#1e1e2e" stroke="#89dceb" stroke-width="2" rx="3"/>
+  <text x="588" y="59" fill="#89dceb" text-anchor="middle" font-weight="bold">r9</text>
+
+  <!-- R10: magenta -->
+  <rect x="620" y="36" width="56" height="36" fill="#1e1e2e" stroke="#cba6f7" stroke-width="2" rx="3"/>
+  <text x="648" y="59" fill="#cba6f7" text-anchor="middle" font-weight="bold">r10</text>
+
+  <!-- R11: yellow -->
+  <rect x="680" y="36" width="80" height="36" fill="#1e1e2e" stroke="#f9e2af" stroke-width="2" rx="3"/>
+  <text x="720" y="59" fill="#f9e2af" text-anchor="middle" font-weight="bold">r11</text>
+
+  <!-- Group brackets and labels -->
+
+  <!-- R0 bracket -->
+  <path d="M20 78 L20 90 L76 90 L76 78" fill="none" stroke="#a6e3a1" stroke-width="1.5"/>
+  <text x="48" y="108" fill="#a6e3a1" font-size="11" text-anchor="middle">return value</text>
+
+  <!-- R1-R5 bracket -->
+  <path d="M80 78 L80 90 L376 90 L376 78" fill="none" stroke="#fab387" stroke-width="1.5"/>
+  <text x="228" y="108" fill="#fab387" font-size="11" text-anchor="middle">argument registers</text>
+
+  <!-- R6-R9 bracket -->
+  <path d="M380 78 L380 90 L616 90 L616 78" fill="none" stroke="#89dceb" stroke-width="1.5"/>
+  <text x="485" y="108" fill="#89dceb" font-size="11" text-anchor="middle">callee-saved scratch registers</text>
+
+  <!-- R10 bracket -->
+  <path d="M620 78 L620 90 L676 90 L676 78" fill="none" stroke="#cba6f7" stroke-width="1.5"/>
+  <text x="648" y="108" fill="#cba6f7" font-size="11" text-anchor="middle">frame pointer</text>
+
+  <!-- R11 bracket -->
+  <path d="M680 78 L680 90 L760 90 L760 78" fill="none" stroke="#f9e2af" stroke-width="1.5"/>
+  <text x="755" y="108" fill="#f9e2af" font-size="11" text-anchor="middle">program counter</text>
+
+</svg>
