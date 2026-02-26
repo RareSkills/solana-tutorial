@@ -319,3 +319,5 @@ let program_id: &Pubkey = &*(input.add(offset) as *const Pubkey);
 ```
 
 We’ve explored how the Solana BPF loader serializes program instruction inputs into a byte array and how programs deserialize them into the program ID, accounts, and instruction data. In the next part of this article, we’ll see what happens to these inputs once they reach the program.
+
+*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*

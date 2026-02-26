@@ -354,3 +354,5 @@ programs/
 ```
 
 With this structure, it becomes easier for developers to locate related logic, reason about the program flow, and extend functionality without breaking existing behavior regardless of whether it’s a raw Solana program or Anchor.
+
+*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*

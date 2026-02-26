@@ -506,3 +506,5 @@ Concatenating these gives us `0xf49a2dba35ba12c5711a6c50fba2d0087a86d42b3af4ea93
 ## Testing with empty accounts array or instruction data
 
 When a transaction has an empty accounts array or no instruction data, the VM only reserves space for the count fields (account count and instruction data length), which will both be 0. We'll demonstrate this with actual examples in the next article, where we discuss syscalls.
+
+*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*

@@ -303,3 +303,5 @@ Once again, the images are split to make the register’s values more visible:
 ![A screenshot showing execution trace.](images/execution-trace-split4.png)
 
 This is self-explanatory. From the image, we see five `mov` instructions that store five numbers in register `r1-r5`. Those numbers are exactly what we logged.
+
+*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*
