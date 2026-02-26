@@ -262,3 +262,5 @@ In this tutorial, we covered how Borsh serialization works in Solana:
 - `AccountInfo` provides access to all account metadata, while `account.try_borrow_data()?` gives us just the serialized data field
 
 In the next tutorial, we'll put this knowledge into practice by creating storage accounts and reading their data in native Rust Solana programs.
+
+*This article is part of a tutorial series on [Solana development](https://rareskills.io/solana-tutorial).*

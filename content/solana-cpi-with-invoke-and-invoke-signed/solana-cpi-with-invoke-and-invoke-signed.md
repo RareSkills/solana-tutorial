@@ -653,3 +653,5 @@ This mechanism allows programs to not only call each other but also pass data ba
 3. The runtime resumes the caller program from where it left off (right after the `invoke()` call)
 4. The target program executes, calls `set_return_data(&return_bytes)` to store value 42, and returns `Ok(())`
 5. The Solana runtime suspends the caller program and transfers execution to the target program
+
+*This article is part of a tutorial series on [Solana development](https://rareskills.io/solana-tutorial).*

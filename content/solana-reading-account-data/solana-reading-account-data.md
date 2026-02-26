@@ -282,3 +282,5 @@ It runs successfully.
 In your `solana logs` terminal, you should see detailed information for each account, including balances, owners, and metadata:
 
 ![A screenshot showing Solana logs for a transaction](images/log.png)
+
+*This article is part of a tutorial series on [Solana development](https://rareskills.io/solana-tutorial).*
