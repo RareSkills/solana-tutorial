@@ -315,3 +315,5 @@ npm run test
 You'll see the PDA storage account being created with counter value 100.
 
 This demonstrates how to create storage accounts and write data in pure Rust Solana programs using the PDAs.
+
+*This article is part of a tutorial series on [Solana development](https://rareskills.io/solana-tutorial).*

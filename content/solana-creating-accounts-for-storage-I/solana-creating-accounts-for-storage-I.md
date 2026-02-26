@@ -401,3 +401,5 @@ You should see the transaction execute successfully.
 Our program executed successfully and created an account with counter value 42. We also see the serialized `CounterData` of `[42, 0, 0, 0, 0, 0, 0, 0]` (8 bytes).
 
 In the next part of this tutorial, we'll create a storage account using a PDA instead of a keypair. The fundamentals remain the same—only the signing mechanism differs.
+
+*This article is part of a tutorial series on [Solana development](https://rareskills.io/solana-tutorial).*

@@ -517,3 +517,5 @@ pub fn initialize_vault_safe(
 By checking `vault.lamports() > 0` first, we handle both cases: normal creation (no prior lamports) and the frontrunning scenario (attacker sent lamports). The `allocate` and `assign` instructions work on accounts that already have a balance, so the attacker's griefing attempt has no effect.
 
 In Anchor, using [`init_if_needed`](https://rareskills.io/post/init-if-needed-anchor) instead of `init` handles this scenario.
+
+*This article is part of a tutorial series on [Solana development](https://rareskills.io/solana-tutorial).*

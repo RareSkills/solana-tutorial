@@ -348,3 +348,5 @@ It runs successfully!
 Looking at the logs, we can see that both of our program functions executed.
 
 ![A screenshot showing program log messages highlighting the say_hello function and inspect_account functions.](images/program_log.png)
+
+*This article is part of a tutorial series on [Solana development](https://rareskills.io/solana-tutorial).*

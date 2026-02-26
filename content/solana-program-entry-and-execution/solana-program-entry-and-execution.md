@@ -354,3 +354,5 @@ You should see a program log like this one:
 ![Screenshot showing program log messages](images/log.png)
 
 Our program executed successfully. Notice how much simpler this is compared to Anchor, no account validation or instruction parsing.
+
+*This article is part of a tutorial series on [Solana development](https://rareskills.io/solana-tutorial).*
