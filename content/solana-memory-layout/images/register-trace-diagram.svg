@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="340" font-family="monospace" font-size="13">
+
+  <!-- Background -->
+  <rect width="860" height="340" fill="#1e1e2e" rx="10"/>
+
+  <!-- Column x positions -->
+  <!-- Line | r0 | r1 | r2 | r3 | ... | r10 | Instruction -->
+  <!-- 40   | 90 | 190| 290| 390| 490 | 560 | 660         -->
+
+  <!-- Header -->
+  <text x="40"  y="36" fill="#6c7086" font-size="12" text-anchor="middle">Frame</text>
+  <text x="110" y="36" fill="#6c7086" font-size="12" text-anchor="middle">r0</text>
+  <text x="210" y="36" fill="#6c7086" font-size="12" text-anchor="middle">r1</text>
+  <text x="310" y="36" fill="#6c7086" font-size="12" text-anchor="middle">r2</text>
+  <text x="410" y="36" fill="#a6e3a1" font-size="12" text-anchor="middle" font-weight="bold">r3</text>
+  <text x="490" y="36" fill="#6c7086" font-size="12" text-anchor="middle">...</text>
+  <text x="580" y="36" fill="#6c7086" font-size="12" text-anchor="middle">r10</text>
+  <text x="720" y="36" fill="#6c7086" font-size="12" text-anchor="middle">Instruction</text>
+
+  <!-- Divider -->
+  <line x1="20" y1="44" x2="840" y2="44" stroke="#313244" stroke-width="1"/>
+
+  <!-- r3 column highlight band -->
+  <rect x="375" y="48" width="70" height="270" fill="#2a2a3e" rx="0"/>
+
+  <!-- Row 0 -->
+  <rect x="20" y="52" width="820" height="28" fill="#181825" rx="3"/>
+  <text x="40"  y="71" fill="#6c7086" text-anchor="middle">0</text>
+  <text x="110" y="71" fill="#a6adc8" text-anchor="middle">0x00...00</text>
+  <text x="210" y="71" fill="#a6adc8" text-anchor="middle">0x00...00</text>
+  <text x="310" y="71" fill="#a6adc8" text-anchor="middle">0x00...00</text>
+  <text x="410" y="71" fill="#45475a" text-anchor="middle">0x00...00</text>
+  <text x="490" y="71" fill="#45475a" text-anchor="middle">...</text>
+  <text x="580" y="71" fill="#a6adc8" text-anchor="middle">0x200001000</text>
+  <text x="720" y="71" fill="#cba6f7" text-anchor="middle">mov64 r1, 10</text>
+
+  <!-- Row 1 -->
+  <rect x="20" y="88" width="820" height="28" fill="#1e1e2e" rx="3"/>
+  <text x="40"  y="107" fill="#6c7086" text-anchor="middle">1</text>
+  <text x="110" y="107" fill="#a6adc8" text-anchor="middle">0x00...00</text>
+  <text x="210" y="107" fill="#a6adc8" text-anchor="middle">0x0A</text>
+  <text x="310" y="107" fill="#a6adc8" text-anchor="middle">0x00...00</text>
+  <text x="410" y="107" fill="#45475a" text-anchor="middle">0x00...00</text>
+  <text x="490" y="107" fill="#45475a" text-anchor="middle">...</text>
+  <text x="580" y="107" fill="#a6adc8" text-anchor="middle">0x200001000</text>
+  <text x="720" y="107" fill="#cba6f7" text-anchor="middle">mov64 r2, 25</text>
+
+  <!-- Row 2 -->
+  <rect x="20" y="124" width="820" height="28" fill="#181825" rx="3"/>
+  <text x="40"  y="143" fill="#6c7086" text-anchor="middle">2</text>
+  <text x="110" y="143" fill="#a6adc8" text-anchor="middle">0x00...00</text>
+  <text x="210" y="143" fill="#a6adc8" text-anchor="middle">0x0A</text>
+  <text x="310" y="143" fill="#a6adc8" text-anchor="middle">0x19</text>
+  <text x="410" y="143" fill="#45475a" text-anchor="middle">0x00...00</text>
+  <text x="490" y="143" fill="#45475a" text-anchor="middle">...</text>
+  <text x="580" y="143" fill="#a6adc8" text-anchor="middle">0x200001000</text>
+  <text x="720" y="143" fill="#cba6f7" text-anchor="middle">add64 r1, r2</text>
+
+  <!-- Row 3 -->
+  <rect x="20" y="160" width="820" height="28" fill="#1e1e2e" rx="3"/>
+  <text x="40"  y="179" fill="#6c7086" text-anchor="middle">3</text>
+  <text x="110" y="179" fill="#a6adc8" text-anchor="middle">0x00...00</text>
+  <text x="210" y="179" fill="#a6adc8" text-anchor="middle">0x23</text>
+  <text x="310" y="179" fill="#a6adc8" text-anchor="middle">0x19</text>
+  <text x="410" y="179" fill="#45475a" text-anchor="middle">0x00...00</text>
+  <text x="490" y="179" fill="#45475a" text-anchor="middle">...</text>
+  <text x="580" y="179" fill="#a6adc8" text-anchor="middle">0x200001000</text>
+  <text x="720" y="179" fill="#cba6f7" text-anchor="middle">mov64 r3, r1</text>
+
+  <!-- Row 4 HIGHLIGHTED -->
+  <rect x="20" y="196" width="820" height="28" fill="#313244" rx="3" stroke="#a6e3a1" stroke-width="1"/>
+  <text x="40"  y="215" fill="#6c7086" text-anchor="middle">4</text>
+  <text x="110" y="215" fill="#a6adc8" text-anchor="middle">0x00...00</text>
+  <text x="210" y="215" fill="#a6adc8" text-anchor="middle">0x23</text>
+  <text x="310" y="215" fill="#a6adc8" text-anchor="middle">0x19</text>
+  <text x="410" y="215" fill="#a6e3a1" text-anchor="middle" font-weight="bold">0x23</text>
+  <text x="490" y="215" fill="#45475a" text-anchor="middle">...</text>
+  <text x="580" y="215" fill="#a6adc8" text-anchor="middle">0x200001000</text>
+  <text x="720" y="215" fill="#cba6f7" text-anchor="middle">exit</text>
+
+
+
+  <!-- Legend -->
+  <rect x="20" y="244" width="820" height="70" fill="#181825" rx="6"/>
+  <text x="40" y="266" fill="#6c7086" font-size="12">0x0A = 10  (r1, first argument)</text>
+  <text x="40" y="284" fill="#6c7086" font-size="12">0x19 = 25  (r2, second argument, unchanged)</text>
+  <text x="40" y="302" fill="#6c7086" font-size="12">0x23 = 35  (r3 holds the result after mov64 r3, r1 on line 3)</text>
+
+</svg>
