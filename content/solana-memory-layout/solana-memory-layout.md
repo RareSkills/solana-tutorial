@@ -310,9 +310,7 @@ function_b:
 The animation below illustrates these steps:
 
 
-<video controls>
-  <source src="animations/callee-saved-registers.mp4" type="video/mp4">
-</video>
+<video src="animations/callee-saved-registers.mp4" style="width: 100%; height: 100%;" autoplay="" loop="" muted="" controls="" class=""></video>
 
 Running the above code produces the trace below:
 
@@ -343,9 +341,7 @@ point to a new stack frame at `0x200003000`
 
 The animation below explains the above steps:
 
-<video controls>
-  <source src="animations/callee-saved-registers-trace.mp4" type="video/mp4">
-</video>
+<video src="animations/callee-saved-registers-trace.mp4" style="width: 100%; height: 100%;" autoplay="" loop="" muted="" controls="" class=""></video>
 
 In the next part of this article, we’ll further demonstrate how to read and write the instruction inputs to memory by writing simple raw assembly programs that directly inspect memory contents.
 
