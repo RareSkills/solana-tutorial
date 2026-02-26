@@ -76,4 +76,5 @@ There are opcodes to perform memory read and write operations too.
 
 Now that you understand the sBPF VM architecture, register conventions, and instruction set, the next article demonstrates how to analyze program execution using traces and calculate compute units from actual bytecode execution.
 
-*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*
+
+*This article is part of a tutorial series on [Solana development](https://rareskills.io/solana-tutorial)*

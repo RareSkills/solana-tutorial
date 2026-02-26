@@ -107,4 +107,5 @@ macro_rules! custom_panic_default {
 
 Like the heap allocator, you can override this by adding a `custom-panic` feature to your `Cargo.toml` and defining your own panic handler. The most common reason to do this [is to reduce program size](https://github.com/anza-xyz/solana-sdk/blob/55809cfe16daf39828f543ecf8a17a89fca9c300/program-entrypoint/src/lib.rs#L252-L255). This custom panic handler includes string formatting and logging code that adds around 25KB to your compiled program. If you're hitting the program size limit (10MB for BPF programs), you can define a no-op panic handler that does nothing, which saves that space. The tradeoff is that panics become silent. You won't see error messages, which makes debugging harder. Most developers only do this as a last resort when they need to squeeze down program size.
 
-*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*
+
+*This article is part of a tutorial series on [Solana development](https://rareskills.io/solana-tutorial)*

@@ -406,4 +406,6 @@ Here's a table that summarizes the five logging syscalls we’ve discussed:
 | `sol_log_pubkey` | `r1`: pointer to 32-byte public key in memory | Public key in standard Solana base58 format | 100 CU (fixed) |
 | `sol_log_compute_units_` | None | Remaining compute units at execution point | 100 CU (fixed) |
 
-*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*
+
+
+*This article is part of a tutorial series on [Solana development](https://rareskills.io/solana-tutorial)*

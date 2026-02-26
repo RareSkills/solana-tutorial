@@ -172,4 +172,5 @@ Taking the first instruction from the dump screenshot earlier (highlighted in ye
 
 You can find the complete opcode list is in the [sbpf ebpf module](https://github.com/anza-xyz/sbpf/blob/main/src/ebpf.rs).
 
-*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*
+
+*This article is part of a tutorial series on [Solana development](https://rareskills.io/solana-tutorial)*
