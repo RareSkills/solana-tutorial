@@ -242,7 +242,7 @@ For example, if you need a 64-byte buffer as the first argument:
 - You can store data in the memory region `[r10 - 64]` to `[r10 - 1]`
 - You move the starting address `r10 - 64` into `r1`
 
-![Stack frame diagram showing r10 as the frame pointer with a 64-byte buffer allocated below it at [r10 - 64], with r1 pointing to the buffer start](images/r10-stack-arg-buffer.png)
+![Stack frame diagram showing r10 as the frame pointer with a 64-byte buffer allocated below it at r10 minus 64, with r1 pointing to the buffer start](images/r10-stack-arg-buffer.png)
 
 - Then you make your function call
 
