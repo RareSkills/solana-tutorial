@@ -217,7 +217,7 @@ Note how all the functions in Solana have a return type of `Result<()>`. A [resu
 If you add it, your code won't compile. If the final statement in Rust does not have a semicolon, then the value on that line is returned.
 
 ### Why does `Ok(())` have an extra set of parenthesis?
-The `()` means "unit" in Rust, which you can think of as being a void in C or a Nothing in Haskell. Here, `Ok` is an enum which contains a unit type. That is what get returns. Functions that don't return things implicitly return the unit type in Rust. An `Ok(())` with no semicolon is syntactically equivalent to return `Ok(())`;. Note the semicolon at the end.
+The `()` means "unit" in Rust, which you can think of as being a void in C or a Nothing in Haskell. Here, `Ok` is an enum which contains a unit type. That is what get returns. Functions that don't return things implicitly return the unit type in Rust. An `Ok(())` with no semicolon is syntactically equivalent to `return Ok(());`. Note the semicolon at the end.
 
 
 ### How come the `if statements` above are missing parenthesis?

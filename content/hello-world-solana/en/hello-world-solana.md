@@ -168,7 +168,7 @@ There is nothing special about the name initialize in this context, and so we ca
 When the tests run against a node, we will be able to query the node for state changes. If you are not able to get the node to run, it is okay to run `anchor test` without the `--skip-local-validator` flag. However, you will have a harder time developing and testing, so we recommend getting the local validator to work.
 
 ## Troubleshooting
-Solana is a rapidly developing software, and you may run into installation issues. We've documented the ones you are most likely to encounter the following sections.
+Solana is a rapidly developing software, and you may run into installation issues. We've documented the ones you are most likely to encounter in the following sections.
 
 Our tutorial series was written with the following versions:
 * Anchor = version 0.29.0
