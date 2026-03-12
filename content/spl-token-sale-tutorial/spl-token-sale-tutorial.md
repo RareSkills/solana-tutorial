@@ -53,7 +53,7 @@ In the code above, we define constants for our token sale program: `TOKENS_PER_S
 Next, add the `Initialize` account struct for our function. It contains the following accounts:
 
 - `admin`: The account that pays for transaction fees and serves as the program administrator
-- `admin_config`: This  is a program-owned account that stores the admin’s public key, so later during withdrawals we can verify the signer is the same admin (like checking `msg.sender == admin` in Solidity, where `admin` is a state variable that stores an admin’s public key).
+- `admin_config`: A PDA that stores the admin's public key, so later during withdrawals we can verify the signer is the same admin (like checking `msg.sender == admin` in Solidity, where `admin` is a state variable that stores an admin's public key). We use a PDA with seed `"admin_config"` so the address can be deterministically derived without needing off-chain storage.
 - `mint`: A self-referential mint PDA that serves as both the token mint and its own authority (we will explain the concept later)
 - `treasury`: A PDA that holds SOL collected from token sales
 - Finally, we pass the Token Program and System Program that we interact with.
@@ -68,6 +68,8 @@ pub struct Initialize<'info> {
         init,
         payer = admin,
         space = 8+AdminConfig::INIT_SPACE, // 8 is for the discriminator
+        seeds = [b"admin_config"],
+        bump,
     )]
     pub admin_config: Account<'info, AdminConfig>,
 
@@ -122,7 +124,10 @@ Let's break down each account in the `Initialize` account struct and understand 
 
 **admin config**
 
-`admin_config`: This account holds the admin's public key (defined by the `AdminConfig` struct) and is used to make sure only the admin can withdraw SOL from the treasury.
+`admin_config`: This account holds the admin's public key (defined by the `AdminConfig` struct) and is used to make sure only the admin can withdraw SOL from the treasury. We create it as a PDA using the seed `"admin_config"` so it can be easily derived later without needing to store its address off-chain.
+
+By using a PDA for the admin config, we ensure the address is deterministic and can always be re-derived using `findProgramAddressSync`.
+We don't need to store the address or generate and manage a keypair during initialization
 
 ![A screenshot showing constraints for the admin_config account initialization](https://r2media.rareskills.io/SolanaSPLTokenSale/image8.png)
 
@@ -200,12 +205,10 @@ describe("token_sale", async () => {
   const buyer = adminKp; // Using the same keypair as both admin and buyer for testing
   const TOKENS_PER_SOL = 100;
 
-  // Generate keypair for admin config account (will be passed as signer to authorize adminConfig account creation)
-  const adminConfigKp = web3.Keypair.generate();
-
   let mint: anchor.web3.PublicKey;
   let treasuryPda: anchor.web3.PublicKey;
   let buyerAta: anchor.web3.PublicKey;
+  let adminConfigPda: anchor.web3.PublicKey;
 
     it("creates mint", async () => {
     [mint] = web3.PublicKey.findProgramAddressSync(
@@ -218,17 +221,22 @@ describe("token_sale", async () => {
       program.programId
     );
 
+    [adminConfigPda] = web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("admin_config")],
+      program.programId
+    );
+
     const tx = await program.methods
       .initialize()
       .accounts({
         admin: adminKp.publicKey,
-        adminConfig: adminConfigKp.publicKey,
+        adminConfig: adminConfigPda,
         mint: mint,
         treasury: treasuryPda,
         tokenProgram: TOKEN_PROGRAM_ID,
         systemProgram: anchor.web3.SystemProgram.programId,
       })
-      .signers([adminKp, adminConfigKp])
+      .signers([adminKp])
       .rpc();
 
     console.log("initialize tx:", tx);
@@ -578,7 +586,7 @@ Add the `withdraw_funds` function below to the token sale program. It does the f
 Now add the `WithdrawFunds` account struct, used by the `withdraw_funds` function. It contains the following accounts:
 
 - **`admin`**: The transaction signer, and our admin account.
-- **`admin_config`**: The account that stores the admin's public key, with a constraint to verify the signer is authorized. We pass it because we need to check that the current signer matches the admin key stored during initialization.
+- **`admin_config`**: The PDA (derived with seed `"admin_config"`) that stores the admin's public key, with a constraint to verify the signer is authorized. We pass it because we need to check that the current signer matches the admin key stored during initialization.
 - **`treasury`**: The mutable treasury PDA that holds the SOL to be withdrawn.
 - **`system_program`**: The System Program for handling SOL transfers.
 
@@ -633,7 +641,7 @@ This test block withdraws half of the treasury balance from the treasury PDA to 
         .withdrawFunds(amountToWithdraw)
         .accounts({
           admin: adminKp.publicKey,
-          adminConfig: adminConfigKp.publicKey,
+          adminConfig: adminConfigPda,
           treasury: treasuryPda,
           systemProgram: anchor.web3.SystemProgram.programId,
         })
@@ -689,7 +697,7 @@ it("prevents non-admins from withdrawing funds", async () => {
         .withdrawFunds(amountToWithdraw)
         .accounts({
           admin: nonAdminKeypair.publicKey,
-          adminConfig: adminConfigKp.publicKey,
+          adminConfig: adminConfigPda,
           treasury: treasuryPda,
           systemProgram: anchor.web3.SystemProgram.programId,
         })
