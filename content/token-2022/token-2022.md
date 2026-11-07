@@ -1,4 +1,7 @@
-# The Solana Token 2022 Specification
+---
+description: "Token-2022 is the backward-compatible successor to Solana's SPL Token program, with built-in extensions. See how it works and build a token with extensions."
+---
+# Solana Token-2022 and Token Extensions Explained
 
 Token-2022 is a new backward-compatible version of the [SPL Token](https://rareskills.io/post/spl-token) program that supports additional features in the form of *extensions*. The bytecode for these extensions is part of the Token-2022 program itself, no separate programs are deployed. The bytecode activated for a particular token is determined by the extension enabled in the mint or token accounts.
 

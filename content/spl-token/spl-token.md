@@ -1,4 +1,7 @@
-# How the SPL Token Works
+---
+description: "SPL Token is Solana's answer to ERC-20 and ERC-721. Learn how one program serves every token and how mint, token, and associated token accounts work."
+---
+# SPL Token Explained: How Tokens Work on Solana
 
 Solana Program Library Token (SPL Token) is Solana's standard for tokens: how to create tokens and how they should behave. It is Solana’s equivalent to Ethereum’s token standards like ERC-20 (fungible tokens), and ERC-721 (NFTs). 
 
