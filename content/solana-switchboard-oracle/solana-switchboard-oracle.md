@@ -1,4 +1,7 @@
-# Switchboard
+---
+description: "Build a Solana program that reads the SOL/USD price from the Switchboard oracle: how jobs and feeds work, setting up a feed, and a client script on Devnet."
+---
+# Switchboard Oracle on Solana: How to Read Price Feeds
 
 On-chain programs can’t access off-chain data directly. They rely on oracles to bring in information such as asset prices, event outcomes, or API responses. Without these oracles, programs are limited to state already stored on-chain.
 
