@@ -2,7 +2,7 @@
 
 ![Hero image showing Close accounts and programs](https://static.wixstatic.com/media/935a00_74aadefdf66141ac8156b6fb8a78cbfd~mv2.jpg/v1/fill/w_1480,h_832,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_74aadefdf66141ac8156b6fb8a78cbfd~mv2.jpg)
 
-In the Anchor framework for Solana, `close` is the opposite of `init` ([initializing an account in Anchor](https://www.rareskills.io/post/solana-initialize-account)) — it reduces the lamport balance to zero, sending the lamports to a target address, and changes the owner of the account to be the system program.
+In the Anchor framework for Solana, `close` is the opposite of `init` ([initializing an account in Anchor](https://rareskills.io/post/solana-initialize-account)) — it reduces the lamport balance to zero, sending the lamports to a target address, and changes the owner of the account to be the system program.
 
 Here is an example of using the `close` instruction in Rust:
 
@@ -145,6 +145,6 @@ Here is the sequence of commands in the screenshot above:
 4. We try to deploy again and fail because a closed program cannot be redeployed
 
 ## Learn more with RareSkills
-To continue learning Solana development, please see our [Solana course](https://www.rareskills.io/solana-tutorial). For other blockchain topics, see our [blockchain bootcamp](https://www.rareskills.io/web3-blockchain-bootcamps).
+To continue learning Solana development, please see our [Solana course](https://rareskills.io/solana-tutorial). For other blockchain topics, see our [blockchain bootcamp](https://rareskills.io/web3-blockchain-bootcamps).
 
 *Originally Published March, 12, 2024*

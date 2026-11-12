@@ -1,6 +1,6 @@
 # How Metaplex Metadata for Tokens Works
 
-We have deployed and interacted with [SPL tokens](https://rareskills.io/post/spl-token), but none of them had a name, symbol, or any metadata attached. Instead, we identified each token by its mint account address. In contrast, ERC20 tokens include functions for reading the token’s name and symbol (but it's worth noting these are just human-readable conveniences, there is nothing preventing different tokens from having the same name or symbol). [ERC721](https://rareskills.io/post/erc721) and [ERC1155](https://rareskills.io/post/erc-1155) also include a `tokenURI` function that returns a URI pointing to off-chain metadata. 
+We have deployed and interacted with [SPL tokens](https://rareskills.io/post/spl-token), but none of them had a name, symbol, or any metadata attached. Instead, we identified each token by its mint account address. In contrast, ERC20 tokens include functions for reading the token’s name and symbol (but it's worth noting these are just human-readable conveniences, there is nothing preventing different tokens from having the same name or symbol). [ERC721](https://rareskills.io/post/erc721) and [ERC1155](https://rareskills.io/post/ERC-1155) also include a `tokenURI` function that returns a URI pointing to off-chain metadata. 
 
 But as we have seen so far, the SPL mint account does not have a name, symbol, or a URI field.
 
@@ -135,4 +135,4 @@ To wrap up: the Metaplex Token Metadata Program gives SPL tokens an identity lik
 
 In the next tutorial, we will create metadata for an SPL token. 
 
-*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*
+*This article is part of a [tutorial series on Solana](https://rareskills.io/solana-tutorial).*

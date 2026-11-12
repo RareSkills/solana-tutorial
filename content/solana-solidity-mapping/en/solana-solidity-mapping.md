@@ -126,7 +126,7 @@ pub struct Set<'info> {
 ```
 
 ## Set and read a mapping: Typescript
-Because we derive the account address where the value is stored in the client (Typescript), we read and write from it just like we do with accounts that have the `seeds` array empty. The syntax for [reading the Solana account data](https://www.rareskills.io/post/solana-read-account-data) and writing is identical to previous tutorials:
+Because we derive the account address where the value is stored in the client (Typescript), we read and write from it just like we do with accounts that have the `seeds` array empty. The syntax for [reading the Solana account data](https://rareskills.io/post/solana-read-account-data) and writing is identical to previous tutorials:
 
 ```typescript
 import * as anchor from "@coral-xyz/anchor";

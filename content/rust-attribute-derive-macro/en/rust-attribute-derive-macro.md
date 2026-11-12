@@ -387,6 +387,6 @@ Macros a very large topic. Our intent here is to give you a sense of what is hap
 Having an idea of what they do however will hopefully make the programs you see less mysterious.
 
 ## Learn more with RareSkills
-This tutorial is part of our free [Solana course](https://www.rareskills.io/solana-tutorial).
+This tutorial is part of our free [Solana course](https://rareskills.io/solana-tutorial).
 
 *Originally Published February, 16, 2024*

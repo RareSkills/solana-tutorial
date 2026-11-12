@@ -2,7 +2,7 @@
 
 ![Solana logs, "events," and transaction history](https://static.wixstatic.com/media/935a00_5dfc6f5062894ef7be199e2084106222~mv2.jpg/v1/fill/w_1480,h_832,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_5dfc6f5062894ef7be199e2084106222~mv2.jpg)
 
-Solana programs can emit events similar to how [Ethereum emits events](https://www.rareskills.io/post/ethereum-events), though there are some differences we will discuss.
+Solana programs can emit events similar to how [Ethereum emits events](https://rareskills.io/post/ethereum-events), though there are some differences we will discuss.
 
 Specifically, events in Solana are intended to pass information to the frontend rather than document past transactions. To get past history, Solana transactions can be queried by address.
 
@@ -39,7 +39,7 @@ pub struct MySecondEvent {
     pub message: String,
 }
 ```
-Events become part of the [Solana program's IDL](https://www.rareskills.io/post/anchor-idl), similar to how events are part of a Solidity smart contract's ABI. Below we screenshot the IDL of the program above while highlighting the relevant part:
+Events become part of the [Solana program's IDL](https://rareskills.io/post/anchor-idl), similar to how events are part of a Solidity smart contract's ABI. Below we screenshot the IDL of the program above while highlighting the relevant part:
 ![Event definition in Solana IDL](https://static.wixstatic.com/media/935a00_3b8137e010d540178284188e9925d7ad~mv2.png/v1/fill/w_700,h_968,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_3b8137e010d540178284188e9925d7ad~mv2.png)
 
 There is no such thing as "indexed" or "non-indexed" information in Solana like there is in Ethereum (even though there is an "index" field in the screenshot above, it has no use).
@@ -116,7 +116,7 @@ We can *count* the number of transactions sent from an address using [eth_getTra
 
 However, it is not possible to get all transactions by address. This has to be done indirectly by parsing every block since the wallet became active or the smart contract was deployed.
 
-To audit the transactions in a smart contract, developers add [smart contract events](https://www.rareskills.io/post/ethereum-events) to query transactions of interest.
+To audit the transactions in a smart contract, developers add [smart contract events](https://rareskills.io/post/ethereum-events) to query transactions of interest.
 
 ## Getting the transaction history in Solana
 

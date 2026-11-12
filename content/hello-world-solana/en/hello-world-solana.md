@@ -279,6 +279,6 @@ clear the cache: run `rm -rf ~/.cache/solana/*`.
 Create a new project and name it day_1 instead of day1. Anchor seems to silently insert underscores on some machines.
 
 ## Learn more with RareSkills
-This tutorial is the first in our free [Solana Course](https://www.rareskills.io/solana-tutorial).
+This tutorial is the first in our free [Solana Course](https://rareskills.io/solana-tutorial).
 
 *Originally Published February, 08, 2024*

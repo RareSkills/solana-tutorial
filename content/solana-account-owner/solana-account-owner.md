@@ -8,7 +8,7 @@ Here is the summary of account ownership in Solana:
 
 1. The `system program` owns wallets and keypair accounts that haven't been assigned ownership to a program (initialized).
 2. The BPFLoader owns programs.
-3. A program owns [Solana PDAs](https://www.rareskills.io/post/solana-pda). It can also own keypair accounts if ownership has been transferred to the program (this is what happens during initialization).
+3. A program owns [Solana PDAs](https://rareskills.io/post/solana-pda). It can also own keypair accounts if ownership has been transferred to the program (this is what happens during initialization).
 
 We now examine the implications of these facts.
 
@@ -442,6 +442,6 @@ The runtime should block you.
 Note that withdrawing the lamport balance below the rent-exempt threshold will result in the account getting closed. If there is data in the account, that will be erased. As such, programs should track how much SOL is required for rent exemption before withdrawing SOL unless they don't care about the account getting erased.
 
 ## Learn more with RareSkills
-See our [Solana tutorial](https://www.rareskills.io/solana-tutorial) for the complete list of topics.
+See our [Solana tutorial](https://rareskills.io/solana-tutorial) for the complete list of topics.
 
 *Originally Published March, 7, 2024*

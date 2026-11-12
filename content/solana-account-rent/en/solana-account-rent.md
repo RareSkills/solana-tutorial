@@ -190,6 +190,6 @@ The screenshot below shows how to obtain this information:
 A simple hello world program currently costs a little over 2.47 SOL to deploy. The cost can be significantly reduced by writing raw Rust code instead of using the Anchor framework, but we don't recommend doing that until you fully understand all the security risks Anchor eliminates by default.
 
 ## Learn more with RareSkills
-See our [Solana developer course](https://www.rareskills.io/solana-tutorial) to learn more.
+See our [Solana developer course](https://rareskills.io/solana-tutorial) to learn more.
 
 *Originally Published February, 28, 2024*

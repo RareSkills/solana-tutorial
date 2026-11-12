@@ -224,6 +224,6 @@ The `()` means "unit" in Rust, which you can think of as being a void in C or a 
 Those are optional in Rust.
 
 ## Learn more with RareSkills
-This tutorial is part of our free [Solana course](https://www.rareskills.io/solana-tutorial).
+This tutorial is part of our free [Solana course](https://rareskills.io/solana-tutorial).
 
 *Originally Published February, 11, 2024*

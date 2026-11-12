@@ -2,7 +2,7 @@
 
 Cross Program Invocation (CPI) is Solana's terminology for a program calling the public function of another program.
 
-We've already done CPI before when we sent a [transfer SOL transaction to the system program](https://www.rareskills.io/post/anchor-transfer-sol). Here is the relevant snippet by way of reminder:
+We've already done CPI before when we sent a [transfer SOL transaction to the system program](https://rareskills.io/post/anchor-transfer-sol). Here is the relevant snippet by way of reminder:
 
 ``` rust
 pub fn send_sol(ctx: Context<SendSol>, amount: u64) -> Result<()> {  
@@ -304,6 +304,6 @@ pub struct AliceOp<'info> {
 We are able to make a CPI call to `Bob` in "one line." This could be handy if other parts of the Alice program made a CPI to Bob — moving the code to the `impl` would prevent us from copying and pasting the code to create the `CpiContext`.
 
 ## Learn more with RareSkills
-This tutorial is part of a series on [learning Solana development](https://www.rareskills.io/solana-tutorial).
+This tutorial is part of a series on [learning Solana development](https://rareskills.io/solana-tutorial).
 
 *Originally Published May, 17, 2024*

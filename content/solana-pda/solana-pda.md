@@ -9,7 +9,7 @@ It is also possible to create an account outside the program, then `init` that a
 Interestingly, the account we create outside the program will have a private key, but we will see this won't have the security implications it would seem to have. We will refer to it as a "keypair account".
 
 ## Account Creation Revisited
-Before we get into keypair accounts, let's review how we've been creating accounts in our [Solana tutorials](https://www.rareskills.io/solana-tutorial) so far. This is the same boilerplate we've been using, and it creates program-derived addresses (PDA):
+Before we get into keypair accounts, let's review how we've been creating accounts in our [Solana tutorials](https://rareskills.io/solana-tutorial) so far. This is the same boilerplate we've been using, and it creates program-derived addresses (PDA):
 
 ```rust
 use anchor_lang::prelude::*;
@@ -117,7 +117,7 @@ pub struct MyKeypairAccount {
 
 When `seeds` and `bump` are absent, **the Anchor program is now expecting us to create an account first, then pass the account to the program. Since we create the account ourselves, its address will not be "derived from" the address of the program. In other words, it will not be a program derived account (PDA)**.
 
-Creating an account for the program is as simple as generating a new keypair (in the same manner we used to [test different signers in Anchor](https://www.rareskills.io/post/anchor-signer)). Yes, this may sound a bit terrifying that we hold the secret key for an account the program is using to store data — we will revisit this in a bit. For now, here is the Typescript code to create a new account and pass it to the program above. We will call attention to the important parts next:
+Creating an account for the program is as simple as generating a new keypair (in the same manner we used to [test different signers in Anchor](https://rareskills.io/post/anchor-signer)). Yes, this may sound a bit terrifying that we hold the secret key for an account the program is using to store data — we will revisit this in a bit. For now, here is the Typescript code to create a new account and pass it to the program above. We will call attention to the important parts next:
 
 ```typescript
 import * as anchor from "@coral-xyz/anchor";
@@ -160,7 +160,7 @@ describe("keypair_vs_pda", () => {
 ```
 
 Some things we wish to call attention to:
-- We added a utility function `airdropSol` to airdrop SOL to the new keypair we created `newKeypair`. Without the SOL, it would not be able to pay for the transaction. Additionally, because this is the same account that will be used to store data, it needs a SOL balance to be [rent exempt](https://www.rareskills.io/post/solana-account-rent). When airdropping SOL, an additional `confirmTransaction` routine is needed because there seems to be race conditions in the runtime about when the SOL is actually airdropped and when the transaction is confirmed.
+- We added a utility function `airdropSol` to airdrop SOL to the new keypair we created `newKeypair`. Without the SOL, it would not be able to pay for the transaction. Additionally, because this is the same account that will be used to store data, it needs a SOL balance to be [rent exempt](https://rareskills.io/post/solana-account-rent). When airdropping SOL, an additional `confirmTransaction` routine is needed because there seems to be race conditions in the runtime about when the SOL is actually airdropped and when the transaction is confirmed.
 - We changed the `signers` from the default one to the `newKeypair`. When creating a keypair account, you are not able to create an account you do not hold the private key to.
 
 ## It is not possible to initialize a keypair account you don't hold the private key for
@@ -323,7 +323,7 @@ The screenshot below shows the expected result:
 
 ![keypair_vs_pda : 1 passing](https://static.wixstatic.com/media/935a00_210bf2a0dc0d49e48fc9d07c4b04b4f2~mv2.png/v1/fill/w_1480,h_380,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_210bf2a0dc0d49e48fc9d07c4b04b4f2~mv2.png)
 
-After initialization, the owner of the keypair account changed from `111...111` to the deployed program. We have not yet covered the significance of account ownership or the system program (the address of all ones) in depth in our [Solana tutorials](https://www.rareskills.io/solana-tutorial) just yet. However, this should give you an idea of what "initialization" is doing and why the owner of the private key can no longer transfer SOL out of the account.
+After initialization, the owner of the keypair account changed from `111...111` to the deployed program. We have not yet covered the significance of account ownership or the system program (the address of all ones) in depth in our [Solana tutorials](https://rareskills.io/solana-tutorial) just yet. However, this should give you an idea of what "initialization" is doing and why the owner of the private key can no longer transfer SOL out of the account.
 
 ## Should I use PDAs or Keypair accounts?
 Once the account is initialized, they behave the same way, so practically there is not much difference.
@@ -333,6 +333,6 @@ The only significance difference (which will not affect most applications) is th
 Most applications use PDAs since they can be programmatically addressed via the `seeds` parameter, but to access a keypair account you must know the address in advance. We include a discussion of keypair accounts because several tutorials online use them as examples, so we want you to have some context. In practice however, PDAs are the preferred way to store data.
 
 ## Learn more with RareSkills
-Continue with our [Solana course](https://www.rareskills.io/solana-tutorial) to keep learning!
+Continue with our [Solana course](https://rareskills.io/solana-tutorial) to keep learning!
 
 *Originally Published March, 6, 2024*

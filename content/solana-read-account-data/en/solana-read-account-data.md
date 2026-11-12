@@ -261,6 +261,6 @@ The next step is to parse the data buffer, which is not something we will cover 
 **There is no "enforced" way that data is serialized in a Solana account**. Anchor serializes structs its own way, but if someone wrote a Solana program in raw Rust (without Anchor) or used their own serialization algorithm, then you will have to customize your deserialization algorithm for how they serialized the data.
 
 ## Continue learning Solana
-You can see the rest of our [Solana course](http://rareskills.io/solana-tutorial) here.
+You can see the rest of our [Solana course](https://rareskills.io/solana-tutorial) here.
 
 *Originally Published February, 26, 2024*

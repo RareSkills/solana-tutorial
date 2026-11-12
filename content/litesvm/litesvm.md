@@ -705,4 +705,4 @@ We used `litesvm` (and `anchor-litesvm`) to create a local test environment w
 
 By overwriting the `Clock` sysvar and using LiteSVM’s APIs, we were able to test time‑based logic deterministically.
 
-*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*
+*This article is part of a [tutorial series on Solana](https://rareskills.io/solana-tutorial).*

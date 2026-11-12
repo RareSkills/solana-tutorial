@@ -154,6 +154,6 @@ You should observe message string changes but the program id stays the same.
 - Solana does not have delegatecall, programs can be “just updated”
 
 ## Learn more with RareSkills
-This tutorial is part of our free [Solana course](https://www.rareskills.io/solana-tutorial).
+This tutorial is part of our free [Solana course](https://rareskills.io/solana-tutorial).
 
 *Originally Published February, 12, 2024*

@@ -118,7 +118,7 @@ This article focuses primarily on ATAs as they have become the standard approach
 
 ### How are ATA addresses derived?
 
-An ATA address is a [Program Derived Address (PDA)](https://www.rareskills.io/post/solana-pda), deterministically derived from two inputs:
+An ATA address is a [Program Derived Address (PDA)](https://rareskills.io/post/solana-pda), deterministically derived from two inputs:
 
 1. The address of the user/signer’s wallet (the intended authority).
 2. The address of the token's mint account.
@@ -164,7 +164,7 @@ The diagram below shows the relation between the Token Program, the mint account
 
 ## **Associated Token Account Program**
 
-The Associated Token Account program has the fixed address **`ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL`.** It is an onchain program that finds or creates the correct ATA for a given user-token pair. It handles the deterministic address derivation and, when needed, uses [Cross Program Invocation (CPI)](https://www.rareskills.io/post/cross-program-invocation) to create new ATAs through the Token Program.
+The Associated Token Account program has the fixed address **`ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL`.** It is an onchain program that finds or creates the correct ATA for a given user-token pair. It handles the deterministic address derivation and, when needed, uses [Cross Program Invocation (CPI)](https://rareskills.io/post/cross-program-invocation) to create new ATAs through the Token Program.
 
 Specifically, the creation flow orchestrated by the ATA Program is:
 
@@ -381,4 +381,4 @@ Here are the most important points to remember:
 - **Parallel Processing:** Because every user's balance is in a separate account, the network can process thousands of transfers at the same time without them getting in each other's way.
 - **Standardization:** Every SPL token, whether it's a stablecoin or a meme coin, follows the exact same secure logic from the core Token Program. This reduces the risk of bugs that can happen with custom token contracts.
 
-*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*
+*This article is part of a [tutorial series on Solana](https://rareskills.io/solana-tutorial).*

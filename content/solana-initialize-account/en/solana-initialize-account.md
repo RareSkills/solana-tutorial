@@ -143,7 +143,7 @@ The `'info` keyword is a [Rust lifetime](https://doc.rust-lang.org/rust-by-examp
 We will focus on the macro above `my_storage`, as this is where the action for initialization is happening.
 
 ### 3) The `my_storage` field in the Initialize struct
-The attribute macro above the `my_storage` field (<span style="color:#8d28a4">purple arrow</span>) is how Anchor knows this transaction is intended to initialize this account (remember, an [attribute-like macro](https://www.rareskills.io/post/rust-attribute-derive-macro) starts with `#` and augments the struct with additional functionality):
+The attribute macro above the `my_storage` field (<span style="color:#8d28a4">purple arrow</span>) is how Anchor knows this transaction is intended to initialize this account (remember, an [attribute-like macro](https://rareskills.io/post/rust-attribute-derive-macro) starts with `#` and augments the struct with additional functionality):
 ![annotation of struct fields](https://static.wixstatic.com/media/935a00_48be1af69ce54df281456844ff5fbec7~mv2.png/v1/fill/w_1160,h_848,al_c,q_90,enc_auto/935a00_48be1af69ce54df281456844ff5fbec7~mv2.png)
 
 The important keyword here is `init`.
@@ -156,7 +156,7 @@ When we `init` an account, we must supply additional information:
 This might seem like a lot to take in, don't worry. **Initializing an account can largely be treated as boilerplate for now.**
 
 ### 4) What is the system program?
-The `system program` is a program built into the Solana runtime (a bit like an [Ethereum precompile](https://www.rareskills.io/post/solidity-precompiles)) that transfers SOL from one account to another. We will revisit this in a later tutorial about transferring SOL. For now, we need to transfer SOL away from the signer, who is paying for the `MyStruct` storage, so the `system program` is always a part of initialization transactions.
+The `system program` is a program built into the Solana runtime (a bit like an [Ethereum precompile](https://rareskills.io/post/solidity-precompiles)) that transfers SOL from one account to another. We will revisit this in a later tutorial about transferring SOL. For now, we need to transfer SOL away from the signer, who is paying for the `MyStruct` storage, so the `system program` is always a part of initialization transactions.
 
 ### 5) MyStorage struct
 Recall the data field inside the Solana account:
