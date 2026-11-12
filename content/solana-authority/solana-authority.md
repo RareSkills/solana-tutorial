@@ -39,7 +39,7 @@ This is a pattern you will frequently see in Solana: only the owner of the accou
 
 However the owner is always a program, and that program will modify the account on behalf of someone else if the signature for the transaction is valid.
 
-We saw this for example, in our tutorial on [modifying accounts with different signers](https://www.rareskills.io/post/anchor-signer).
+We saw this for example, in our tutorial on [modifying accounts with different signers](https://rareskills.io/post/anchor-signer).
 
 **Exercise**: Create a program that initializes a storage account. You will want to have the address of the program and storage accounts handy. Consider adding the following code to the tests:
 
@@ -62,7 +62,7 @@ When we look at the metadata of the storage account, we see the program is the o
 In Solidity, we usually refer to the owner as a special address with admin privileges over the smart contract. The "owner" is not a concept that exists at the Ethereum runtime level, it is a design pattern applied to Solidity contracts. An owner in Solana is much more fundamental. In Ethereum, a smart contract can only write to its own storage slots. Imagine we had a mechanism to allow an Ethereum smart contract to be able to write to some other storage slot. In Solana terms, it would become the *owner* or those storage slots.
 
 ## Authority can mean who deployed a contract and who can send write transactions for a particular account
-An *authority* can be a construct at the program level. In our tutorial on [Anchor signers](https://www.rareskills.io/post/anchor-signer), we made a program where Alice could deduct points from her account to transfer to someone else. To know that only Alice can send a deduction transaction for that account, we stored her address in the account:
+An *authority* can be a construct at the program level. In our tutorial on [Anchor signers](https://rareskills.io/post/anchor-signer), we made a program where Alice could deduct points from her account to transfer to someone else. To know that only Alice can send a deduction transaction for that account, we stored her address in the account:
 
 ```rust
 #[account]
@@ -72,7 +72,7 @@ pub struct Player {
 }
 ```
 
-Solana uses a similar mechanism to remember who deployed a program. In our tutorial on [Anchor deploy](https://www.rareskills.io/post/solana-anchor-deploy), we noted that the wallet that deployed a program is also able to upgrade it.
+Solana uses a similar mechanism to remember who deployed a program. In our tutorial on [Anchor deploy](https://rareskills.io/post/solana-anchor-deploy), we noted that the wallet that deployed a program is also able to upgrade it.
 
 "Upgrading" a program is the same as writing new data to it — i.e. new bytecode. Only the owner of the program can write to it (this program is `BPFLoaderUpgradeable` as we will see soon).
 
@@ -184,6 +184,6 @@ print(hex_string)
 ```
 
 ## Learn more with RareSkills
-See our [Solana development course](https://www.rareskills.io/solana-tutorial) to learn more Solana topics! For other blockchain topics, please see our [blockchain bootcamp](https://www.rareskills.io/web3-blockchain-bootcamps).
+See our [Solana development course](https://rareskills.io/solana-tutorial) to learn more Solana topics! For other blockchain topics, please see our [blockchain bootcamp](https://rareskills.io/web3-blockchain-bootcamps).
 
 *Originally Published March, 11, 2024*

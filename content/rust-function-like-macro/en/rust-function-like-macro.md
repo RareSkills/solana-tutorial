@@ -106,6 +106,6 @@ Let's look at a fresh program created by anchor:
 We will explain how these work in the following tutorial.
 
 ## Learn more with RareSkills
-This tutorial is part of our free [Solana course](https://www.rareskills.io/solana-tutorial).
+This tutorial is part of our free [Solana course](https://rareskills.io/solana-tutorial).
 
 *Originally Published February, 15, 2024*

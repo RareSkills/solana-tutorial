@@ -4,7 +4,7 @@
 
 This tutorial goes over the most commonly used syntax in Solidity and demonstrates the equivalent in Rust.
 
-If you want a high level overview of the differences of [Rust vs Solidity](https://www.rareskills.io/post/solidity-vs-rust) please see the linked tutorial. This tutorial assumes you already know Solidity, so please see our free [Solidity tutorial](https://www.rareskills.io/learn-solidity) if you are unfamiliar with Solidity.
+If you want a high level overview of the differences of [Rust vs Solidity](https://rareskills.io/post/solidity-vs-rust) please see the linked tutorial. This tutorial assumes you already know Solidity, so please see our free [Solidity tutorial](https://rareskills.io/learn-solidity) if you are unfamiliar with Solidity.
 
 Create a new Solana Anchor project called `tryrust` and set up the environment.
 
@@ -472,6 +472,6 @@ Rust does not have try catch. Failures are expected to return errors (like we di
 **Exercise**: Write a Solana / Rust program that takes a vector of u64, loops through it, and pushes all the even numbers into another vector, then prints the new vector.
 
 ## Learn more with RareSkills
-This tutorial is part of our free [Solana course](https://www.rareskills.io/solana-tutorial).
+This tutorial is part of our free [Solana course](https://rareskills.io/solana-tutorial).
 
 *Originally Published February, 13, 2024*

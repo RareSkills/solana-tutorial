@@ -330,6 +330,6 @@ pub fn decode(_accounts: Context<Initialize>, encoded_data: Vec<u8>) -> Result<P
 The `try_to_vec()` method encodes a struct to a byte vector and returns a `Result<T, E>` enum where `T` is the byte vector, while the `unwrap()` method is used to extract the value of the byte vector from `OK(T)`. This will crash the program if the method fails to convert the struct to a byte vector.
 
 ## Learn more with RareSkills
-This tutorial is part of our free [Solana course](https://www.rareskills.io/solana-tutorial).
+This tutorial is part of our free [Solana course](https://rareskills.io/solana-tutorial).
 
 *Originally Published February, 14, 2024*

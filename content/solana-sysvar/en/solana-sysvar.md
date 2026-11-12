@@ -231,7 +231,7 @@ Just as mentioned earlier, it returns empty data for our local validator.
 We can also obtain the public key of the StakeHistory sysvar from the Anchor Typescript client by replacing our `StakeHistory_PublicKey` variable with `anchor.web3.SYSVAR_STAKE_HISTORY_PUBKEY`.
 
 ### RecentBlockhashes sysvar
-How to access this sysvar was discussed in our [previous tutorial](https://www.rareskills.io/post/solana-clock). As a reminder, it is deprecated and support will be dropped.
+How to access this sysvar was discussed in our [previous tutorial](https://rareskills.io/post/solana-clock). As a reminder, it is deprecated and support will be dropped.
 
 ### Fees sysvar
 The Fees sysvar is also deprecated.
@@ -336,6 +336,6 @@ We can also see the number `3` highlighted with the <span style="color:#c1c146">
 In the current version of Anchor, it is not feasible to access certain sysvars. These sysvars include EpochRewards, SlotHistory, and SlotHashes. When attempting to access these sysvars, it results to an error.
 
 ## Learn more with RareSkills
-See our [Solana course](https://www.rareskills.io/solana-tutorial) for more Solana tutorials; this tutorial is part of that course.
+See our [Solana course](https://rareskills.io/solana-tutorial) for more Solana tutorials; this tutorial is part of that course.
 
 *Originally Published February, 19, 2024*

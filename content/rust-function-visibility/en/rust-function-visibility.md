@@ -316,6 +316,6 @@ In Solidity, we think a lot about function visibility because it's very critical
 Solidity achieves contract inheritance through classes, a feature that Rust, the language used in Solana, does not have. Nevertheless, you can still organize your code using Rust modules.
 
 ## Learn more with RareSkills
-This tutorial is part of our free [Solana course](https://www.rareskills.io/solana-tutorial).
+This tutorial is part of our free [Solana course](https://rareskills.io/solana-tutorial).
 
 *Originally Published February, 17, 2024*

@@ -371,6 +371,6 @@ The exact process for how the transactions are batched up are described in [Sola
 The list of transactions are separate transactions, not a batched transaction. If it were batched, it would exceed the 1232 byte limit.
 
 ## Learn more with RareSkills
-See our [Solana dev course](https://www.rareskills.io/solana-tutorial) for more Solana tutorials.
+See our [Solana dev course](https://rareskills.io/solana-tutorial) for more Solana tutorials.
 
 *Originally Published March, 10, 2024*

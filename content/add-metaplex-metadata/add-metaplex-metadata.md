@@ -542,4 +542,4 @@ In this tutorial, we created an SPL token and attached metadata to it with the h
 
 In our Anchor program, we used the `DataV2` struct to define the token’s metadata and invoked the `CreateMetadataAccountV3` instruction (through CPI) from the `mpl-token-metadata` crate to create the metadata account. We used Metaplex with Irys to upload the token's image and metadata JSON to Arweave. We then confirmed that the metadata account exists after creation and is owned by the Metaplex program. Lastly, we explained the Metaplex token standards — Fungible (2), Fungible Asset (1), and Non-Fungible (0) — and outlined their JSON URI formats.
 
-*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*
+*This article is part of a [tutorial series on Solana](https://rareskills.io/solana-tutorial).*

@@ -173,7 +173,7 @@ As you can see in the image above, we initialize this new mint account as a [Pro
 If you’re new to how PDAs work or how they differ from keypair accounts, check out our article “[PDA (Program Derived Address) vs Keypair Account in Solana.](https://rareskills.io/post/solana-pda)”
 Finally, the `init` constraint tells Anchor to create and initialize the mint account automatically when `create_and_mint_token` runs (we’ll explain that function next).
 
-Because of this `init` constraint, Anchor will make a [CPI (cross-program invocation)](https://www.rareskills.io/post/cross-program-invocation) to the Token Program’s `InitializeMint` instruction behind the scenes. This instruction sets the mint’s decimals to 9 and assigns both the mint and freeze authority to the signer.
+Because of this `init` constraint, Anchor will make a [CPI (cross-program invocation)](https://rareskills.io/post/cross-program-invocation) to the Token Program’s `InitializeMint` instruction behind the scenes. This instruction sets the mint’s decimals to 9 and assigns both the mint and freeze authority to the signer.
 
 ### Associated Token Account
 
@@ -726,4 +726,4 @@ You should get a similar result below.
 
 ![expected outcome of a successful programming exercise](https://r2media.rareskills.io/SolanaTransferSPLToken/image4.png)
 
-*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*
+*This article is part of a [tutorial series on Solana](https://rareskills.io/solana-tutorial).*

@@ -328,6 +328,6 @@ The `init_if_needed` macro can be convenient to avoid needing two transactions t
 - If the program has a function that "blindly" writes to an account, then data in that account could get overwritten. This usually requires loading in the account via `AccountInfo` or its alias `UncheckedAccount`.
 
 ## Learn more with RareSkills
-See our [Solana development course](https://www.rareskills.io/solana-tutorial) for the rest of our Solana tutorials. Thank you for reading!
+See our [Solana development course](https://rareskills.io/solana-tutorial) for the rest of our Solana tutorials. Thank you for reading!
 
 *Originally Published March, 8, 2024*

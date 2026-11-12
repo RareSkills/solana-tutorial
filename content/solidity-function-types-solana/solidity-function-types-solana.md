@@ -8,7 +8,7 @@ A Solana transaction must specify in advance the accounts it will modify or read
 
 ## Solana does not have a notion of a "view" or "pure" function
 A "view" function in Solidity creates a guarantee that the state will not change using two mechanisms:
-- All external calls in a view function are [staticcalls](https://www.rareskills.io/post/solidity-staticcall) (calls that revert if a state change happens)
+- All external calls in a view function are [staticcalls](https://rareskills.io/post/solidity-staticcall) (calls that revert if a state change happens)
 - If the compiler detects state-changing opcodes, it throws an error
 
 A pure function takes this even further by the compiler checking if there are opcodes that view the state.
@@ -22,13 +22,13 @@ Finally, there is no such thing as a `staticcall` in the Solana virtual machine 
 ## View functions aren't necessary in Solana anyway
 Because a Solana program can read any account passed to it, it can read an account owned by another program.
 
-The program owning the account does not need to implement a view function to grant access for another program to view that account. The web3 js client — or another program — can [view the Solana account data](https://www.rareskills.io/post/solana-read-account-data) directly.
+The program owning the account does not need to implement a view function to grant access for another program to view that account. The web3 js client — or another program — can [view the Solana account data](https://rareskills.io/post/solana-read-account-data) directly.
 
 This has a very important implication:
 
 **It is not possible to use reentrancy locks to directly defend against read only reentrancy in Solana. The program must expose flag for readers to know if the data is reliable.**
 
-[Read only reentrancy](https://www.rareskills.io/post/where-to-find-solidity-reentrancy-attacks) happens when a victim contract accesses a view function that is showing manipulated data. This can be defended against in Solidity by adding a nonReentrant modifier to the view function. However, in Solana there is no way to prevent another program from viewing data in an account.
+[Read only reentrancy](https://rareskills.io/post/where-to-find-solidity-reentrancy-attacks) happens when a victim contract accesses a view function that is showing manipulated data. This can be defended against in Solidity by adding a nonReentrant modifier to the view function. However, in Solana there is no way to prevent another program from viewing data in an account.
 
 However, Solana programs can still implement the flags reentrancy guards use. Programs consuming the account of another program can check those flags to see if the account might currently be in a reentrant state and should not be trusted.
 
@@ -44,6 +44,6 @@ Similarly, Solidity has `days` as a convenient alias for 84,600 seconds, but no 
 This is the subject of the next tutorial.
 
 ## Learn more with RareSkills
-See our [Solana development course](https://www.rareskills.io/solana-tutorial) for the next chapter.
+See our [Solana development course](https://rareskills.io/solana-tutorial) for the next chapter.
 
 *Originally Published March, 1, 2024*

@@ -11,7 +11,7 @@ Since both Alice and Bob specify a (storage) account, the Solana runtime can inf
 
 This is why each function has it's own separate `#[derive(Accounts)]` struct. Each field in the struct is an account that the program intends to (but is not required to) access during execution.
 
-Some Ethereum developers may notice the similarity with this requirement and [EIP 2930 access list transactions](https://www.rareskills.io/post/eip-2930-optional-access-list-ethereum).
+Some Ethereum developers may notice the similarity with this requirement and [EIP 2930 access list transactions](https://rareskills.io/post/eip-2930-optional-access-list-ethereum).
 
 The type of account signals to Anchor how you intend to interact with the account.
 
@@ -292,6 +292,6 @@ Transaction executed in slot 11184:
 This should be self explanatory. It signals to Anchor the account is an executable one, i.e. a program, and you may issue to it a cross program invocation. The one we have been using is the system program, though later we will use our own programs.
 
 ## Learn more
-[Learn Solana](https://www.rareskills.io/solana-tutorial) development in our Ethereum to Solana course.
+[Learn Solana](https://rareskills.io/solana-tutorial) development in our Ethereum to Solana course.
 
 *Originally Published April, 6, 2024*

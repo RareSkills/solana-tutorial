@@ -2,7 +2,7 @@
 
 ![Hero image showing Anchor Signer: Modifying accounts with different signers](https://static.wixstatic.com/media/935a00_8a5622df6d344ca3bd3d548454a703fe~mv2.jpg/v1/fill/w_1480,h_832,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_8a5622df6d344ca3bd3d548454a703fe~mv2.jpg)
 
-In our [Solana tutorials](https://www.rareskills.io/solana-tutorial) thus far, we've only had one account initialize and write to the account.
+In our [Solana tutorials](https://rareskills.io/solana-tutorial) thus far, we've only had one account initialize and write to the account.
 
 In practice, this is very restrictive. For example, if user Alice is transferring points to Bob, Alice must be able to write to an account initialized by user Bob.
 
@@ -267,7 +267,7 @@ Alice should be able to modify both her account and Bob's account. That is, she 
 
 By convention, we call an address that can make privileged  changes to an account an "authority" in Solana. It is a common pattern to store the "authority" field in the account struct to signify that only that account can conduct sensitive operations on that account (such as deducting points in our example).
 
-This is somewhat analogous to the [onlyOwner pattern in Solidity](https://www.rareskills.io/post/anchor-signer), except that instead of applying to the entire contract, it applies only to a single account:
+This is somewhat analogous to the [onlyOwner pattern in Solidity](https://rareskills.io/post/anchor-signer), except that instead of applying to the entire contract, it applies only to a single account:
 
 ```rust
 use anchor_lang::prelude::*;
@@ -335,11 +335,11 @@ pub struct Player {
     authority: Pubkey
 }
 ```
-Note that we use the address of the signer (`&(signer.as_ref().key().to_bytes())`) to derive the address of the account where their points are stored. This behaves like a Solidity [mapping in Solana](https://www.rareskills.io/post/solana-solidity-mapping), where the [Solana "msg.sender / tx.origin"](https://www.rareskills.io/post/msg-sender-solana) is the key.
+Note that we use the address of the signer (`&(signer.as_ref().key().to_bytes())`) to derive the address of the account where their points are stored. This behaves like a Solidity [mapping in Solana](https://rareskills.io/post/solana-solidity-mapping), where the [Solana "msg.sender / tx.origin"](https://rareskills.io/post/msg-sender-solana) is the key.
 
 In the `initialize` function, the program sets the initial points to `10` and the authority to the `signer`. The user does not have control over these initial values.
 
-The `transfer_points` function uses [Solana Anchor require macros and error code macros](https://www.rareskills.io/post/solana-require-macro) to ensure that 1) the Signer of the transaction is the authority of the account whose balance is getting deducted; and 2) the account has enough points balance to transfer.
+The `transfer_points` function uses [Solana Anchor require macros and error code macros](https://rareskills.io/post/solana-require-macro) to ensure that 1) the Signer of the transaction is the authority of the account whose balance is getting deducted; and 2) the account has enough points balance to transfer.
 
 The test codebase should be straightforward to understand. Alice and Bob initialize their accounts, then Alice transfers 5 points to Bob:
 
@@ -476,6 +476,6 @@ The `Errors` enum was defined in the Rust code earlier that used them in the `re
 **Exercise**: modify the tests to violate the `has_one` and `constraint` macro and observe the error messages.
 
 ## Learn more Solana with RareSkills
-Our [Solana tutorials](https://www.rareskills.io/solana-tutorial)covers how to learn Solana as an Ethereum or EVM developer.
+Our [Solana tutorials](https://rareskills.io/solana-tutorial)covers how to learn Solana as an Ethereum or EVM developer.
 
 *Originally Published March, 5, 2024*

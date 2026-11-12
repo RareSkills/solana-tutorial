@@ -647,7 +647,7 @@ Recall from the **deposit** function, we use the System Program’s **transfer**
 
 ![A screenshot showing the transfer CPI instructions](https://r2media.rareskills.io/SolanaSPLTokenBank/image3.png)
 
-But in the **withdraw** function, we can modify the lamport balances of both the bank and the user account PDA directly. [This is because our program owns both PDAs](https://www.rareskills.io/post/solana-account-owner) (we deployed them).
+But in the **withdraw** function, we can modify the lamport balances of both the bank and the user account PDA directly. [This is because our program owns both PDAs](https://rareskills.io/post/solana-account-owner) (we deployed them).
 
 ![A screenshot showing that the balance of the lamports are modified directly](https://r2media.rareskills.io/SolanaSPLTokenBank/image4.png)
 
@@ -800,4 +800,4 @@ Finally, run the test. It passes.
 
 This concludes our basic bank program. 
 
-*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*
+*This article is part of a [tutorial series on Solana](https://rareskills.io/solana-tutorial).*

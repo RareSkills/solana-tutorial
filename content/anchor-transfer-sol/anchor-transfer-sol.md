@@ -317,6 +317,6 @@ await program.methods.splitSol(amount)
 ```
 
 ## Learn more with RareSkills
-See our [Solana course](https://www.rareskills.io/solana-tutorial) for the rest of the Solana tutorials.
+See our [Solana course](https://rareskills.io/solana-tutorial) for the rest of the Solana tutorials.
 
 *Originally Published March, 2, 2024*

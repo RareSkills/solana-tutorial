@@ -724,4 +724,4 @@ The program utilizes two key PDAs: a self-referential mint PDA and a treasury PD
 
 By using `CpiContext::new_with_signer` with properly derived seeds, our program can mint tokens to buyers and indirectly act as the mint authority.
 
-*This article is part of a [tutorial series on Solana](http://rareskills.io/solana-tutorial).*
+*This article is part of a [tutorial series on Solana](https://rareskills.io/solana-tutorial).*

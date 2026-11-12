@@ -256,6 +256,6 @@ The owner can just redeploy the bytecode.
 **Exercise**: Upgrade a program like the one above to have a new owner.
 
 ## Learn more with RareSkills
-This tutorial is chapter 14 in our [Solana course](https://www.rareskills.io/solana-tutorial).
+This tutorial is chapter 14 in our [Solana course](https://rareskills.io/solana-tutorial).
 
 *Originally Published February, 21, 2024*
